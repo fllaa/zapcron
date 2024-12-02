@@ -3,6 +3,7 @@ import "@bolabali/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
+import { NextUIProvider } from "@bolabali/app/_providers";
 import { TRPCReactProvider } from "@bolabali/trpc/react";
 
 export const metadata: Metadata = {
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <NextUIProvider>{children}</NextUIProvider>
+        </TRPCReactProvider>
       </body>
     </html>
   );
