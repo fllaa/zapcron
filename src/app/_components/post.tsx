@@ -5,7 +5,7 @@ import { Input } from "@nextui-org/react";
 import { Send } from "lucide-react";
 
 import { api } from "@bolabali/trpc/react";
-import { RoundedIconButton } from "@bolabali/app/_components/common/rounded-icon-button";
+import { IconButton } from "@bolabali/app/_components/common";
 
 export function LatestPost() {
   const [latestPost] = api.post.getLatest.useSuspenseQuery();
@@ -39,7 +39,7 @@ export function LatestPost() {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <RoundedIconButton
+        <IconButton
           icon={<Send size={16} color="black" />}
           type="submit"
           color="primary"
@@ -48,7 +48,7 @@ export function LatestPost() {
           isLoading={createPost.isPending}
         >
           {createPost.isPending ? "Submitting..." : "Submit"}
-        </RoundedIconButton>
+        </IconButton>
       </form>
     </div>
   );
