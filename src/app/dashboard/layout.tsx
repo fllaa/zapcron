@@ -1,6 +1,6 @@
 import { type Metadata } from "next";
 
-import { Sidebar } from "@bolabali/app/_components/layout";
+import { Sidebar } from "@bolabali/components/layout";
 
 export const metadata: Metadata = {
   title: "Bolabali | Dashboard",

@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react";
 import { CalendarSync, Settings, Workflow } from "lucide-react";
 
-import { IconButton, LogoLink } from "@bolabali/app/_components/common";
+import { IconButton, LogoLink } from "@bolabali/components/common";
 
 const menu = [
   {

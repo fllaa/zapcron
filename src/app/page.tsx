@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { LatestPost } from "@bolabali/app/_components/post";
+import { LatestPost } from "@bolabali/components/post";
 import { auth } from "@bolabali/server/auth";
 import { api, HydrateClient } from "@bolabali/trpc/server";
 

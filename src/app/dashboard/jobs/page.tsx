@@ -1,5 +1,5 @@
-import { HeaderPage } from "@bolabali/app/_components/common";
-import { CardPage } from "@bolabali/app/_components/layout";
+import { HeaderPage } from "@bolabali/components/common";
+import { CardPage } from "@bolabali/components/layout";
 
 export default function JobsPage() {
   return (

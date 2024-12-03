@@ -1,4 +1,4 @@
-import { CardPage } from "@bolabali/app/_components/layout";
+import { CardPage } from "@bolabali/components/layout";
 
 export default function SettingsPage() {
   return (

@@ -3,7 +3,7 @@ import "@bolabali/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
-import { NextUIProvider } from "@bolabali/app/_providers";
+import { NextUIProvider } from "@bolabali/providers";
 import { TRPCReactProvider } from "@bolabali/trpc/react";
 
 export const metadata: Metadata = {

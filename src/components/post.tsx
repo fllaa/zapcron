@@ -5,7 +5,7 @@ import { Input } from "@nextui-org/react";
 import { Send } from "lucide-react";
 
 import { api } from "@bolabali/trpc/react";
-import { IconButton } from "@bolabali/app/_components/common";
+import { IconButton } from "@bolabali/components/common";
 
 export function LatestPost() {
   const [latestPost] = api.post.getLatest.useSuspenseQuery();

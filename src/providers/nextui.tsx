@@ -7,7 +7,7 @@ import {
   ThemeProvider as NextThemesProvider,
   type ThemeProviderProps,
 } from "next-themes";
-import { useIsClient } from "@bolabali/app/_hooks";
+import { useIsClient } from "@bolabali/hooks";
 
 export interface NextUIProviderProps {
   children: React.ReactNode;
