@@ -7,6 +7,8 @@ import {
   ThemeProvider as NextThemesProvider,
   type ThemeProviderProps,
 } from "next-themes";
+import { Toaster } from "sonner";
+
 import { useIsClient } from "@bolabali/hooks";
 
 export interface NextUIProviderProps {
@@ -26,6 +28,7 @@ export function NextUIProvider({
   ) : (
     <NUIProvider navigate={(path: string) => router.push(path)}>
       <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+      <Toaster />
     </NUIProvider>
   );
 }

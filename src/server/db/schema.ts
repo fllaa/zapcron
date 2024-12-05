@@ -1,10 +1,11 @@
-import { relations, sql } from "drizzle-orm";
+import { type InferSelectModel, relations, sql } from "drizzle-orm";
 import {
   index,
   integer,
   pgTableCreator,
   primaryKey,
   text,
+  json,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -39,6 +40,8 @@ export const posts = createTable(
   }),
 );
 
+export type Post = InferSelectModel<typeof posts>;
+
 export const users = createTable("user", {
   id: varchar("id", { length: 255 })
     .notNull()
@@ -52,6 +55,8 @@ export const users = createTable("user", {
   }).default(sql`CURRENT_TIMESTAMP`),
   image: varchar("image", { length: 255 }),
 });
+
+export type User = InferSelectModel<typeof users>;
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
@@ -87,6 +92,8 @@ export const accounts = createTable(
   }),
 );
 
+export type Account = InferSelectModel<typeof accounts>;
+
 export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, { fields: [accounts.userId], references: [users.id] }),
 }));
@@ -110,6 +117,8 @@ export const sessions = createTable(
   }),
 );
 
+export type Session = InferSelectModel<typeof sessions>;
+
 export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(users, { fields: [sessions.userId], references: [users.id] }),
 }));
@@ -128,3 +137,55 @@ export const verificationTokens = createTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   }),
 );
+
+export type VerificationToken = InferSelectModel<typeof verificationTokens>;
+
+export const jobs = createTable(
+  "job",
+  {
+    id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+    name: varchar("name", { length: 255 }).notNull(),
+    description: text("description"),
+    cronspec: varchar("cronspec", { length: 255 }).notNull(),
+    url: varchar("url", { length: 255 }).notNull(),
+    method: varchar("method", { length: 255 }).notNull(),
+    headers: json("headers"),
+    body: json("body"),
+    createdById: varchar("created_by", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    executeAt: timestamp("execute_at", { withTimezone: true }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+      () => new Date(),
+    ),
+  },
+  (job) => ({
+    createdByIdIdx: index("job_created_by_idx").on(job.createdById),
+    nameIndex: index("job_name_idx").on(job.name),
+  }),
+);
+
+export type Job = InferSelectModel<typeof jobs>;
+
+export const logs = createTable(
+  "log",
+  {
+    id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+    jobId: integer("job_id")
+      .notNull()
+      .references(() => jobs.id),
+    status: varchar("status", { length: 255 }).notNull(),
+    response: json("response"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (log) => ({
+    jobIdIdx: index("log_job_id_idx").on(log.jobId),
+  }),
+);
+
+export type Log = InferSelectModel<typeof logs>;

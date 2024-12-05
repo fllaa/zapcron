@@ -1,3 +1,6 @@
+"use client";
+
+import React from "react";
 import {
   Table as NTable,
   TableBody,
@@ -10,7 +13,7 @@ import {
 } from "@nextui-org/react";
 
 interface TableProps extends NTableProps {
-  rows: Record<string, string | number | boolean>[];
+  rows: ({ key: string } & Record<string, string | number | boolean>)[];
   columns: Record<"key" | "label", string>[];
   ariaLabel?: string;
 }

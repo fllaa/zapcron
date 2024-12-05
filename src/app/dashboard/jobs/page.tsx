@@ -1,14 +1,31 @@
-import { HeaderPage } from "@bolabali/components/common";
-import { CardPage } from "@bolabali/components/layout";
+import { api } from "@bolabali/trpc/server";
+import { JobsCreateModal, JobsTable } from "@bolabali/components/features/jobs";
+import { HeaderPage, Search } from "@bolabali/components/common";
 
-export default function JobsPage() {
+export default async function JobsPage({
+  searchParams,
+}: {
+  readonly searchParams: Promise<Record<string, string | undefined>>;
+}) {
+  const { limit, page } = await searchParams;
+
+  const jobs = await api.job.getAll({
+    limit: !isNaN(parseInt(limit!)) ? parseInt(limit!) : undefined,
+    page: !isNaN(parseInt(page!)) ? parseInt(page!) : undefined,
+  });
+
   return (
-    <CardPage className="mx-16 my-10 p-8">
+    <div className="mx-16 my-10 p-8">
       <HeaderPage
         title="Jobs"
         icon="calendar-sync"
         description="Manage your schedule jobs"
       />
-    </CardPage>
+      <div className="my-6 flex items-center justify-between gap-4">
+        <Search className="max-w-72" />
+        <JobsCreateModal />
+      </div>
+      <JobsTable data={jobs} />
+    </div>
   );
 }
