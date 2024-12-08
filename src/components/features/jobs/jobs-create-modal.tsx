@@ -18,7 +18,6 @@ import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DevTool } from "@hookform/devtools";
 
 import { CronBuilder } from "@bolabali/components/common";
 import { api } from "@bolabali/trpc/react";
@@ -160,12 +159,10 @@ const JobsCreateModal = () => {
                   </Button>
                 </ModalFooter>
               </form>
-              <DevTool control={methods.control} />
             </FormProvider>
           )}
         </ModalContent>
       </Modal>
-      {/* TODO: Remove this in production */}
     </>
   );
 };
