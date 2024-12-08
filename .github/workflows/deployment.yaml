@@ -27,7 +27,7 @@ jobs:
         id: commithash
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
-      - name: Build and push API image
+      - name: Build and push Webapp image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -42,4 +42,4 @@ jobs:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
       - name: Deploy to Kubernetes
-        run: kubectl --namespace=slivadoc set image deployment/bolabali webapp=${{ secrets.DOCKER_USERNAME }}/bolabali-webapp:${{ env.BRANCH_NAME }}-${{ steps.commithash.outputs.sha_short }}
+        run: kubectl set image deployment/bolabali webapp=${{ secrets.DOCKER_USERNAME }}/bolabali-webapp:${{ env.BRANCH_NAME }}-${{ steps.commithash.outputs.sha_short }}
