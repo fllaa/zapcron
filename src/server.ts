@@ -11,8 +11,10 @@ const handle = app.getRequestHandler();
 
 void app.prepare().then(() => {
   createServer((req, res) => {
-    const parsedUrl = parse(req.url!, true);
-    void handle(req, res, parsedUrl);
+    if (req.url) {
+      const parsedUrl = parse(req.url, true);
+      void handle(req, res, parsedUrl);
+    }
   }).listen(port);
 
   const scheduler = new Scheduler();
