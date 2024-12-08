@@ -30,10 +30,12 @@ const JobsCreateModal = () => {
   const methods = useForm({
     resolver: zodResolver(zCreateJobInput),
   });
+  const utils = api.useUtils();
 
   const createJob = api.job.create.useMutation({
     onSuccess: () => {
       methods.reset();
+      void utils.job.invalidate();
       toast.success("Job created successfully");
       onOpenChange();
     },

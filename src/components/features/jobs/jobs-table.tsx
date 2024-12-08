@@ -1,18 +1,22 @@
 "use client";
 
 import React, { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 
+import { api } from "@bolabali/trpc/react";
 import { Table } from "@bolabali/components/common";
-import { type Job } from "@bolabali/server/db/schema";
 
-interface JobsTableProps {
-  data: Job[];
-}
+const JobsTable = () => {
+  const searchParams = useSearchParams();
 
-const JobsTable = ({ data }: JobsTableProps) => {
+  const [jobs] = api.job.getAll.useSuspenseQuery({
+    limit: parseInt(searchParams.get("limit") ?? "10", 10),
+    page: parseInt(searchParams.get("page") ?? "1", 10),
+  });
+
   const rows = useMemo(
     () =>
-      data.map((job) => ({
+      jobs.map((job) => ({
         key: job.id.toString(),
         name: job.name,
         cronspec: job.cronspec,
@@ -20,7 +24,7 @@ const JobsTable = ({ data }: JobsTableProps) => {
         createdAt: job.createdAt.toISOString(),
         executeAt: job.executeAt.toISOString(),
       })),
-    [data],
+    [jobs],
   );
 
   const columns = [

@@ -1,4 +1,5 @@
-import { api } from "@bolabali/trpc/server";
+import { api, HydrateClient } from "@bolabali/trpc/server";
+import { auth } from "@bolabali/server/auth";
 import { JobsCreateModal, JobsTable } from "@bolabali/components/features/jobs";
 import { HeaderPage, Search } from "@bolabali/components/common";
 
@@ -9,10 +10,14 @@ export default async function JobsPage({
 }) {
   const { limit, page } = await searchParams;
 
-  const jobs = await api.job.getAll({
-    limit: !isNaN(parseInt(limit!)) ? parseInt(limit!) : undefined,
-    page: !isNaN(parseInt(page!)) ? parseInt(page!) : undefined,
-  });
+  const session = await auth();
+
+  if (session?.user) {
+    void api.job.getAll.prefetch({
+      limit: !isNaN(parseInt(limit!)) ? parseInt(limit!) : undefined,
+      page: !isNaN(parseInt(page!)) ? parseInt(page!) : undefined,
+    });
+  }
 
   return (
     <div className="mx-16 my-10 p-8">
@@ -25,7 +30,9 @@ export default async function JobsPage({
         <Search className="max-w-72" />
         <JobsCreateModal />
       </div>
-      <JobsTable data={jobs} />
+      <HydrateClient>
+        <JobsTable />
+      </HydrateClient>
     </div>
   );
 }
