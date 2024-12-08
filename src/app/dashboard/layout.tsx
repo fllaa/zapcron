@@ -1,5 +1,8 @@
 import { type Metadata } from "next";
+import { redirect } from "next/navigation";
+import { SessionProvider } from "next-auth/react";
 
+import { auth } from "@bolabali/server/auth";
 import { Sidebar } from "@bolabali/components/layout";
 
 export const metadata: Metadata = {
@@ -8,15 +11,19 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const session = await auth();
+  if (!session?.user) return redirect("/");
   return (
-    <div className="flex min-h-screen">
-      <aside className="w-80">
-        <Sidebar />
-      </aside>
-      <aside className="flex-auto">{children}</aside>
-    </div>
+    <SessionProvider session={session}>
+      <div className="flex min-h-screen">
+        <aside className="w-80">
+          <Sidebar />
+        </aside>
+        <aside className="flex-auto">{children}</aside>
+      </div>
+    </SessionProvider>
   );
 }
