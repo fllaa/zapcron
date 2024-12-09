@@ -1,6 +1,9 @@
 import { api, HydrateClient } from "@bolabali/trpc/server";
 import { auth } from "@bolabali/server/auth";
-import { JobsCreateModal, JobsTable } from "@bolabali/components/features/jobs";
+import {
+  JobsCreateModal,
+  JobsWrapper,
+} from "@bolabali/components/features/jobs";
 import { HeaderPage, Search } from "@bolabali/components/common";
 
 export default async function JobsPage({
@@ -31,7 +34,7 @@ export default async function JobsPage({
         <JobsCreateModal />
       </div>
       <HydrateClient>
-        <JobsTable />
+        <JobsWrapper />
       </HydrateClient>
     </div>
   );

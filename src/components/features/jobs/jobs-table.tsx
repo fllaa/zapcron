@@ -1,28 +1,35 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useCallback, useMemo } from "react";
+import { Button, Chip, Link, Tooltip } from "@nextui-org/react";
+import { ChevronRight, Trash2 } from "lucide-react";
+import cronstrue from "cronstrue";
+import { format } from "@formkit/tempo";
 
-import { api } from "@bolabali/trpc/react";
 import { Table } from "@bolabali/components/common";
+import { getClientTimezone } from "@bolabali/utils/datetime";
+import { type Job } from "@bolabali/server/db/schema";
 
-const JobsTable = () => {
-  const searchParams = useSearchParams();
+interface JobsTableProps {
+  jobs: {
+    data: Job[];
+    _meta: Record<string, unknown>;
+  };
+}
 
-  const [jobs] = api.job.getAll.useSuspenseQuery({
-    limit: parseInt(searchParams.get("limit") ?? "10", 10),
-    page: parseInt(searchParams.get("page") ?? "1", 10),
-  });
-
+const JobsTable = ({ jobs }: JobsTableProps) => {
   const rows = useMemo(
     () =>
-      jobs.map((job) => ({
+      jobs.data.map((job) => ({
         key: job.id.toString(),
         name: job.name,
         cronspec: job.cronspec,
         url: job.url,
-        createdAt: job.createdAt.toISOString(),
-        executeAt: job.executeAt.toISOString(),
+        createdAt: format({
+          date: job.createdAt,
+          format: "medium",
+          tz: getClientTimezone(),
+        }),
       })),
     [jobs],
   );
@@ -32,10 +39,66 @@ const JobsTable = () => {
     { key: "cronspec", label: "Cronspec" },
     { key: "url", label: "URL" },
     { key: "createdAt", label: "Created Date" },
-    { key: "executeAt", label: "Next Execution" },
+    { key: "actions", label: "Actions" },
   ];
 
-  return <Table rows={rows} columns={columns} />;
+  const renderCell = useCallback(
+    (
+      item: Record<string, string | number | boolean | Date>,
+      columnKey: React.Key | string,
+    ) => {
+      const _columnKey = columnKey as string;
+      const value = item[_columnKey];
+
+      switch (_columnKey) {
+        case "cronspec":
+          return (
+            <Tooltip
+              content={`${cronstrue.toString(value as string)}, Next: ${format({
+                date: item.executeAt as Date,
+                // format date and time
+                format: "YYYY-MM-DD HH:mm",
+                tz: getClientTimezone(),
+              })}`}
+            >
+              <Chip size="sm" variant="bordered">
+                {value as string}
+              </Chip>
+            </Tooltip>
+          );
+        case "url":
+          const hostname = new URL(value as string).hostname;
+          return (
+            <Button
+              isExternal
+              showAnchorIcon
+              as={Link}
+              href={value as string}
+              variant="light"
+              size="sm"
+            >
+              {hostname}
+            </Button>
+          );
+        case "actions":
+          return (
+            <div className="flex items-center gap-2">
+              <Button isIconOnly size="sm" variant="flat" color="danger">
+                <Trash2 size={16} />
+              </Button>
+              <Button isIconOnly size="sm" variant="flat" color="secondary">
+                <ChevronRight size={16} />
+              </Button>
+            </div>
+          );
+        default:
+          return value as string;
+      }
+    },
+    [],
+  );
+
+  return <Table rows={rows} columns={columns} renderCell={renderCell} />;
 };
 
 export { JobsTable };

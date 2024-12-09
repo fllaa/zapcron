@@ -1,11 +1,11 @@
 import parser from "cron-parser";
 
+import { count, eq } from "drizzle-orm";
 import {
   createTRPCRouter,
   protectedProcedure,
 } from "@bolabali/server/api/trpc";
 import { jobs } from "@bolabali/server/db/schema";
-import { eq } from "drizzle-orm";
 import {
   zCreateJobInput,
   zGetAllJobInput,
@@ -32,11 +32,22 @@ export const jobRouter = createTRPCRouter({
   getAll: protectedProcedure
     .input(zGetAllJobInput)
     .query(async ({ ctx, input }) => {
-      return await ctx.db.query.jobs.findMany({
+      const data = await ctx.db.query.jobs.findMany({
         orderBy: (jobs, { desc }) => [desc(jobs.createdAt)],
         limit: input.limit,
         offset: (input.page - 1) * input.limit,
       });
+      const total =
+        (await ctx.db.select({ count: count() }).from(jobs))[0]?.count ?? 0;
+      return {
+        data,
+        _meta: {
+          total,
+          page: input.page,
+          limit: input.limit,
+          totalPages: Math.ceil(total / input.limit),
+        },
+      };
     }),
 
   get: protectedProcedure.input(zGetJobInput).query(async ({ ctx, input }) => {

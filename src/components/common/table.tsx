@@ -16,9 +16,19 @@ interface TableProps extends NTableProps {
   rows: ({ key: string } & Record<string, string | number | boolean>)[];
   columns: Record<"key" | "label", string>[];
   ariaLabel?: string;
+  renderCell?: (
+    item: Record<string, string | number | boolean | Date>,
+    columnKey: React.Key | string,
+  ) => React.ReactNode;
 }
 
-const Table = ({ rows, columns, ariaLabel, ...props }: TableProps) => {
+const Table = ({
+  rows,
+  columns,
+  ariaLabel,
+  renderCell,
+  ...props
+}: TableProps) => {
   return (
     <NTable {...props} aria-label={ariaLabel ?? "Table"}>
       <TableHeader columns={columns}>
@@ -28,7 +38,11 @@ const Table = ({ rows, columns, ariaLabel, ...props }: TableProps) => {
         {(item) => (
           <TableRow key={item.key?.toString()}>
             {(columnKey) => (
-              <TableCell>{getKeyValue(item, columnKey)}</TableCell>
+              <TableCell>
+                {renderCell
+                  ? renderCell(item, columnKey)
+                  : getKeyValue(item, columnKey)}
+              </TableCell>
             )}
           </TableRow>
         )}
