@@ -5,14 +5,16 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Pagination, Select, SelectItem } from "@nextui-org/react";
 
 import { api } from "@bolabali/trpc/react";
-import { JobsTable } from "@bolabali/components/features/jobs/jobs-table";
-import { useCreateQueryString } from "@bolabali/hooks";
+import { JobsCreateModal, JobsTable } from "@bolabali/components/features/jobs";
+import { Search } from "@bolabali/components/common";
+import { useCreateQueryString, useDebouncedState } from "@bolabali/hooks";
 
 interface JobsWrapper {
   children: React.ReactNode;
 }
 
 const JobsWrapper = () => {
+  const [query, setQuery] = useDebouncedState("", 300);
   const createQueryString = useCreateQueryString();
   const pathname = usePathname();
   const router = useRouter();
@@ -25,42 +27,53 @@ const JobsWrapper = () => {
   const [jobs] = api.job.getAll.useSuspenseQuery({
     limit,
     page,
+    query,
   });
 
   return (
-    <div className="space-y-4">
-      <JobsTable jobs={jobs} />
-      <div className="flex items-center justify-between">
-        <Pagination
-          initialPage={page}
-          total={jobs._meta.totalPages}
-          onChange={(page) =>
-            router.push(
-              `${pathname}?${createQueryString("page", page.toString())}`,
-            )
-          }
+    <>
+      <div className="my-6 flex items-center justify-between gap-4">
+        <Search
+          onChange={(e) => setQuery(e.target.value)}
+          onClear={() => setQuery("")}
+          className="max-w-72"
         />
-        <Select
-          className="max-w-20"
-          variant="bordered"
-          value={limit.toString()}
-          onChange={(e) =>
-            router.push(
-              `${pathname}?${createQueryString("limit", e.target.value)}`,
-            )
-          }
-        >
-          {availableLimits.map((_value) => {
-            const value = _value.toString();
-            return (
-              <SelectItem key={value} value={value}>
-                {value}
-              </SelectItem>
-            );
-          })}
-        </Select>
+        <JobsCreateModal />
       </div>
-    </div>
+      <div className="space-y-4">
+        <JobsTable jobs={jobs} />
+        <div className="flex items-center justify-between">
+          <Pagination
+            initialPage={page}
+            total={jobs._meta.totalPages}
+            onChange={(page) =>
+              router.push(
+                `${pathname}?${createQueryString("page", page.toString())}`,
+              )
+            }
+          />
+          <Select
+            className="max-w-20"
+            variant="bordered"
+            value={limit.toString()}
+            onChange={(e) =>
+              router.push(
+                `${pathname}?${createQueryString("limit", e.target.value)}`,
+              )
+            }
+          >
+            {availableLimits.map((_value) => {
+              const value = _value.toString();
+              return (
+                <SelectItem key={value} value={value}>
+                  {value}
+                </SelectItem>
+              );
+            })}
+          </Select>
+        </div>
+      </div>
+    </>
   );
 };
 

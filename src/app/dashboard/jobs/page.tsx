@@ -1,10 +1,7 @@
 import { api, HydrateClient } from "@bolabali/trpc/server";
 import { auth } from "@bolabali/server/auth";
-import {
-  JobsCreateModal,
-  JobsWrapper,
-} from "@bolabali/components/features/jobs";
-import { HeaderPage, Search } from "@bolabali/components/common";
+import { JobsWrapper } from "@bolabali/components/features/jobs";
+import { HeaderPage } from "@bolabali/components/common";
 
 export default async function JobsPage({
   searchParams,
@@ -29,10 +26,6 @@ export default async function JobsPage({
         icon="calendar-sync"
         description="Manage your schedule jobs"
       />
-      <div className="my-6 flex items-center justify-between gap-4">
-        <Search className="max-w-72" />
-        <JobsCreateModal />
-      </div>
       <HydrateClient>
         <JobsWrapper />
       </HydrateClient>

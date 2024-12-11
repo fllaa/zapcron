@@ -1,14 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { forwardRef } from "react";
 import { Input, type InputProps } from "@nextui-org/react";
 import { Search as SearchIcon } from "lucide-react";
 
 type SearchProps = Omit<InputProps, "startContent" | "label">;
 
-const Search = ({ ...props }: SearchProps) => {
+const Search = forwardRef<HTMLInputElement, SearchProps>((props, ref) => {
   return (
     <Input
+      ref={ref}
       label="Search"
       isClearable
       radius="lg"
@@ -41,6 +42,8 @@ const Search = ({ ...props }: SearchProps) => {
       {...props}
     />
   );
-};
+});
+
+Search.displayName = "Search";
 
 export { Search };

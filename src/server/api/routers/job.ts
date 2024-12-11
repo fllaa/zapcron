@@ -1,6 +1,6 @@
 import parser from "cron-parser";
 
-import { count, eq } from "drizzle-orm";
+import { count, eq, ilike, or } from "drizzle-orm";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -36,6 +36,13 @@ export const jobRouter = createTRPCRouter({
         orderBy: (jobs, { desc }) => [desc(jobs.createdAt)],
         limit: input.limit,
         offset: (input.page - 1) * input.limit,
+        where: input.query
+          ? or(
+              ilike(jobs.name, `%${input.query}%`),
+              ilike(jobs.description, `%${input.query}%`),
+              ilike(jobs.url, `%${input.query}%`),
+            )
+          : undefined,
       });
       const total =
         (await ctx.db.select({ count: count() }).from(jobs))[0]?.count ?? 0;
