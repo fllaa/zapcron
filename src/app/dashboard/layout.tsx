@@ -19,9 +19,7 @@ export default async function DashboardLayout({
   return (
     <SessionProvider session={session}>
       <div className="flex min-h-screen">
-        <aside className="w-80">
-          <Sidebar />
-        </aside>
+        <Sidebar />
         <aside className="flex-auto">{children}</aside>
       </div>
     </SessionProvider>

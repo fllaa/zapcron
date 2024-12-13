@@ -22,13 +22,20 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
           <span
             className={cx(
               "absolute left-0 m-1.5 aspect-square h-4/5 place-content-center place-items-center items-center rounded-full",
-              variant === "ghostv2" ? "bg-transparent" : "bg-white invert",
+              variant === "ghostv2"
+                ? "bg-transparent"
+                : "bg-black dark:bg-white",
             )}
           >
             {isLoading ? (
               <Spinner color={props.color} size="sm" className="flex" />
             ) : (
-              <span className="flex items-center justify-center">
+              <span
+                className={cx(
+                  "flex items-center justify-center",
+                  variant === "solid" && "invert",
+                )}
+              >
                 {props.icon}
               </span>
             )}
