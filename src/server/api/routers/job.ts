@@ -76,6 +76,7 @@ export const jobRouter = createTRPCRouter({
       with: {
         logs: {
           orderBy: (logs, { desc }) => [desc(logs.createdAt)],
+          limit: 10,
         },
         createdBy: true,
       },
