@@ -5,7 +5,7 @@ import { Button, Card, CardBody, Chip } from "@nextui-org/react";
 import { Info } from "lucide-react";
 import { format } from "@formkit/tempo";
 
-import { useCurrentDate } from "@bolabali/hooks";
+import { useCurrentDate, useIsClient } from "@bolabali/hooks";
 
 interface TimeInfoProps {
   serverDate: string;
@@ -13,7 +13,10 @@ interface TimeInfoProps {
 
 export const TimeInfo = ({ serverDate }: TimeInfoProps) => {
   const clientDate = useCurrentDate();
-  return (
+  const isClient = useIsClient();
+  return !isClient ? (
+    <></>
+  ) : (
     <div className="absolute -right-[215px] top-12 flex items-center gap-4 transition-all duration-500 ease-in-out hover:-right-[12px]">
       <Button isIconOnly size="sm" variant="faded">
         <Info size={12} />
