@@ -42,9 +42,11 @@ export const env = createEnv({
     AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
     REDIS_HOST: process.env.REDIS_HOST,
-    REDIS_PORT: process.env.REDIS_PORT,
+    REDIS_PORT: process.env.REDIS_PORT
+      ? parseInt(process.env.REDIS_PORT)
+      : undefined,
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
-    REDIS_DB: process.env.REDIS_DB,
+    REDIS_DB: process.env.REDIS_DB ? parseInt(process.env.REDIS_DB) : undefined,
     NODE_ENV: process.env.NODE_ENV,
   },
   /**
