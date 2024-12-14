@@ -1,13 +1,5 @@
-import Link from "next/link";
+import { NotFound } from "@bolabali/components/features/not-found";
 
-export default async function NotFound() {
-  return (
-    <div>
-      <h2>Not Found</h2>
-      <p>Could not find requested resource</p>
-      <p>
-        Back <Link href="/">home</Link>
-      </p>
-    </div>
-  );
+export default async function NotFoundPage() {
+  return <NotFound />;
 }
