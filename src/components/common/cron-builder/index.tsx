@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Tab, Tabs } from "@nextui-org/react";
+import { Tab, Tabs, type TabsProps } from "@nextui-org/react";
 
 import {
   CustomCard,
@@ -11,10 +11,14 @@ import {
   MonthlyCard,
 } from "./card";
 
-const CronBuilder = () => {
+interface CronBuilderProps {
+  tabsProps?: TabsProps;
+}
+
+const CronBuilder = ({ tabsProps }: CronBuilderProps) => {
   return (
     <div className="flex w-full flex-col">
-      <Tabs aria-label="Options">
+      <Tabs aria-label="Options" {...tabsProps}>
         <Tab key="minutely" title="Minutely">
           <MinutelyCard />
         </Tab>

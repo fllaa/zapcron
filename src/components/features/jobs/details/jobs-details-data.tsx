@@ -15,6 +15,7 @@ import cronstrue from "cronstrue";
 
 import { type api } from "@bolabali/trpc/server";
 import { getClientTimezone } from "@bolabali/utils/datetime";
+import { JobsDetailsUpdateModal } from "@bolabali/components/features/jobs/details";
 
 interface JobsDetailsDataProps {
   data: Awaited<ReturnType<typeof api.job.get>>;
@@ -24,7 +25,10 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
   return (
     <Card className="col-span-5">
       <CardBody>
-        <h3 className="text-lg font-semibold">Details</h3>
+        <div className="flex items-start justify-between">
+          <h3 className="text-lg font-semibold">Details</h3>
+          <JobsDetailsUpdateModal data={data} />
+        </div>
         <div className="mt-4 grid grid-cols-2 gap-4">
           <div className="space-y-1">
             <Chip startContent={<Fingerprint size={12} />} size="sm">
