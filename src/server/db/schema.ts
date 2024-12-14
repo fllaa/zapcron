@@ -147,7 +147,7 @@ export const jobs = createTable(
     id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
     name: varchar("name", { length: 255 }).notNull(),
     description: text("description"),
-    isEnabled: boolean("is_active").notNull().default(true),
+    isEnabled: boolean("is_enabled").notNull().default(true),
     cronspec: varchar("cronspec", { length: 255 }).notNull(),
     url: varchar("url", { length: 255 }).notNull(),
     method: varchar("method", { length: 255 }).notNull(),
