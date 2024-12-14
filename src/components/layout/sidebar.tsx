@@ -35,8 +35,8 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-80 flex-shrink-0 md:block">
-      <div className="sticky bottom-0 top-0 z-30 flex max-h-screen min-h-[50vh]">
+    <aside className="hidden max-h-screen w-60 flex-shrink-0 md:block lg:w-72 xl:w-80">
+      <div className="fixed bottom-0 top-0 z-30 flex max-h-screen min-h-[50vh] md:w-60 lg:w-72 xl:w-80">
         <div className="flex w-full flex-col overflow-y-auto px-8 pt-6">
           <LogoLink />
           <ul className="mt-8 flex flex-col gap-2">
