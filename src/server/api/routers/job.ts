@@ -1,6 +1,9 @@
 import parser from "cron-parser";
-
 import { count, eq, ilike, or } from "drizzle-orm";
+import { Queue } from "bullmq";
+import IORedis from "ioredis";
+
+import { env } from "@bolabali/env";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -47,6 +50,26 @@ export const jobRouter = createTRPCRouter({
     .input(zGetJobInput)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.delete(jobs).where(eq(jobs.id, input.id));
+    }),
+
+  executeNow: protectedProcedure
+    .input(zGetJobInput)
+    .mutation(async ({ ctx, input }) => {
+      const job = await ctx.db.query.jobs.findFirst({
+        where: eq(jobs.id, input.id),
+      });
+      if (!job) {
+        throw new Error("Job not found");
+      }
+      const redisConn = new IORedis({
+        host: env.REDIS_HOST,
+        port: env.REDIS_PORT,
+        password: env.REDIS_PASSWORD,
+        db: env.REDIS_DB,
+        maxRetriesPerRequest: null,
+      });
+      const queue = new Queue("jobs", { connection: redisConn });
+      await queue.add("execute", job);
     }),
 
   getAll: protectedProcedure

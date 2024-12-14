@@ -14,6 +14,10 @@ export const env = createEnv({
     AUTH_GITHUB_ID: z.string(),
     AUTH_GITHUB_SECRET: z.string(),
     DATABASE_URL: z.string().url(),
+    REDIS_HOST: z.string().optional().default("localhost"),
+    REDIS_PORT: z.number().optional().default(6379),
+    REDIS_PASSWORD: z.string().optional(),
+    REDIS_DB: z.number().optional().default(0),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -37,6 +41,10 @@ export const env = createEnv({
     AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
     AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
+    REDIS_HOST: process.env.REDIS_HOST,
+    REDIS_PORT: process.env.REDIS_PORT,
+    REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+    REDIS_DB: process.env.REDIS_DB,
     NODE_ENV: process.env.NODE_ENV,
   },
   /**

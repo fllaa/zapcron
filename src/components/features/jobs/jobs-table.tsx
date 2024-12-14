@@ -3,7 +3,7 @@
 import React, { useCallback, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { Button, Chip, Link, Tooltip, cn } from "@nextui-org/react";
-import { ChevronRight, Trash2 } from "lucide-react";
+import { ChevronRight, Play, Trash2 } from "lucide-react";
 import cronstrue from "cronstrue";
 import { toast } from "sonner";
 import { format } from "@formkit/tempo";
@@ -25,6 +25,11 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
     onSuccess: () => {
       void utils.job.invalidate();
       toast.success("Job deleted successfully");
+    },
+  });
+  const executeNowJob = api.job.executeNow.useMutation({
+    onSuccess: () => {
+      void utils.job.invalidate();
     },
   });
 
@@ -138,6 +143,26 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
                 title="Delete Job"
                 message="Are you sure you want to delete this job?"
               />
+              <Button
+                onClick={() =>
+                  toast.promise(
+                    executeNowJob.mutateAsync({
+                      id: parseInt(item.key as string),
+                    }),
+                    {
+                      loading: "Executing job...",
+                      success: "Job executed successfully",
+                      error: "Failed to execute job",
+                    },
+                  )
+                }
+                isIconOnly
+                size="sm"
+                variant="flat"
+                color="primary"
+              >
+                <Play size={16} />
+              </Button>
               <Button
                 as={Link}
                 href={`${pathname}/${item.key as string}`}
