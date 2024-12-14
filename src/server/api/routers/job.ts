@@ -10,6 +10,7 @@ import {
   zCreateJobInput,
   zGetAllJobInput,
   zGetJobInput,
+  zUpdateJobInput,
 } from "@bolabali/zod/job";
 
 export const jobRouter = createTRPCRouter({
@@ -27,6 +28,18 @@ export const jobRouter = createTRPCRouter({
         executeAt: parser.parseExpression(input.cronspec).next().toDate(),
         createdById: ctx.session.user.id,
       });
+    }),
+
+  update: protectedProcedure
+    .input(zUpdateJobInput)
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.update(jobs).set(input).where(eq(jobs.id, input.id));
+    }),
+
+  delete: protectedProcedure
+    .input(zGetJobInput)
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.delete(jobs).where(eq(jobs.id, input.id));
     }),
 
   getAll: protectedProcedure
@@ -61,7 +74,10 @@ export const jobRouter = createTRPCRouter({
     return await ctx.db.query.jobs.findFirst({
       where: eq(jobs.id, input.id),
       with: {
-        logs: true,
+        logs: {
+          orderBy: (logs, { desc }) => [desc(logs.createdAt)],
+        },
+        createdBy: true,
       },
     });
   }),

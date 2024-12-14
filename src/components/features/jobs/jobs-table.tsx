@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useMemo } from "react";
+import { usePathname } from "next/navigation";
 import { Button, Chip, Link, Tooltip } from "@nextui-org/react";
 import { ChevronRight, Trash2 } from "lucide-react";
 import cronstrue from "cronstrue";
@@ -18,6 +19,8 @@ interface JobsTableProps {
 }
 
 const JobsTable = ({ jobs }: JobsTableProps) => {
+  const pathname = usePathname();
+
   const rows = useMemo(
     () =>
       jobs.data.map((job) => ({
@@ -43,10 +46,7 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
   ];
 
   const renderCell = useCallback(
-    (
-      item: Record<string, string | number | boolean | Date>,
-      columnKey: React.Key | string,
-    ) => {
+    (item: Record<string, unknown>, columnKey: React.Key | string) => {
       const _columnKey = columnKey as string;
       const value = item[_columnKey];
 
@@ -86,7 +86,14 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
               <Button isIconOnly size="sm" variant="flat" color="danger">
                 <Trash2 size={16} />
               </Button>
-              <Button isIconOnly size="sm" variant="flat" color="secondary">
+              <Button
+                as={Link}
+                href={`${pathname}/${item.key as string}`}
+                isIconOnly
+                size="sm"
+                variant="flat"
+                color="secondary"
+              >
                 <ChevronRight size={16} />
               </Button>
             </div>
@@ -95,6 +102,7 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
           return value as string;
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

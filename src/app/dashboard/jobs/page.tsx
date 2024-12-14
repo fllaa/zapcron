@@ -20,7 +20,7 @@ export default async function JobsPage({
   }
 
   return (
-    <div className="p-2 md:mx-16 md:my-10 md:p-8">
+    <div className="p-2 md:mx-4 md:my-2 md:p-4 lg:mx-4 lg:my-4 lg:p-6 xl:mx-16 xl:my-10 xl:p-8">
       <HeaderPage
         title="Jobs"
         icon="calendar-sync"

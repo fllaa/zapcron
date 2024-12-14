@@ -13,11 +13,11 @@ import {
 } from "@nextui-org/react";
 
 interface TableProps extends NTableProps {
-  rows: ({ key: string } & Record<string, string | number | boolean>)[];
+  rows: ({ key: string } & Record<string, unknown>)[];
   columns: Record<"key" | "label", string>[];
   ariaLabel?: string;
   renderCell?: (
-    item: Record<string, string | number | boolean | Date>,
+    item: Record<string, unknown>,
     columnKey: React.Key | string,
   ) => React.ReactNode;
 }

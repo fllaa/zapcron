@@ -170,6 +170,11 @@ export const jobs = createTable(
 
 export type Job = InferSelectModel<typeof jobs>;
 
+export const jobsRelations = relations(jobs, ({ one, many }) => ({
+  createdBy: one(users, { fields: [jobs.createdById], references: [users.id] }),
+  logs: many(logs),
+}));
+
 export const logs = createTable(
   "log",
   {
@@ -189,3 +194,7 @@ export const logs = createTable(
 );
 
 export type Log = InferSelectModel<typeof logs>;
+
+export const logsRelations = relations(logs, ({ one }) => ({
+  job: one(jobs, { fields: [logs.jobId], references: [jobs.id] }),
+}));
