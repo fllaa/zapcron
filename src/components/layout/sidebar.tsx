@@ -2,7 +2,7 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import {
   Dropdown,
   DropdownItem,
@@ -14,7 +14,6 @@ import {
 import { CalendarSync, Settings, Workflow } from "lucide-react";
 
 import { IconButton, LogoLink } from "@bolabali/components/common";
-import { signOut } from "next-auth/react";
 
 const menu = [
   {
@@ -61,7 +60,7 @@ const Sidebar = () => {
           </ul>
         </div>
       </div>
-      <div className="fixed bottom-0 z-30 flex max-h-screen p-10">
+      <div className="fixed bottom-0 z-30 flex max-h-screen flex-col gap-4 p-10">
         <Dropdown placement="bottom-start">
           <DropdownTrigger>
             <User

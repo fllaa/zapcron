@@ -5,6 +5,7 @@ import { type Metadata } from "next";
 
 import { NextUIProvider } from "@bolabali/providers";
 import { TRPCReactProvider } from "@bolabali/trpc/react";
+import { TimeInfo } from "@bolabali/components/common";
 
 export const metadata: Metadata = {
   title: "Bolabali",
@@ -15,12 +16,14 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const date = new Date();
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className="bg-gray-50 dark:bg-black">
         <TRPCReactProvider>
           <NextUIProvider>{children}</NextUIProvider>
         </TRPCReactProvider>
+        <TimeInfo serverDate={date.toISOString()} />
       </body>
     </html>
   );
