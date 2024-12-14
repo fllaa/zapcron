@@ -7,15 +7,12 @@ import { ChevronRight, Trash2 } from "lucide-react";
 import cronstrue from "cronstrue";
 import { format } from "@formkit/tempo";
 
+import { type api } from "@bolabali/trpc/server";
 import { Table } from "@bolabali/components/common";
 import { getClientTimezone } from "@bolabali/utils/datetime";
-import { type Job } from "@bolabali/server/db/schema";
 
 interface JobsTableProps {
-  jobs: {
-    data: Job[];
-    _meta: Record<string, unknown>;
-  };
+  jobs: Awaited<ReturnType<typeof api.job.getAll>>;
 }
 
 const JobsTable = ({ jobs }: JobsTableProps) => {

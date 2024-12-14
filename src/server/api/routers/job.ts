@@ -46,6 +46,13 @@ export const jobRouter = createTRPCRouter({
     .input(zGetAllJobInput)
     .query(async ({ ctx, input }) => {
       const data = await ctx.db.query.jobs.findMany({
+        columns: {
+          id: true,
+          name: true,
+          cronspec: true,
+          url: true,
+          createdAt: true,
+        },
         orderBy: (jobs, { desc }) => [desc(jobs.createdAt)],
         limit: input.limit,
         offset: (input.page - 1) * input.limit,
@@ -78,7 +85,11 @@ export const jobRouter = createTRPCRouter({
           orderBy: (logs, { desc }) => [desc(logs.createdAt)],
           limit: 10,
         },
-        createdBy: true,
+        createdBy: {
+          columns: {
+            name: true,
+          },
+        },
       },
     });
   }),
