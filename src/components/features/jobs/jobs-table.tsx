@@ -10,6 +10,7 @@ import { format } from "@formkit/tempo";
 import { type api } from "@bolabali/trpc/server";
 import { Table } from "@bolabali/components/common";
 import { getClientTimezone } from "@bolabali/utils/datetime";
+import { colorByStatus } from "@bolabali/utils/color";
 
 interface JobsTableProps {
   jobs: Awaited<ReturnType<typeof api.job.getAll>>;
@@ -25,11 +26,7 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
         name: job.name,
         cronspec: job.cronspec,
         url: job.url,
-        createdAt: format({
-          date: job.createdAt,
-          format: "medium",
-          tz: getClientTimezone(),
-        }),
+        history: job.logs.map((log) => log.status),
       })),
     [jobs],
   );
@@ -38,7 +35,7 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
     { key: "name", label: "Name" },
     { key: "cronspec", label: "Cronspec" },
     { key: "url", label: "URL" },
-    { key: "createdAt", label: "Created Date" },
+    { key: "history", label: "History" },
     { key: "actions", label: "Actions" },
   ];
 
@@ -76,6 +73,22 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
             >
               {hostname}
             </Button>
+          );
+        case "history":
+          return (
+            <div className="flex items-center gap-0.5">
+              {(value as string[]).reverse().map((status, index) => {
+                const color = colorByStatus(parseInt(status, 10));
+                return (
+                  <Chip
+                    key={index}
+                    size="sm"
+                    color={color}
+                    className="aspect-square h-2 w-2"
+                  />
+                );
+              })}
+            </div>
           );
         case "actions":
           return (

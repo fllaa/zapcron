@@ -51,7 +51,6 @@ export const jobRouter = createTRPCRouter({
           name: true,
           cronspec: true,
           url: true,
-          createdAt: true,
         },
         orderBy: (jobs, { desc }) => [desc(jobs.createdAt)],
         limit: input.limit,
@@ -63,6 +62,15 @@ export const jobRouter = createTRPCRouter({
               ilike(jobs.url, `%${input.query}%`),
             )
           : undefined,
+        with: {
+          logs: {
+            columns: {
+              status: true,
+            },
+            orderBy: (logs, { desc }) => [desc(logs.createdAt)],
+            limit: 5,
+          },
+        },
       });
       const total =
         (await ctx.db.select({ count: count() }).from(jobs))[0]?.count ?? 0;

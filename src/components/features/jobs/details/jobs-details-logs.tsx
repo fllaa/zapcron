@@ -9,6 +9,7 @@ import { Table } from "@bolabali/components/common";
 import { JobsDetailsLogsResponseModal } from "@bolabali/components/features/jobs/details";
 import { getClientTimezone } from "@bolabali/utils/datetime";
 import { type Log } from "@bolabali/server/db/schema";
+import { colorByStatus } from "@bolabali/utils/color";
 
 interface JobsDetailsLogsProps {
   data: Log[];
@@ -39,22 +40,10 @@ const JobsDetailsLogs = ({ data }: JobsDetailsLogsProps) => {
 
       switch (_columnKey) {
         case "status":
-          // if 2xx or 3xx, color success, if 4xx, color warning, if 5xx, color danger
-          const status = value as number;
-          let color = "default";
-          if (status >= 200 && status < 400) {
-            color = "success";
-          } else if (status >= 400 && status < 500) {
-            color = "warning";
-          } else if (status >= 500) {
-            color = "danger";
-          }
+          const color = colorByStatus(value as number);
           return (
-            <Chip
-              size="sm"
-              color={color as "default" | "success" | "warning" | "danger"}
-            >
-              {status}
+            <Chip size="sm" color={color} variant="flat">
+              {value as number}
             </Chip>
           );
         case "createdAt":
