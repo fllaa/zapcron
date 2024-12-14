@@ -20,6 +20,7 @@ export const jobRouter = createTRPCRouter({
       await ctx.db.insert(jobs).values({
         name: input.name,
         description: input.description,
+        isEnabled: input.isEnabled,
         cronspec: input.cronspec,
         url: input.url,
         method: input.method,
@@ -55,6 +56,7 @@ export const jobRouter = createTRPCRouter({
         columns: {
           id: true,
           name: true,
+          isEnabled: true,
           cronspec: true,
           url: true,
         },

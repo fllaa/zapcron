@@ -11,6 +11,7 @@ import {
   ModalFooter,
   Select,
   SelectItem,
+  Switch,
   Textarea,
   useDisclosure,
 } from "@nextui-org/react";
@@ -65,6 +66,7 @@ const JobsCreateModal = () => {
                   createJob.mutate({
                     name: data.name as string,
                     description: data.description as string,
+                    isEnabled: data.isEnabled as boolean,
                     cronspec: data.cronspec as string,
                     url: data.url as string,
                     method: data.method as
@@ -103,6 +105,7 @@ const JobsCreateModal = () => {
                     isInvalid={!!methods.formState.errors.description?.message}
                     errorMessage={methods.formState.errors.description?.message?.toString()}
                   />
+                  <Switch {...methods.register("isEnabled")}>Enabled</Switch>
                   <CronBuilder />
                   <Input
                     {...methods.register("url", {

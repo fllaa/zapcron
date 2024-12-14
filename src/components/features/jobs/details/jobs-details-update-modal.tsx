@@ -12,6 +12,7 @@ import {
   ModalFooter,
   Select,
   SelectItem,
+  Switch,
   Textarea,
   useDisclosure,
 } from "@nextui-org/react";
@@ -40,6 +41,7 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
       id: data!.id,
       name: data!.name,
       description: data!.description,
+      isEnabled: data!.isEnabled,
       cronspec: data!.cronspec,
       url: data!.url,
       method: data!.method,
@@ -79,6 +81,7 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
                     id: data.id,
                     name: data.name,
                     description: data.description!,
+                    isEnabled: data.isEnabled,
                     cronspec: data.cronspec,
                     url: data.url,
                     method: data.method as
@@ -118,6 +121,7 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
                     isInvalid={!!methods.formState.errors.description?.message}
                     errorMessage={methods.formState.errors.description?.message?.toString()}
                   />
+                  <Switch {...methods.register("isEnabled")}>Enabled</Switch>
                   <CronBuilder
                     tabsProps={{
                       defaultSelectedKey: "custom",

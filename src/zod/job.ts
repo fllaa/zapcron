@@ -4,6 +4,7 @@ import { parseCronValid, parseJSONValid } from "@bolabali/utils/validate-value";
 export const zCreateJobInput = z.object({
   name: z.string().min(1),
   description: z.optional(z.string()),
+  isEnabled: z.boolean().default(true),
   cronspec: z
     .string()
     .refine((value) => parseCronValid(value, { ignoreEmpty: true }), {
@@ -27,6 +28,7 @@ export const zUpdateJobInput = z.object({
   id: z.number(),
   name: z.optional(z.string().min(1)),
   description: z.optional(z.string()),
+  isEnabled: z.optional(z.boolean()),
   cronspec: z
     .string()
     .refine((value) => parseCronValid(value, { ignoreEmpty: true }), {

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useMemo } from "react";
 import { usePathname } from "next/navigation";
-import { Button, Chip, Link, Tooltip } from "@nextui-org/react";
+import { Button, Chip, Link, Tooltip, cn } from "@nextui-org/react";
 import { ChevronRight, Trash2 } from "lucide-react";
 import cronstrue from "cronstrue";
 import { toast } from "sonner";
@@ -33,6 +33,7 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
       jobs.data.map((job) => ({
         key: job.id.toString(),
         name: job.name,
+        isEnabled: job.isEnabled,
         cronspec: job.cronspec,
         url: job.url,
         history: job.logs.map((log) => log.status),
@@ -52,8 +53,15 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
     (item: Record<string, unknown>, columnKey: React.Key | string) => {
       const _columnKey = columnKey as string;
       const value = item[_columnKey];
+      const isEnabled = item.isEnabled as boolean;
 
       switch (_columnKey) {
+        case "name":
+          return (
+            <span className={cn(!isEnabled && "opacity-50")}>
+              {value as string}
+            </span>
+          );
         case "cronspec":
           return (
             <Tooltip
@@ -64,7 +72,11 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
                 tz: getClientTimezone(),
               })}`}
             >
-              <Chip size="sm" variant="bordered">
+              <Chip
+                size="sm"
+                variant="bordered"
+                className={cn(!isEnabled && "opacity-50")}
+              >
                 {value as string}
               </Chip>
             </Tooltip>
@@ -79,6 +91,7 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
               href={value as string}
               variant="light"
               size="sm"
+              className={cn(!isEnabled && "opacity-50")}
             >
               {hostname}
             </Button>
@@ -93,7 +106,10 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
                     key={index}
                     size="sm"
                     color={color}
-                    className="aspect-square h-2 w-2"
+                    className={cn(
+                      "aspect-square h-2 w-2",
+                      !isEnabled && "opacity-50",
+                    )}
                   />
                 );
               })}

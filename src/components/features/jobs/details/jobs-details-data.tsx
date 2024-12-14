@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
-import { Card, CardBody, Chip } from "@nextui-org/react";
+import { Card, CardBody, Chip, cn } from "@nextui-org/react";
 import {
   ArrowUpDown,
   Clock,
   Fingerprint,
   Link2,
+  Pickaxe,
   Timer,
   User,
 } from "lucide-react";
@@ -37,10 +38,12 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
             <p className="text-sm text-gray-200">{data!.id}</p>
           </div>
           <div className="space-y-1">
-            <Chip startContent={<User size={12} />} size="sm">
-              Created By
+            <Chip startContent={<Pickaxe size={12} />} size="sm">
+              Status
             </Chip>
-            <p className="text-sm text-gray-200">{data!.createdBy.name}</p>
+            <p className="text-sm text-gray-200">
+              {data!.isEnabled ? "Enabled" : "Disabled"}
+            </p>
           </div>
           <div className="space-y-1">
             <Chip startContent={<Link2 size={12} />} size="sm">
@@ -66,7 +69,12 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
             <Chip startContent={<Timer size={12} />} size="sm">
               Next Execution
             </Chip>
-            <p className="text-sm text-gray-200">
+            <p
+              className={cn(
+                "text-sm text-gray-200",
+                data!.isEnabled ? "text-green-500" : "text-red-500",
+              )}
+            >
               {format({
                 date: data!.executeAt,
                 format: "YYYY-MM-DD HH:mm",
@@ -101,6 +109,12 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
               </p>
             </div>
           )}
+          <div className="space-y-1">
+            <Chip startContent={<User size={12} />} size="sm">
+              Created By
+            </Chip>
+            <p className="text-sm text-gray-200">{data!.createdBy.name}</p>
+          </div>
         </div>
       </CardBody>
     </Card>

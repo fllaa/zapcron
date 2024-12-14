@@ -41,14 +41,14 @@ const Sidebar = () => {
           <LogoLink />
           <ul className="mt-8 flex flex-col gap-2">
             {menu.map((item) => {
-              const isActive = pathname.includes(item.name.toLowerCase());
+              const isEnabled = pathname.includes(item.name.toLowerCase());
               return (
                 <li key={item.name} className="text-lg font-semibold">
                   <IconButton
                     as={Link}
                     href={`/dashboard/${item.name.toLowerCase()}`}
                     icon={item.icon}
-                    variant={isActive ? "solid" : "ghostv2"}
+                    variant={isEnabled ? "solid" : "ghostv2"}
                     className="w-full rounded-full text-right"
                     size="lg"
                   >
