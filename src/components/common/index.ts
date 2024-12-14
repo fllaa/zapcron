@@ -1,4 +1,5 @@
 export * from "./action-popover";
+export * from "./confirmation-modal";
 export * from "./cron-builder";
 export * from "./header-page";
 export * from "./icon-button";

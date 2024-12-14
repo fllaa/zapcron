@@ -5,19 +5,28 @@ import { usePathname } from "next/navigation";
 import { Button, Chip, Link, Tooltip } from "@nextui-org/react";
 import { ChevronRight, Trash2 } from "lucide-react";
 import cronstrue from "cronstrue";
+import { toast } from "sonner";
 import { format } from "@formkit/tempo";
 
-import { type api } from "@bolabali/trpc/server";
-import { Table } from "@bolabali/components/common";
+import { api } from "@bolabali/trpc/react";
+import { type api as apiServer } from "@bolabali/trpc/server";
+import { ConfirmationModal, Table } from "@bolabali/components/common";
 import { getClientTimezone } from "@bolabali/utils/datetime";
 import { colorByStatus } from "@bolabali/utils/color";
 
 interface JobsTableProps {
-  jobs: Awaited<ReturnType<typeof api.job.getAll>>;
+  jobs: Awaited<ReturnType<typeof apiServer.job.getAll>>;
 }
 
 const JobsTable = ({ jobs }: JobsTableProps) => {
   const pathname = usePathname();
+  const utils = api.useUtils();
+  const deleteJob = api.job.delete.useMutation({
+    onSuccess: () => {
+      void utils.job.invalidate();
+      toast.success("Job deleted successfully");
+    },
+  });
 
   const rows = useMemo(
     () =>
@@ -93,9 +102,26 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
         case "actions":
           return (
             <div className="flex items-center gap-2">
-              <Button isIconOnly size="sm" variant="flat" color="danger">
-                <Trash2 size={16} />
-              </Button>
+              <ConfirmationModal
+                trigger={(onOpen) => (
+                  <Button
+                    onClick={onOpen}
+                    isIconOnly
+                    size="sm"
+                    variant="flat"
+                    color="danger"
+                  >
+                    <Trash2 size={16} />
+                  </Button>
+                )}
+                onConfirm={() =>
+                  deleteJob.mutateAsync({
+                    id: parseInt(item.key as string),
+                  })
+                }
+                title="Delete Job"
+                message="Are you sure you want to delete this job?"
+              />
               <Button
                 as={Link}
                 href={`${pathname}/${item.key as string}`}

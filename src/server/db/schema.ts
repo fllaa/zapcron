@@ -181,7 +181,7 @@ export const logs = createTable(
     id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
     jobId: integer("job_id")
       .notNull()
-      .references(() => jobs.id),
+      .references(() => jobs.id, { onDelete: "cascade" }),
     status: varchar("status", { length: 255 }).notNull(),
     response: json("response"),
     createdAt: timestamp("created_at", { withTimezone: true })
