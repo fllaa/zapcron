@@ -33,7 +33,13 @@ export const jobRouter = createTRPCRouter({
   update: protectedProcedure
     .input(zUpdateJobInput)
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.update(jobs).set(input).where(eq(jobs.id, input.id));
+      await ctx.db
+        .update(jobs)
+        .set({
+          ...input,
+          executeAt: parser.parseExpression(input.cronspec).next().toDate(),
+        })
+        .where(eq(jobs.id, input.id));
     }),
 
   delete: protectedProcedure

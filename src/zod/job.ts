@@ -27,11 +27,11 @@ export const zUpdateJobInput = z.object({
   id: z.number(),
   name: z.optional(z.string().min(1)),
   description: z.optional(z.string()),
-  cronspec: z.optional(
-    z.string().refine((value) => parseCronValid(value, { ignoreEmpty: true }), {
+  cronspec: z
+    .string()
+    .refine((value) => parseCronValid(value, { ignoreEmpty: true }), {
       message: "Invalid cronspec",
     }),
-  ),
   url: z.optional(z.string().url()),
   method: z.optional(z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"])),
   headers: z.optional(
