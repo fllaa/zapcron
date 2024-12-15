@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
  * }
  * ```
  */
-export const useCurrentDate = () => {
+export const useCurrentDate = (): Date => {
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {

@@ -24,10 +24,10 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
  * }
  * ```
  */
-export function useDebouncedState<T>(
+export const useDebouncedState = <T>(
   initialValue: T | (() => T),
   delay: number,
-): [T, Dispatch<SetStateAction<T>>, T] {
+): [T, Dispatch<SetStateAction<T>>, T] => {
   const [value, setValue] = useState(initialValue);
   const [debouncedValue, setDebouncedValue] = useState(initialValue);
 
@@ -42,4 +42,4 @@ export function useDebouncedState<T>(
   }, [value, delay]);
 
   return [debouncedValue, setValue, value];
-}
+};

@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -19,7 +17,10 @@ import { useSearchParams } from "next/navigation";
  * }
  * ```
  */
-export function useCreateQueryString() {
+export const useCreateQueryString = (): ((
+  name: string,
+  value: string,
+) => string) => {
   const searchParams = useSearchParams();
   return useCallback(
     (name: string, value: string) => {
@@ -30,4 +31,4 @@ export function useCreateQueryString() {
     },
     [searchParams],
   );
-}
+};

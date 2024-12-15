@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
  * }
  * ```
  */
-export function useIsClient(): boolean {
+export const useIsClient = (): boolean => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -22,4 +22,4 @@ export function useIsClient(): boolean {
   }, []);
 
   return isClient;
-}
+};
