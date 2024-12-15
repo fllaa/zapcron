@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import { type Session } from "next-auth";
 import {
   Dropdown,
   DropdownItem,
@@ -14,6 +15,7 @@ import {
 import { CalendarSync, Settings, Workflow } from "lucide-react";
 
 import { IconButton, LogoLink } from "@bolabali/components/common";
+import { UserProfileDrawer } from "@bolabali/components/features/user";
 
 const menu = [
   {
@@ -30,9 +32,13 @@ const menu = [
   },
 ];
 
-const Sidebar = () => {
-  const { data: session } = useSession();
+interface SidebarProps {
+  user: Session["user"];
+}
+
+const Sidebar = ({ user }: SidebarProps) => {
   const pathname = usePathname();
+  const buttonProfileRef = useRef<HTMLButtonElement>(null);
 
   return (
     <aside className="hidden max-h-screen w-60 flex-shrink-0 md:block lg:w-72 xl:w-80">
@@ -67,24 +73,31 @@ const Sidebar = () => {
               as="button"
               avatarProps={{
                 isBordered: true,
-                src: session?.user?.image ?? "",
+                src: user?.image ?? "",
               }}
               className="transition-transform"
-              description={session?.user?.email}
-              name={session?.user?.name}
+              description={user?.email}
+              name={user?.name}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="User Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2">
+            <DropdownItem key="user" className="h-14 gap-2">
               <p className="font-bold">Signed in as</p>
-              <p className="font-bold">{session?.user?.name}</p>
+              <p className="font-bold">{user?.name}</p>
             </DropdownItem>
-            <DropdownItem key="logout" color="danger" onClick={() => signOut()}>
+            <DropdownItem
+              key="profile"
+              onPress={() => buttonProfileRef.current?.click()}
+            >
+              Profile
+            </DropdownItem>
+            <DropdownItem key="logout" color="danger" onPress={() => signOut()}>
               Log Out
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
+      <UserProfileDrawer buttonRef={buttonProfileRef} user={user} />
     </aside>
   );
 };
