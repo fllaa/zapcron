@@ -34,10 +34,11 @@ const JobsDetailsLogsResponseModal = ({
         Show
       </Button>
       <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
         size="4xl"
         scrollBehavior="inside"
+        backdrop="blur"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
       >
         <ModalContent>
           {(onClose) => (

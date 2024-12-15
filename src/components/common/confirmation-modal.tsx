@@ -31,7 +31,12 @@ const ConfirmationModal = ({
   return (
     <>
       {trigger(onOpen)}
-      <Modal size="sm" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        size="sm"
+        backdrop="blur"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
         <ModalContent>
           {(onClose) => (
             <>
