@@ -25,6 +25,7 @@ import { CronBuilder } from "@bolabali/components/common";
 import { api } from "@bolabali/trpc/react";
 import { type api as apiServer } from "@bolabali/trpc/server";
 import { zUpdateJobInput } from "@bolabali/zod/job";
+import { HttpMethod } from "@bolabali/constants/http";
 
 interface JobsDetailsUpdateModalProps {
   data: Awaited<ReturnType<typeof apiServer.job.get>>;
@@ -33,7 +34,7 @@ interface JobsDetailsUpdateModalProps {
 const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const httpMethods = ["GET", "POST", "PUT", "PATCH", "DELETE"];
+  const httpMethods = Object.values(HttpMethod);
 
   const methods = useForm({
     resolver: zodResolver(zUpdateJobInput),
@@ -84,12 +85,7 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
                     isEnabled: data.isEnabled,
                     cronspec: data.cronspec,
                     url: data.url,
-                    method: data.method as
-                      | "GET"
-                      | "POST"
-                      | "PUT"
-                      | "PATCH"
-                      | "DELETE",
+                    method: data.method as HttpMethod,
                     headers: data.headers,
                     body: data.body,
                   }),

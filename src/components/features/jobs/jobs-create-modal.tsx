@@ -23,10 +23,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CronBuilder } from "@bolabali/components/common";
 import { api } from "@bolabali/trpc/react";
 import { zCreateJobInput } from "@bolabali/zod/job";
+import { HttpMethod } from "@bolabali/constants/http";
 
 const JobsCreateModal = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const httpMethods = ["GET", "POST", "PUT", "PATCH", "DELETE"];
+  const httpMethods = Object.values(HttpMethod);
 
   const methods = useForm({
     resolver: zodResolver(zCreateJobInput),
@@ -69,12 +70,7 @@ const JobsCreateModal = () => {
                     isEnabled: data.isEnabled as boolean,
                     cronspec: data.cronspec as string,
                     url: data.url as string,
-                    method: data.method as
-                      | "GET"
-                      | "POST"
-                      | "PUT"
-                      | "PATCH"
-                      | "DELETE",
+                    method: data.method as HttpMethod,
                     headers: data.headers as string,
                     body: data.body as string,
                   }),

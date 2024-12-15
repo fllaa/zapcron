@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { parseCronValid, parseJSONValid } from "@bolabali/utils/validate-value";
+import { HttpMethod } from "@bolabali/constants/http";
 
 export const zCreateJobInput = z.object({
   name: z.string().min(1),
@@ -11,7 +13,13 @@ export const zCreateJobInput = z.object({
       message: "Invalid cronspec",
     }),
   url: z.string().url(),
-  method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]),
+  method: z.enum([
+    HttpMethod.GET,
+    HttpMethod.POST,
+    HttpMethod.PUT,
+    HttpMethod.PATCH,
+    HttpMethod.DELETE,
+  ]),
   headers: z.optional(
     z.string().refine((value) => parseJSONValid(value, { ignoreEmpty: true }), {
       message: "Invalid JSON",
@@ -35,7 +43,15 @@ export const zUpdateJobInput = z.object({
       message: "Invalid cronspec",
     }),
   url: z.optional(z.string().url()),
-  method: z.optional(z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"])),
+  method: z.optional(
+    z.enum([
+      HttpMethod.GET,
+      HttpMethod.POST,
+      HttpMethod.PUT,
+      HttpMethod.PATCH,
+      HttpMethod.DELETE,
+    ]),
+  ),
   headers: z.optional(
     z.string().refine((value) => parseJSONValid(value, { ignoreEmpty: true }), {
       message: "Invalid JSON",
