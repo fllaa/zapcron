@@ -55,6 +55,7 @@ const JobsWrapper = () => {
           <Select
             className="max-w-20"
             variant="bordered"
+            defaultSelectedKeys={[limit.toString()]}
             value={limit.toString()}
             onChange={(e) =>
               router.push(
