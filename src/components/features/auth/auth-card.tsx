@@ -11,7 +11,8 @@ import {
   Divider,
 } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
-import { Eye, EyeClosed, Github } from "lucide-react";
+import { Eye, EyeClosed } from "lucide-react";
+import { FaGithub, FaMicrosoft } from "react-icons/fa6";
 
 const AuthCard = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -70,10 +71,18 @@ const AuthCard = () => {
           <Button
             color="default"
             variant="bordered"
-            startContent={<Github size={16} />}
-            onClick={() => signIn("github")}
+            startContent={<FaGithub size={16} />}
+            onPress={() => signIn("github")}
           >
             Sign In with Github
+          </Button>
+          <Button
+            color="default"
+            variant="bordered"
+            startContent={<FaMicrosoft size={16} />}
+            onPress={() => signIn("microsoft-entra-id")}
+          >
+            Sign In with Microsoft
           </Button>
         </div>
       </CardFooter>

@@ -1,8 +1,10 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
+import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id";
 import GithubProvider from "next-auth/providers/github";
 
 import { db } from "@bolabali/server/db";
+import { env } from "@bolabali/env";
 import {
   accounts,
   sessions,
@@ -40,8 +42,13 @@ declare module "next-auth" {
 export const authConfig = {
   providers: [
     GithubProvider({
-      clientId: process.env.AUTH_GITHUB_ID,
-      clientSecret: process.env.AUTH_GITHUB_SECRET,
+      clientId: env.AUTH_GITHUB_ID,
+      clientSecret: env.AUTH_GITHUB_SECRET,
+    }),
+    MicrosoftEntraID({
+      clientId: env.AUTH_MICROSOFT_ENTRA_ID_CLIENT_ID,
+      clientSecret: env.AUTH_MICROSOFT_ENTRA_ID_CLIENT_SECRET,
+      issuer: `https://login.microsoftonline.com/${env.AUTH_MICROSOFT_ENTRA_ID_TENANT_ID}/v2.0`,
     }),
   ],
   adapter: DrizzleAdapter(db, {

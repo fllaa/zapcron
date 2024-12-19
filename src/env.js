@@ -13,6 +13,9 @@ export const env = createEnv({
         : z.string().optional(),
     AUTH_GITHUB_ID: z.string(),
     AUTH_GITHUB_SECRET: z.string(),
+    AUTH_MICROSOFT_ENTRA_ID_CLIENT_ID: z.string(),
+    AUTH_MICROSOFT_ENTRA_ID_CLIENT_SECRET: z.string(),
+    AUTH_MICROSOFT_ENTRA_ID_TENANT_ID: z.string(),
     DATABASE_URL: z.string().url(),
     REDIS_HOST: z.string().optional().default("localhost"),
     REDIS_PORT: z.number().optional().default(6379),
@@ -40,6 +43,12 @@ export const env = createEnv({
     AUTH_SECRET: process.env.AUTH_SECRET,
     AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
     AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
+    AUTH_MICROSOFT_ENTRA_ID_CLIENT_ID:
+      process.env.AUTH_MICROSOFT_ENTRA_ID_CLIENT_ID,
+    AUTH_MICROSOFT_ENTRA_ID_CLIENT_SECRET:
+      process.env.AUTH_MICROSOFT_ENTRA_ID_CLIENT_SECRET,
+    AUTH_MICROSOFT_ENTRA_ID_TENANT_ID:
+      process.env.AUTH_MICROSOFT_ENTRA_ID_TENANT_ID,
     DATABASE_URL: process.env.DATABASE_URL,
     REDIS_HOST: process.env.REDIS_HOST,
     REDIS_PORT: process.env.REDIS_PORT
