@@ -13,6 +13,7 @@ import { ZodError } from "zod";
 
 import { auth } from "@bolabali/server/auth";
 import { db } from "@bolabali/server/db";
+import { queue } from "@bolabali/server/queue";
 import { Role } from "@bolabali/constants/role";
 
 /**
@@ -32,6 +33,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 
   return {
     db,
+    queue,
     session,
     ...opts,
   };

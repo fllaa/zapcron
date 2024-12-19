@@ -1,9 +1,6 @@
 import parser from "cron-parser";
 import { count, eq, ilike, or } from "drizzle-orm";
-import { Queue } from "bullmq";
-import IORedis from "ioredis";
 
-import { env } from "@bolabali/env";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -61,15 +58,7 @@ export const jobRouter = createTRPCRouter({
       if (!job) {
         throw new Error("Job not found");
       }
-      const redisConn = new IORedis({
-        host: env.REDIS_HOST,
-        port: env.REDIS_PORT,
-        password: env.REDIS_PASSWORD,
-        db: env.REDIS_DB,
-        maxRetriesPerRequest: null,
-      });
-      const queue = new Queue("jobs", { connection: redisConn });
-      await queue.add("execute", job);
+      await ctx.queue.add("execute", job);
     }),
 
   getAll: protectedProcedure
