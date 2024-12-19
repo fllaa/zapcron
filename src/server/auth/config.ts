@@ -1,4 +1,5 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import { eq } from "drizzle-orm";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id";
 import GithubProvider from "next-auth/providers/github";
@@ -11,7 +12,7 @@ import {
   users,
   verificationTokens,
 } from "@bolabali/server/db/schema";
-import { type Role } from "@bolabali/constants/role";
+import { Role } from "@bolabali/constants/role";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -65,6 +66,19 @@ export const authConfig = {
         id: user.id,
       },
     }),
+  },
+  events: {
+    async signIn({ user, isNewUser }) {
+      if (isNewUser) {
+        const data = await db.select().from(users);
+        if (data.length === 1) {
+          await db
+            .update(users)
+            .set({ role: Role.ADMIN })
+            .where(eq(users.id, user.id!));
+        }
+      }
+    },
   },
   trustHost: true,
 } satisfies NextAuthConfig;
