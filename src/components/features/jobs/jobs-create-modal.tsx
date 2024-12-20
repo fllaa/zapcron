@@ -102,7 +102,9 @@ const JobsCreateModal = () => {
                     isInvalid={!!methods.formState.errors.description?.message}
                     errorMessage={methods.formState.errors.description?.message?.toString()}
                   />
-                  <Switch {...methods.register("isEnabled")}>Enabled</Switch>
+                  <Switch defaultSelected {...methods.register("isEnabled")}>
+                    Enabled
+                  </Switch>
                   <CronBuilder />
                   <Input
                     {...methods.register("url", {
