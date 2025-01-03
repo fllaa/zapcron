@@ -20,10 +20,10 @@ import { toast } from "sonner";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { CronBuilder } from "@bolabali/components/common";
-import { api } from "@bolabali/trpc/react";
-import { zCreateJobInput } from "@bolabali/zod/job";
-import { HttpMethod } from "@bolabali/constants/http";
+import { CronBuilder } from "@zapcron/components/common";
+import { api } from "@zapcron/trpc/react";
+import { zCreateJobInput } from "@zapcron/zod/job";
+import { HttpMethod } from "@zapcron/constants/http";
 
 const JobsCreateModal = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

@@ -5,7 +5,7 @@
 import os from "os-utils";
 import { sql } from "drizzle-orm";
 
-import { db } from "@bolabali/server/db";
+import { db } from "@zapcron/server/db";
 
 export const GET = async () => {
   // Check if the database is connected, and response time

@@ -7,7 +7,7 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
  * @returns The debounced state and the setter.
  * @example
  * ```tsx
- * import { useDebouncedState } from "@bolabali/hooks";
+ * import { useDebouncedState } from "@zapcron/hooks";
  *
  * export default function MyComponent() {
  * const [value, setValue, debouncedValue] = useDebouncedState("", 500);

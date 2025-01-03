@@ -1,3 +1,3 @@
-import { handlers } from "@bolabali/server/auth";
+import { handlers } from "@zapcron/server/auth";
 
 export const { GET, POST } = handlers;

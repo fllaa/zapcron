@@ -4,8 +4,8 @@ import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
-} from "@bolabali/server/api/trpc";
-import { posts } from "@bolabali/server/db/schema";
+} from "@zapcron/server/api/trpc";
+import { posts } from "@zapcron/server/db/schema";
 
 export const postRouter = createTRPCRouter({
   hello: publicProcedure

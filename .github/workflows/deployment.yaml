@@ -32,7 +32,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/bolabali-webapp:${{ env.BRANCH_NAME }},${{ secrets.DOCKER_USERNAME }}/bolabali-webapp:${{ env.BRANCH_NAME }}-${{ steps.commithash.outputs.sha_short }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/zapcron-webapp:${{ env.BRANCH_NAME }},${{ secrets.DOCKER_USERNAME }}/zapcron-webapp:${{ env.BRANCH_NAME }}-${{ steps.commithash.outputs.sha_short }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -42,4 +42,4 @@ jobs:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
       - name: Deploy to Kubernetes
-        run: kubectl set image deployment/bolabali webapp=${{ secrets.DOCKER_USERNAME }}/bolabali-webapp:${{ env.BRANCH_NAME }}-${{ steps.commithash.outputs.sha_short }}
+        run: kubectl set image deployment/zapcron webapp=${{ secrets.DOCKER_USERNAME }}/zapcron-webapp:${{ env.BRANCH_NAME }}-${{ steps.commithash.outputs.sha_short }}

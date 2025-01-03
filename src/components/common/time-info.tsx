@@ -5,7 +5,7 @@ import { Button, Card, CardBody, Chip } from "@nextui-org/react";
 import { Info } from "lucide-react";
 import { format } from "@formkit/tempo";
 
-import { useCurrentDate, useIsClient } from "@bolabali/hooks";
+import { useCurrentDate, useIsClient } from "@zapcron/hooks";
 
 interface TimeInfoProps {
   serverDate: string;

@@ -14,9 +14,9 @@ import {
 import { format } from "@formkit/tempo";
 import cronstrue from "cronstrue";
 
-import { type api } from "@bolabali/trpc/server";
-import { getClientTimezone } from "@bolabali/utils/datetime";
-import { JobsDetailsUpdateModal } from "@bolabali/components/features/jobs/details";
+import { type api } from "@zapcron/trpc/server";
+import { getClientTimezone } from "@zapcron/utils/datetime";
+import { JobsDetailsUpdateModal } from "@zapcron/components/features/jobs/details";
 
 interface JobsDetailsDataProps {
   data: Awaited<ReturnType<typeof api.job.get>>;

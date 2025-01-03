@@ -8,11 +8,11 @@ import cronstrue from "cronstrue";
 import { toast } from "sonner";
 import { format } from "@formkit/tempo";
 
-import { api } from "@bolabali/trpc/react";
-import { type api as apiServer } from "@bolabali/trpc/server";
-import { ConfirmationModal, Table } from "@bolabali/components/common";
-import { getClientTimezone } from "@bolabali/utils/datetime";
-import { colorByStatus } from "@bolabali/utils/color";
+import { api } from "@zapcron/trpc/react";
+import { type api as apiServer } from "@zapcron/trpc/server";
+import { ConfirmationModal, Table } from "@zapcron/components/common";
+import { getClientTimezone } from "@zapcron/utils/datetime";
+import { colorByStatus } from "@zapcron/utils/color";
 
 interface JobsTableProps {
   jobs: Awaited<ReturnType<typeof apiServer.job.getAll>>;

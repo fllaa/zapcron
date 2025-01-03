@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
  * @returns {boolean} Whether the code is running on the client side.
  * @example
  * ```tsx
- * import { useIsClient } from "@bolabali/hooks";
+ * import { useIsClient } from "@zapcron/hooks";
  *
  * export default function MyComponent() {
  *  const isClient = useIsClient();

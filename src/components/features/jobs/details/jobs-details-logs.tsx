@@ -5,11 +5,11 @@ import React, { useCallback, useMemo } from "react";
 import { Card, CardBody, Chip } from "@nextui-org/react";
 import { format } from "@formkit/tempo";
 
-import { Table } from "@bolabali/components/common";
-import { JobsDetailsLogsResponseModal } from "@bolabali/components/features/jobs/details";
-import { getClientTimezone } from "@bolabali/utils/datetime";
-import { type Log } from "@bolabali/server/db/schema";
-import { colorByStatus } from "@bolabali/utils/color";
+import { Table } from "@zapcron/components/common";
+import { JobsDetailsLogsResponseModal } from "@zapcron/components/features/jobs/details";
+import { getClientTimezone } from "@zapcron/utils/datetime";
+import { type Log } from "@zapcron/server/db/schema";
+import { colorByStatus } from "@zapcron/utils/color";
 
 interface JobsDetailsLogsProps {
   data: Log[];

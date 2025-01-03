@@ -11,10 +11,10 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { auth } from "@bolabali/server/auth";
-import { db } from "@bolabali/server/db";
-import { queue } from "@bolabali/server/queue";
-import { Role } from "@bolabali/constants/role";
+import { auth } from "@zapcron/server/auth";
+import { db } from "@zapcron/server/db";
+import { queue } from "@zapcron/server/queue";
+import { Role } from "@zapcron/constants/role";
 
 /**
  * 1. CONTEXT

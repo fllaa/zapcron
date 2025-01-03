@@ -1,4 +1,4 @@
-import { CardPage } from "@bolabali/components/layout";
+import { CardPage } from "@zapcron/components/layout";
 
 export default function WorkflowPage() {
   return (

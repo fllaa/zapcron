@@ -2,14 +2,14 @@
 
 import React from "react";
 
-import { type api } from "@bolabali/trpc/server";
+import { type api } from "@zapcron/trpc/server";
 import {
   JobsDetailsBody,
   JobsDetailsData,
   JobsDetailsDescription,
   JobsDetailsHeaders,
   JobsDetailsLogs,
-} from "@bolabali/components/features/jobs/details";
+} from "@zapcron/components/features/jobs/details";
 
 interface JobsDetailsWrapperProps {
   data: Awaited<ReturnType<typeof api.job.get>>;

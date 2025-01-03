@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
  * @returns {Date} The current date.
  * @example
  * ```tsx
- * import { useCurrentDate } from "@bolabali/hooks";
+ * import { useCurrentDate } from "@zapcron/hooks";
  *
  * export default function MyComponent() {
  * const date = useCurrentDate();

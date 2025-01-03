@@ -9,7 +9,7 @@ import {
 } from "next-themes";
 import { Toaster } from "sonner";
 
-import { useIsClient } from "@bolabali/hooks";
+import { useIsClient } from "@zapcron/hooks";
 
 export interface NextUIProviderProps {
   children: React.ReactNode;

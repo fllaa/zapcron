@@ -1,6 +1,6 @@
 import { type Config } from "drizzle-kit";
 
-import { env } from "@bolabali/env";
+import { env } from "@zapcron/env";
 
 export default {
   schema: "./src/server/db/schema.ts",
@@ -8,5 +8,5 @@ export default {
   dbCredentials: {
     url: env.DATABASE_URL,
   },
-  tablesFilter: ["bolabali_*"],
+  tablesFilter: ["zc_*"],
 } satisfies Config;

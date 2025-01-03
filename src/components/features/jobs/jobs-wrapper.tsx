@@ -4,10 +4,10 @@ import React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Pagination, Select, SelectItem } from "@nextui-org/react";
 
-import { api } from "@bolabali/trpc/react";
-import { JobsCreateModal, JobsTable } from "@bolabali/components/features/jobs";
-import { Search } from "@bolabali/components/common";
-import { useCreateQueryString, useDebouncedState } from "@bolabali/hooks";
+import { api } from "@zapcron/trpc/react";
+import { JobsCreateModal, JobsTable } from "@zapcron/components/features/jobs";
+import { Search } from "@zapcron/components/common";
+import { useCreateQueryString, useDebouncedState } from "@zapcron/hooks";
 
 interface JobsWrapper {
   children: React.ReactNode;

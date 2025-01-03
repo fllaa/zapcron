@@ -16,7 +16,7 @@ const LogoLink = () => {
         height={40}
         className="dark:invert"
       />
-      <span className="text-2xl font-bold">Bolabali</span>
+      <span className="text-2xl font-bold">ZapCron</span>
     </Link>
   );
 };

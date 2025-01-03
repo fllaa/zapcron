@@ -17,7 +17,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 
-import { Role } from "@bolabali/constants/role";
+import { Role } from "@zapcron/constants/role";
 
 interface UserProfileDrawerProps {
   buttonRef: React.RefObject<HTMLButtonElement>;

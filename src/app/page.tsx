@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 
-import { auth } from "@bolabali/server/auth";
-import { LogoLink } from "@bolabali/components/common";
-import { AuthCard } from "@bolabali/components/features/auth";
+import { auth } from "@zapcron/server/auth";
+import { LogoLink } from "@zapcron/components/common";
+import { AuthCard } from "@zapcron/components/features/auth";
 
 export default async function Home() {
   const session = await auth();

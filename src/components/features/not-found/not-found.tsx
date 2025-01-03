@@ -4,7 +4,7 @@ import React from "react";
 import { Button, Card, CardBody, Link } from "@nextui-org/react";
 import { Home } from "lucide-react";
 
-import { LogoLink } from "@bolabali/components/common";
+import { LogoLink } from "@zapcron/components/common";
 
 const NotFound = () => {
   return (

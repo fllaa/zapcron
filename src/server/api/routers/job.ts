@@ -1,17 +1,14 @@
 import parser from "cron-parser";
 import { count, eq, ilike, or } from "drizzle-orm";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-} from "@bolabali/server/api/trpc";
-import { jobs } from "@bolabali/server/db/schema";
+import { createTRPCRouter, protectedProcedure } from "@zapcron/server/api/trpc";
+import { jobs } from "@zapcron/server/db/schema";
 import {
   zCreateJobInput,
   zGetAllJobInput,
   zGetJobInput,
   zUpdateJobInput,
-} from "@bolabali/zod/job";
+} from "@zapcron/zod/job";
 
 export const jobRouter = createTRPCRouter({
   create: protectedProcedure

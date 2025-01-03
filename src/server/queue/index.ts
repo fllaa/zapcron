@@ -1,7 +1,7 @@
 import { Queue } from "bullmq";
 import IORedis from "ioredis";
 
-import { env } from "@bolabali/env";
+import { env } from "@zapcron/env";
 
 /**
  * Cache the redis connection in development. This avoids creating a new connection on every HMR

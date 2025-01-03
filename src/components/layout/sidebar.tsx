@@ -14,8 +14,8 @@ import {
 } from "@nextui-org/react";
 import { CalendarSync, Settings, Workflow } from "lucide-react";
 
-import { IconButton, LogoLink } from "@bolabali/components/common";
-import { UserProfileDrawer } from "@bolabali/components/features/user";
+import { IconButton, LogoLink } from "@zapcron/components/common";
+import { UserProfileDrawer } from "@zapcron/components/features/user";
 
 const menu = [
   {

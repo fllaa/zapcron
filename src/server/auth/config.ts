@@ -4,15 +4,15 @@ import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id";
 import GithubProvider from "next-auth/providers/github";
 
-import { db } from "@bolabali/server/db";
-import { env } from "@bolabali/env";
+import { db } from "@zapcron/server/db";
+import { env } from "@zapcron/env";
 import {
   accounts,
   sessions,
   users,
   verificationTokens,
-} from "@bolabali/server/db/schema";
-import { Role } from "@bolabali/constants/role";
+} from "@zapcron/server/db/schema";
+import { Role } from "@zapcron/constants/role";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`

@@ -1,6 +1,6 @@
-import { api, HydrateClient } from "@bolabali/trpc/server";
-import { JobsWrapper } from "@bolabali/components/features/jobs";
-import { HeaderPage } from "@bolabali/components/common";
+import { api, HydrateClient } from "@zapcron/trpc/server";
+import { JobsWrapper } from "@zapcron/components/features/jobs";
+import { HeaderPage } from "@zapcron/components/common";
 
 export default async function JobsPage({
   searchParams,

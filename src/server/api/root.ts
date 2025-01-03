@@ -1,9 +1,9 @@
-import { jobRouter } from "@bolabali/server/api/routers/job";
-import { postRouter } from "@bolabali/server/api/routers/post";
+import { jobRouter } from "@zapcron/server/api/routers/job";
+import { postRouter } from "@zapcron/server/api/routers/post";
 import {
   createCallerFactory,
   createTRPCRouter,
-} from "@bolabali/server/api/trpc";
+} from "@zapcron/server/api/trpc";
 
 /**
  * This is the primary router for your server.

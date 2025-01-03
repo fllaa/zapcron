@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
  * @returns {Function} Function to create a query string.
  * @example
  * ```tsx
- * import { useCreateQueryString } from "@bolabali/hooks";
+ * import { useCreateQueryString } from "@zapcron/hooks";
  *
  * export default function MyComponent() {
  *  const createQueryString = useCreateQueryString();
