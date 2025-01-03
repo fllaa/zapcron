@@ -63,9 +63,21 @@ const DailyCard = () => {
           value={selectedValue}
           onValueChange={(value) => setSelectedValue(value)}
         >
-          <Radio value="every-day">Every Day</Radio>
+          <Radio
+            value="every-day"
+            classNames={{
+              hiddenInput: "hidden",
+            }}
+          >
+            Every Day
+          </Radio>
           <Divider className="my-0.5" />
-          <Radio value="every-specified-day">
+          <Radio
+            value="every-specified-day"
+            classNames={{
+              hiddenInput: "hidden",
+            }}
+          >
             <div className="flex items-center">
               <span>Every Specified Day</span>
               <CheckboxGroup
@@ -103,7 +115,12 @@ const DailyCard = () => {
             </div>
           </Radio>
           <Divider className="my-0.5" />
-          <Radio value="every-n-day-at-n">
+          <Radio
+            value="every-n-day-at-n"
+            classNames={{
+              hiddenInput: "hidden",
+            }}
+          >
             <div className="flex items-center gap-2">
               <span>Every</span>
               <Select

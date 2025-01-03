@@ -51,9 +51,21 @@ const HourlyCard = () => {
           value={selectedValue}
           onValueChange={(value) => setSelectedValue(value)}
         >
-          <Radio value="every-hour">Every Hour</Radio>
+          <Radio
+            value="every-hour"
+            classNames={{
+              hiddenInput: "hidden",
+            }}
+          >
+            Every Hour
+          </Radio>
           <Divider className="my-0.5" />
-          <Radio value="every-n-hour">
+          <Radio
+            value="every-n-hour"
+            classNames={{
+              hiddenInput: "hidden",
+            }}
+          >
             <div className="flex items-center gap-2">
               <span>Every</span>
               <Select
@@ -75,7 +87,12 @@ const HourlyCard = () => {
             </div>
           </Radio>
           <Divider className="my-0.5" />
-          <Radio value="every-n-hour-at-n">
+          <Radio
+            value="every-n-hour-at-n"
+            classNames={{
+              hiddenInput: "hidden",
+            }}
+          >
             <div className="flex items-center gap-2">
               <span>Every</span>
               <Select

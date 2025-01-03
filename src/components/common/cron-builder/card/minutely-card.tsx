@@ -42,9 +42,21 @@ const MinutelyCard = () => {
           value={selectedValue}
           onValueChange={(value) => setSelectedValue(value)}
         >
-          <Radio value="every-minute">Every Minute</Radio>
+          <Radio
+            value="every-minute"
+            classNames={{
+              hiddenInput: "hidden",
+            }}
+          >
+            Every Minute
+          </Radio>
           <Divider className="my-0.5" />
-          <Radio value="every-n-minute">
+          <Radio
+            value="every-n-minute"
+            classNames={{
+              hiddenInput: "hidden",
+            }}
+          >
             <div className="flex items-center gap-2">
               <span>Every</span>
               <Select
