@@ -46,7 +46,7 @@ const JobsCreateModal = () => {
   return (
     <>
       <Button
-        size="lg"
+        size="md"
         variant="bordered"
         startContent={<Plus size={16} />}
         onPress={onOpen}

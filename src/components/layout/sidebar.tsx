@@ -13,6 +13,7 @@ import {
   User,
 } from "@nextui-org/react";
 import { CalendarSync, Settings, Workflow } from "lucide-react";
+import _ from "lodash";
 
 import { IconButton, LogoLink } from "@zapcron/components/common";
 import { UserProfileDrawer } from "@zapcron/components/features/user";
@@ -41,8 +42,8 @@ const Sidebar = ({ user }: SidebarProps) => {
   const buttonProfileRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <aside className="hidden max-h-screen w-60 flex-shrink-0 md:block lg:w-72 xl:w-80">
-      <div className="fixed bottom-0 top-0 z-30 flex max-h-screen min-h-[50vh] md:w-60 lg:w-72 xl:w-80">
+    <aside className="hidden max-h-screen w-48 flex-shrink-0 md:block lg:w-56 xl:w-64">
+      <div className="fixed bottom-0 top-0 z-30 flex max-h-screen min-h-[50vh] md:w-48 lg:w-56 xl:w-64">
         <div className="flex w-full flex-col overflow-y-auto px-8 pt-6">
           <LogoLink />
           <ul className="mt-8 flex flex-col gap-2">
@@ -76,7 +77,7 @@ const Sidebar = ({ user }: SidebarProps) => {
                 src: user?.image ?? "",
               }}
               className="transition-transform"
-              description={user?.email}
+              description={_.truncate(user?.email ?? "", { length: 24 })}
               name={user?.name}
             />
           </DropdownTrigger>
