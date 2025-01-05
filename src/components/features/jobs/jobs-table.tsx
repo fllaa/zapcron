@@ -133,7 +133,7 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
               <ConfirmationModal
                 trigger={(onOpen) => (
                   <Button
-                    onClick={onOpen}
+                    onPress={onOpen}
                     isIconOnly
                     size="sm"
                     variant="flat"
@@ -151,7 +151,7 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
                 message="Are you sure you want to delete this job?"
               />
               <Button
-                onClick={() =>
+                onPress={() =>
                   toast.promise(
                     executeNowJob.mutateAsync({
                       id: parseInt(item.key as string),
