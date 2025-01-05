@@ -42,6 +42,7 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
         isEnabled: job.isEnabled,
         cronspec: job.cronspec,
         url: job.url,
+        executeAt: job.executeAt,
         history: job.logs.map((log) => log.status),
       })),
     [jobs],

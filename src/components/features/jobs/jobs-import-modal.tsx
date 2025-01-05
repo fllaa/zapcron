@@ -14,6 +14,7 @@ import {
 } from "@nextui-org/react";
 import { Download, Import, RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
+import parser from "cron-parser";
 import { type z } from "zod";
 
 import { JobsTable } from "@zapcron/components/features/jobs";
@@ -33,6 +34,7 @@ const JobsImportModal = () => {
         cronspec: job.cronspec,
         url: job.url,
         isEnabled: true,
+        executeAt: parser.parseExpression(job.cronspec).next().toDate(),
         logs: [],
       })),
     }),

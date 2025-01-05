@@ -81,6 +81,7 @@ export const jobRouter = createTRPCRouter({
           isEnabled: true,
           cronspec: true,
           url: true,
+          executeAt: true,
         },
         orderBy: (jobs, { desc }) => [
           desc(jobs.isEnabled),
