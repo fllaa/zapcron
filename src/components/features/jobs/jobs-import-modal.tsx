@@ -60,10 +60,13 @@ const JobsImportModal = () => {
     toast.promise(
       async () => {
         const data: Record<string, unknown>[] = await parseCsv(file);
-        // idk why papaparse has last object with empty string url even though it's not in the csv
-        const parsedData = zBulkCreateJobInput.parse(
-          data.filter((job) => JSON.stringify(job) !== '{"url":""}'),
-        );
+        // papaparse looks like have an issue
+        // the result always has last element that only have single key with empty string value
+        // so we pop it
+        if (Object.keys(data[data.length - 1] as object).length === 1) {
+          data.pop();
+        }
+        const parsedData = zBulkCreateJobInput.parse(data);
         setJobs(parsedData);
       },
       {
