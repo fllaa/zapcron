@@ -56,6 +56,7 @@ const JobsDetailsLogs = ({ data }: JobsDetailsLogsProps) => {
         case "response":
           return (
             <JobsDetailsLogsResponseModal
+              id={item.key as string}
               data={value as Record<string, unknown>}
             />
           );

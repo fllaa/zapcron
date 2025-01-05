@@ -2,23 +2,27 @@
 
 import React from "react";
 import {
+  Button,
+  Link,
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
   useDisclosure,
 } from "@nextui-org/react";
 import { Braces } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
+import _ from "lodash";
 
 interface JobsDetailsLogsResponseModalProps {
+  id: string;
   data: Record<string, unknown>;
 }
 
 const JobsDetailsLogsResponseModal = ({
+  id,
   data,
 }: JobsDetailsLogsResponseModalProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -48,12 +52,25 @@ const JobsDetailsLogsResponseModal = ({
               </ModalHeader>
               <ModalBody>
                 <SyntaxHighlighter language="json" style={dracula}>
-                  {JSON.stringify(data ?? {}, null, 2)}
+                  {_.truncate(JSON.stringify(data ?? {}, null, 2), {
+                    length: 1000,
+                  })}
                 </SyntaxHighlighter>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
+                </Button>
+                <Button
+                  showAnchorIcon
+                  as={Link}
+                  href={`/api/logs/${id}/raw`}
+                  rel="noreferrer noopener"
+                  target="_blank"
+                  color="primary"
+                  variant="flat"
+                >
+                  Open Raw Response
                 </Button>
               </ModalFooter>
             </>
