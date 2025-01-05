@@ -82,7 +82,10 @@ export const jobRouter = createTRPCRouter({
           cronspec: true,
           url: true,
         },
-        orderBy: (jobs, { desc }) => [desc(jobs.createdAt)],
+        orderBy: (jobs, { desc }) => [
+          desc(jobs.isEnabled),
+          desc(jobs.createdAt),
+        ],
         limit: input.limit,
         offset: (input.page - 1) * input.limit,
         where: input.query
