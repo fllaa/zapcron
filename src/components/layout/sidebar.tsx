@@ -23,14 +23,6 @@ const menu = [
     icon: <CalendarSync size={20} />,
     name: "Jobs",
   },
-  {
-    icon: <Workflow size={20} />,
-    name: "Workflow",
-  },
-  {
-    icon: <Settings size={20} />,
-    name: "Settings",
-  },
 ];
 
 interface SidebarProps {
