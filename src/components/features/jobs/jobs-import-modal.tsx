@@ -151,12 +151,20 @@ const JobsImportModal = () => {
                 className={cn(
                   "flex items-center justify-between",
                   isFilled &&
-                    "sticky bottom-0 left-0 right-0 rounded-2xl bg-white dark:bg-black",
+                    "sticky bottom-0 left-0 right-0 rounded-2xl bg-content1",
                 )}
               >
                 <div className="flex items-center gap-2">
                   {isFilled ? (
                     <div className="flex items-center gap-2">
+                      <Switch
+                        size="sm"
+                        isSelected={isEnableAll}
+                        onValueChange={setIsEnableAll}
+                        defaultSelected
+                      >
+                        Enable All
+                      </Switch>
                       <Button
                         size="sm"
                         color="warning"
@@ -166,14 +174,6 @@ const JobsImportModal = () => {
                       >
                         Reset
                       </Button>
-                      <Switch
-                        size="sm"
-                        isSelected={isEnableAll}
-                        onValueChange={setIsEnableAll}
-                        defaultSelected
-                      >
-                        Enable All
-                      </Switch>
                     </div>
                   ) : (
                     <Button
