@@ -37,7 +37,7 @@ export const zBulkCreateJobInput = z.array(zCreateJobInput);
 export const zUpdateJobInput = z.object({
   id: z.number(),
   name: z.optional(z.string().min(1)),
-  description: z.optional(z.string()),
+  description: z.optional(z.string()).nullable(),
   isEnabled: z.optional(z.boolean()),
   cronspec: z
     .string()
