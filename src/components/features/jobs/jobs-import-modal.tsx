@@ -15,7 +15,7 @@ import {
 import { Download, Import, RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
 import parser from "cron-parser";
-import { type z } from "zod";
+import { ZodError, type z } from "zod";
 
 import { JobsTable } from "@zapcron/components/features/jobs";
 import { api } from "@zapcron/trpc/react";
@@ -62,7 +62,7 @@ const JobsImportModal = () => {
         const data: Record<string, unknown>[] = await parseCsv(file);
         // idk why papaparse has last object with empty string url even though it's not in the csv
         const parsedData = zBulkCreateJobInput.parse(
-          data.filter((job) => job.url),
+          data.filter((job) => JSON.stringify(job) !== '{"url":""}'),
         );
         setJobs(parsedData);
       },
@@ -70,8 +70,10 @@ const JobsImportModal = () => {
         loading: "Importing jobs...",
         success: "Jobs imported successfully",
         error: (error) => {
-          console.error(error);
-          return "Failed to import jobs";
+          if (error instanceof ZodError) {
+            return "CSV is invalid.";
+          }
+          return "Failed import jobs";
         },
       },
     );
@@ -130,6 +132,7 @@ const JobsImportModal = () => {
                 <input
                   id="upload-file"
                   type="file"
+                  accept="text/csv"
                   className="hidden"
                   onChange={onUpload}
                 />
