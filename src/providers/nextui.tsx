@@ -28,7 +28,7 @@ export function NextUIProvider({
   ) : (
     <NUIProvider navigate={(path: string) => router.push(path)}>
       <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
-      <Toaster theme="system" />
+      <Toaster theme="system" richColors />
     </NUIProvider>
   );
 }
