@@ -107,7 +107,20 @@ export const jobRouter = createTRPCRouter({
         },
       });
       const total =
-        (await ctx.db.select({ count: count() }).from(jobs))[0]?.count ?? 0;
+        (
+          await ctx.db
+            .select({ count: count() })
+            .from(jobs)
+            .where(
+              input.query
+                ? or(
+                    ilike(jobs.name, `%${input.query}%`),
+                    ilike(jobs.description, `%${input.query}%`),
+                    ilike(jobs.url, `%${input.query}%`),
+                  )
+                : undefined,
+            )
+        )[0]?.count ?? 0;
       return {
         data,
         _meta: {
