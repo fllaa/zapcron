@@ -5,7 +5,11 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Pagination, Select, SelectItem } from "@nextui-org/react";
 
 import { api } from "@zapcron/trpc/react";
-import { JobsCreateModal, JobsTable } from "@zapcron/components/features/jobs";
+import {
+  JobsCreateModal,
+  JobsImportModal,
+  JobsTable,
+} from "@zapcron/components/features/jobs";
 import { Search } from "@zapcron/components/common";
 import { useCreateQueryString, useDebouncedState } from "@zapcron/hooks";
 
@@ -38,7 +42,10 @@ const JobsWrapper = () => {
           onClear={() => setQuery("")}
           className="max-w-72"
         />
-        <JobsCreateModal />
+        <div className="flex gap-2">
+          <JobsImportModal />
+          <JobsCreateModal />
+        </div>
       </div>
       <div className="space-y-4">
         <JobsTable jobs={jobs} />

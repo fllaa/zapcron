@@ -4,6 +4,7 @@ import { count, eq, ilike, or } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "@zapcron/server/api/trpc";
 import { jobs } from "@zapcron/server/db/schema";
 import {
+  zBulkCreateJobInput,
   zCreateJobInput,
   zGetAllJobInput,
   zGetJobInput,
@@ -11,6 +12,18 @@ import {
 } from "@zapcron/zod/job";
 
 export const jobRouter = createTRPCRouter({
+  bulkCreate: protectedProcedure
+    .input(zBulkCreateJobInput)
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.insert(jobs).values(
+        input.map((job) => ({
+          ...job,
+          executeAt: parser.parseExpression(job.cronspec).next().toDate(),
+          createdById: ctx.session.user.id,
+        })),
+      );
+    }),
+
   create: protectedProcedure
     .input(zCreateJobInput)
     .mutation(async ({ ctx, input }) => {

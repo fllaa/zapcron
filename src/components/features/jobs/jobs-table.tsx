@@ -15,10 +15,11 @@ import { getClientTimezone } from "@zapcron/utils/datetime";
 import { colorByStatus } from "@zapcron/utils/color";
 
 interface JobsTableProps {
-  jobs: Awaited<ReturnType<typeof apiServer.job.getAll>>;
+  jobs: Omit<Awaited<ReturnType<typeof apiServer.job.getAll>>, "_meta">;
+  isImport?: boolean;
 }
 
-const JobsTable = ({ jobs }: JobsTableProps) => {
+const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
   const pathname = usePathname();
   const utils = api.useUtils();
   const deleteJob = api.job.delete.useMutation({
@@ -46,13 +47,19 @@ const JobsTable = ({ jobs }: JobsTableProps) => {
     [jobs],
   );
 
-  const columns = [
-    { key: "name", label: "Name" },
-    { key: "cronspec", label: "Cronspec" },
-    { key: "url", label: "URL" },
-    { key: "history", label: "History" },
-    { key: "actions", label: "Actions" },
-  ];
+  const columns = isImport
+    ? [
+        { key: "name", label: "Name" },
+        { key: "cronspec", label: "Cronspec" },
+        { key: "url", label: "URL" },
+      ]
+    : [
+        { key: "name", label: "Name" },
+        { key: "cronspec", label: "Cronspec" },
+        { key: "url", label: "URL" },
+        { key: "history", label: "History" },
+        { key: "actions", label: "Actions" },
+      ];
 
   const renderCell = useCallback(
     (item: Record<string, unknown>, columnKey: React.Key | string) => {

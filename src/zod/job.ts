@@ -32,6 +32,8 @@ export const zCreateJobInput = z.object({
   ),
 });
 
+export const zBulkCreateJobInput = z.array(zCreateJobInput);
+
 export const zUpdateJobInput = z.object({
   id: z.number(),
   name: z.optional(z.string().min(1)),

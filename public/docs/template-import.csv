@@ -1,0 +1,4 @@
+url,method,name,description,cronspec,body,headers
+https://api.example.com/users,GET,User,Get All User,*/10 * * * *,,"{""Content-Type"": ""application/json""}"
+https://api.example.com/purge-blocked-users,DELETE,Purge Blocked Users,Purge Nonactive & Blocked Users,0 18 * * *,"{""duration_user"": 3000}","{""Content-Type"": ""application/json""}"
+http://api.example.com/synchronization-data,POST,Sync Data,Synchronization Data from third-party,*/10 * * * *,"{""user"": true, ""product"": true}","{""Content-Type"": ""application/json""}"
