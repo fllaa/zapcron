@@ -1,29 +1,82 @@
-# Create T3 App
+# ZapCron
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+ZapCron is a cron-based HTTP webhook automation tool designed to simplify task scheduling and execution for IT engineers and general users. With customizable schedules, API support, and robust logging, ZapCron makes automating webhook calls seamless and efficient.
 
-## What's next? How do I make an app with this?
+## Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- **Customizable Schedules:** Define when and how often your webhooks are triggered.
+- **API Support:** Easily integrate with your existing applications.
+- **Logging:** Track and debug webhook calls with comprehensive logs.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Prerequisites
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+Ensure the following are installed on your system before running ZapCron:
 
-## Learn More
+- [Bun](https://bun.sh/)
+- [Node.js](https://nodejs.org/)
+- The [zapcron-scheduler](https://github.com/fllaa/zapcron-scheduler) must be running to enable scheduling functionality.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+---
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Installation
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### Manual Installation
 
-## How do I deploy this?
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/fllaa/zapcron.git
+   cd zapcron
+   ```
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+2. Install dependencies:
+   ```bash
+   bun install
+   ```
+
+3. Configure environment variables:
+   - Copy `.env.example` to `.env`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Update the `.env` file with your configuration.
+
+4. Run database push migration:
+   ```bash
+   bun run db:push
+   ```
+
+5. Start the application:
+   ```bash
+   bun run start
+   ```
+
+### Docker Installation
+
+1. Pull the Docker image:
+   ```bash
+   docker pull fallavall/zapcron:main
+   ```
+2. Run the container with your environment variables:
+   ```bash
+   docker run -d --env-file .env -p 3000:3000 fallavall/zapcron:main
+   ```
+
+## Configuration
+
+ZapCron uses environment variables for configuration. Refer to the provided `.env.example` file for required and optional variables. Customize it according to your needs.
+
+## Usage
+
+Once ZapCron is running, you can define your webhook schedules and manage them through the API. Refer to the API documentation (coming soon) for detailed instructions.
+
+## Contributing
+
+Contributions are welcome! Feel free to fork the repository, make changes, and submit a pull request. For major changes, please open an issue first to discuss your ideas.
+
+## License
+
+This project is licensed under the GNU General Public License (GPL). See the [LICENSE](LICENSE) file for details.
+
+---
+
+Happy automating with ZapCron!
