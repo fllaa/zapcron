@@ -35,13 +35,15 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
             <Chip startContent={<Fingerprint size={12} />} size="sm">
               ID
             </Chip>
-            <p className="text-sm text-gray-200">{data!.id}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-200">
+              {data!.id}
+            </p>
           </div>
           <div className="space-y-1">
             <Chip startContent={<Pickaxe size={12} />} size="sm">
               Status
             </Chip>
-            <p className="text-sm text-gray-200">
+            <p className="text-sm text-gray-700 dark:text-gray-200">
               {data!.isEnabled ? "Enabled" : "Disabled"}
             </p>
           </div>
@@ -49,19 +51,23 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
             <Chip startContent={<Link2 size={12} />} size="sm">
               URL
             </Chip>
-            <p className="text-sm text-gray-200">{data!.url}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-200">
+              {data!.url}
+            </p>
           </div>
           <div className="space-y-1">
             <Chip startContent={<ArrowUpDown size={12} />} size="sm">
               Method
             </Chip>
-            <p className="text-sm text-gray-200">{data!.method}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-200">
+              {data!.method}
+            </p>
           </div>
           <div className="space-y-1">
             <Chip startContent={<Timer size={12} />} size="sm">
               Cronspec
             </Chip>
-            <p className="text-sm text-gray-200">
+            <p className="text-sm text-gray-700 dark:text-gray-200">
               {cronstrue.toString(data!.cronspec)}
             </p>
           </div>
@@ -71,7 +77,7 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
             </Chip>
             <p
               className={cn(
-                "text-sm text-gray-200",
+                "text-sm text-gray-700 dark:text-gray-200",
                 data!.isEnabled ? "text-green-500" : "text-red-500",
               )}
             >
@@ -86,7 +92,7 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
             <Chip startContent={<Clock size={12} />} size="sm">
               Created At
             </Chip>
-            <p className="text-sm text-gray-200">
+            <p className="text-sm text-gray-700 dark:text-gray-200">
               {format({
                 date: data!.createdAt,
                 format: "YYYY-MM-DD HH:mm",
@@ -99,7 +105,7 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
               <Chip startContent={<Clock size={12} />} size="sm">
                 Updated At
               </Chip>
-              <p className="text-sm text-gray-200">
+              <p className="text-sm text-gray-700 dark:text-gray-200">
                 {format({
                   date: data!.updatedAt,
 
@@ -113,7 +119,9 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
             <Chip startContent={<User size={12} />} size="sm">
               Created By
             </Chip>
-            <p className="text-sm text-gray-200">{data!.createdBy.name}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-200">
+              {data!.createdBy.name}
+            </p>
           </div>
         </div>
       </CardBody>

@@ -12,7 +12,7 @@ const JobsDetailsDescription = ({ data }: JobsDetailsDescriptionProps) => {
     <Card className="col-span-3">
       <CardBody>
         <h3 className="text-lg font-semibold">Description</h3>
-        <p className="mt-4 text-sm text-gray-200">{data}</p>
+        <p className="mt-4 text-sm text-gray-700 dark:text-gray-200">{data}</p>
       </CardBody>
     </Card>
   );
