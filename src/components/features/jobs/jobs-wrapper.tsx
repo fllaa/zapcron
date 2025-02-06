@@ -24,7 +24,7 @@ const JobsWrapper = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const availableLimits = [5, 10, 20, 50];
+  const availableLimits = [5, 10, 20, 50, 100, 200];
   const limit = parseInt(searchParams.get("limit") ?? "10", 10);
   const page = parseInt(searchParams.get("page") ?? "1", 10);
 
