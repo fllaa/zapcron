@@ -1,10 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
-import React, { useCallback, useMemo } from "react";
-import { Card, CardBody, Chip } from "@nextui-org/react";
+import React, { useCallback, useMemo, useState } from "react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Chip,
+  DateRangePicker,
+  type RangeValue,
+} from "@nextui-org/react";
 import { format } from "@formkit/tempo";
+import {
+  today,
+  getLocalTimeZone,
+  type CalendarDate,
+} from "@internationalized/date";
 
+import { api } from "@zapcron/trpc/react";
 import { Table } from "@zapcron/components/common";
 import { JobsDetailsLogsResponseModal } from "@zapcron/components/features/jobs/details";
 import { formatTime, getClientTimezone } from "@zapcron/utils/datetime";
@@ -14,13 +27,42 @@ import { LogsMode } from "@zapcron/constants/logs-mode";
 
 type LogWithCreatedBy = Log & { createdBy: { name: string | null } | null };
 interface JobsDetailsLogsProps {
+  jobId: number;
   data: LogWithCreatedBy[];
 }
 
-const JobsDetailsLogs = ({ data }: JobsDetailsLogsProps) => {
+const JobsDetailsLogs = ({ jobId, data }: JobsDetailsLogsProps) => {
+  const [dateFilter, setDateFilter] = useState<RangeValue<CalendarDate> | null>(
+    null,
+  );
+  const {
+    data: logs,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = api.log.getAllByJob.useInfiniteQuery(
+    {
+      jobId,
+      filter: dateFilter
+        ? {
+            startDate: dateFilter.start.toString(),
+            endDate: dateFilter.end.toString(),
+          }
+        : undefined,
+    },
+    {
+      getNextPageParam: (lastPage) =>
+        lastPage.length > 0 ? lastPage[lastPage.length - 1]?.id : undefined,
+
+      initialData: {
+        pages: [data],
+        pageParams: [data[data.length - 1]?.id],
+      },
+    },
+  );
   const rows = useMemo(
     () =>
-      data.map((log) => ({
+      logs.pages.flat(1).map((log) => ({
         key: log.id.toString(),
         status: log.status,
         createdAt: log.createdAt.toISOString(),
@@ -29,7 +71,7 @@ const JobsDetailsLogs = ({ data }: JobsDetailsLogsProps) => {
         createdBy: log.createdBy?.name,
         response: log.response as Record<string, unknown>,
       })),
-    [data],
+    [logs],
   );
 
   const columns = [
@@ -89,8 +131,51 @@ const JobsDetailsLogs = ({ data }: JobsDetailsLogsProps) => {
   return (
     <Card className="col-span-8">
       <CardBody>
-        <h3 className="text-lg font-semibold">Logs</h3>
-        <Table columns={columns} rows={rows} renderCell={renderCell} />
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold">Logs</h3>
+          <DateRangePicker
+            className="w-fit"
+            size="sm"
+            label="Date"
+            labelPlacement="outside-left"
+            variant="flat"
+            maxValue={today(getLocalTimeZone())}
+            value={dateFilter}
+            onChange={setDateFilter}
+            CalendarBottomContent={
+              <div className="mx-auto px-2 pb-2 text-right">
+                <Button
+                  size="sm"
+                  variant="bordered"
+                  radius="full"
+                  color="warning"
+                  onPress={() => setDateFilter(null)}
+                >
+                  Reset
+                </Button>
+              </div>
+            }
+            disableAnimation
+            showMonthAndYearPickers
+          />
+        </div>
+        <Table
+          columns={columns}
+          rows={rows}
+          renderCell={renderCell}
+          className="mt-4"
+        />
+        <div className="mx-auto mt-4">
+          <Button
+            onPress={() => fetchNextPage()}
+            isDisabled={!hasNextPage}
+            isLoading={isFetchingNextPage}
+            size="sm"
+            variant="ghost"
+          >
+            {hasNextPage ? "Load More" : "No More Logs"}
+          </Button>
+        </div>
       </CardBody>
     </Card>
   );

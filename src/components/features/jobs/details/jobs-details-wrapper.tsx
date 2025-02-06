@@ -22,7 +22,7 @@ export const JobsDetailsWrapper = ({ data }: JobsDetailsWrapperProps) => {
       <JobsDetailsDescription data={data?.description} />
       <JobsDetailsHeaders data={data!.headers as Record<string, unknown>} />
       <JobsDetailsBody data={data!.body as Record<string, unknown>} />
-      <JobsDetailsLogs data={data!.logs} />
+      <JobsDetailsLogs jobId={data!.id} data={data!.logs} />
     </div>
   );
 };
