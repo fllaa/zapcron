@@ -12,6 +12,8 @@ import {
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
+import { LogsMode } from "@zapcron/constants/logs-mode";
+
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
  * database instance for multiple projects.
@@ -187,12 +189,20 @@ export const logs = createTable(
       .references(() => jobs.id, { onDelete: "cascade" }),
     status: varchar("status", { length: 255 }).notNull(),
     response: json("response"),
+    duration: integer("duration").notNull().default(0),
+    mode: varchar("mode", { length: 255 })
+      .notNull()
+      .default(LogsMode.SCHEDULED),
+    createdById: varchar("created_by", { length: 255 }).references(
+      () => users.id,
+    ),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
   },
   (log) => ({
     jobIdIdx: index("log_job_id_idx").on(log.jobId),
+    createdByIdIdx: index("log_created_by_idx").on(log.createdById),
   }),
 );
 
