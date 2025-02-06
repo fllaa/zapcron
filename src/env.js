@@ -17,6 +17,7 @@ export const env = createEnv({
     AUTH_MICROSOFT_ENTRA_ID_CLIENT_SECRET: z.string(),
     AUTH_MICROSOFT_ENTRA_ID_TENANT_ID: z.string(),
     DATABASE_URL: z.string().url(),
+    ENABLE_QUERY_LOGGING: z.boolean().optional().default(false),
     REDIS_HOST: z.string().optional().default("localhost"),
     REDIS_PORT: z.number().optional().default(6379),
     REDIS_PASSWORD: z.string().optional(),
@@ -50,6 +51,7 @@ export const env = createEnv({
     AUTH_MICROSOFT_ENTRA_ID_TENANT_ID:
       process.env.AUTH_MICROSOFT_ENTRA_ID_TENANT_ID,
     DATABASE_URL: process.env.DATABASE_URL,
+    ENABLE_QUERY_LOGGING: process.env.ENABLE_QUERY_LOGGING === "true",
     REDIS_HOST: process.env.REDIS_HOST,
     REDIS_PORT: process.env.REDIS_PORT
       ? parseInt(process.env.REDIS_PORT)
