@@ -68,7 +68,10 @@ export const jobRouter = createTRPCRouter({
       if (!job) {
         throw new Error("Job not found");
       }
-      await ctx.queue.add("execute", job);
+      await ctx.queue.add("execute", {
+        ...job,
+        triggeredBy: ctx.session.user.id,
+      });
     }),
 
   getAll: protectedProcedure
@@ -139,6 +142,13 @@ export const jobRouter = createTRPCRouter({
         logs: {
           orderBy: (logs, { desc }) => [desc(logs.createdAt)],
           limit: 10,
+          with: {
+            createdBy: {
+              columns: {
+                name: true,
+              },
+            },
+          },
         },
         createdBy: {
           columns: {

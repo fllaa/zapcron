@@ -206,4 +206,5 @@ export type Log = InferSelectModel<typeof logs>;
 
 export const logsRelations = relations(logs, ({ one }) => ({
   job: one(jobs, { fields: [logs.jobId], references: [jobs.id] }),
+  createdBy: one(users, { fields: [logs.createdById], references: [users.id] }),
 }));

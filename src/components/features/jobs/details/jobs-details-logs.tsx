@@ -7,12 +7,14 @@ import { format } from "@formkit/tempo";
 
 import { Table } from "@zapcron/components/common";
 import { JobsDetailsLogsResponseModal } from "@zapcron/components/features/jobs/details";
-import { getClientTimezone } from "@zapcron/utils/datetime";
+import { formatTime, getClientTimezone } from "@zapcron/utils/datetime";
 import { type Log } from "@zapcron/server/db/schema";
 import { colorByStatus } from "@zapcron/utils/color";
+import { LogsMode } from "@zapcron/constants/logs-mode";
 
+type LogWithCreatedBy = Log & { createdBy: { name: string | null } | null };
 interface JobsDetailsLogsProps {
-  data: Log[];
+  data: LogWithCreatedBy[];
 }
 
 const JobsDetailsLogs = ({ data }: JobsDetailsLogsProps) => {
@@ -22,6 +24,9 @@ const JobsDetailsLogs = ({ data }: JobsDetailsLogsProps) => {
         key: log.id.toString(),
         status: log.status,
         createdAt: log.createdAt.toISOString(),
+        duration: log.duration,
+        mode: log.mode,
+        createdBy: log.createdBy?.name,
         response: log.response as Record<string, unknown>,
       })),
     [data],
@@ -30,6 +35,9 @@ const JobsDetailsLogs = ({ data }: JobsDetailsLogsProps) => {
   const columns = [
     { key: "status", label: "Status Code" },
     { key: "createdAt", label: "Date" },
+    { key: "duration", label: "Duration" },
+    { key: "mode", label: "Mode" },
+    { key: "createdBy", label: "Triggered By" },
     { key: "response", label: "Response" },
   ];
 
@@ -53,6 +61,18 @@ const JobsDetailsLogs = ({ data }: JobsDetailsLogsProps) => {
             format: "YYYY-MM-DD HH:mm",
             tz: getClientTimezone(),
           });
+        case "duration":
+          return formatTime(value as number);
+        case "mode":
+          return (
+            <Chip
+              size="sm"
+              color={value === LogsMode.IMMEDIATE ? "primary" : "secondary"}
+              variant="bordered"
+            >
+              {value as string}
+            </Chip>
+          );
         case "response":
           return (
             <JobsDetailsLogsResponseModal
