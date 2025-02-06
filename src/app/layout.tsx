@@ -2,9 +2,8 @@ import "@zapcron/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-import { NextUIProvider } from "@zapcron/providers";
+import { HeroUIProvider } from "@zapcron/providers";
 import { TRPCReactProvider } from "@zapcron/trpc/react";
 import { TimeInfo } from "@zapcron/components/common";
 
@@ -22,14 +21,14 @@ export default function RootLayout({
     <html lang="en" className={`overflow-x-hidden ${GeistSans.variable}`}>
       <body className="overflow-x-hidden">
         <TRPCReactProvider>
-          <NextUIProvider
+          <HeroUIProvider
             themeProps={{
               attribute: "class",
               defaultTheme: "dark",
             }}
           >
             {children}
-          </NextUIProvider>
+          </HeroUIProvider>
         </TRPCReactProvider>
         <TimeInfo serverDate={date.toISOString()} />
       </body>

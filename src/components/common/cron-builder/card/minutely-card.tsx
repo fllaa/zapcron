@@ -9,7 +9,7 @@ import {
   RadioGroup,
   Select,
   SelectItem,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useFormContext } from "react-hook-form";
 import CronTime from "cron-time-generator";
 

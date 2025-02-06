@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { NextUIProvider as NUIProvider } from "@nextui-org/system";
+import { HeroUIProvider as HUIProvider } from "@heroui/system";
 import { useRouter } from "next/navigation";
 import {
   ThemeProvider as NextThemesProvider,
@@ -11,24 +11,24 @@ import { Toaster } from "sonner";
 
 import { useIsClient } from "@zapcron/hooks";
 
-export interface NextUIProviderProps {
+export interface HeroUIProviderProps {
   children: React.ReactNode;
   themeProps?: ThemeProviderProps;
 }
 
-export function NextUIProvider({
+export function HeroUIProvider({
   children,
   themeProps,
-}: Readonly<NextUIProviderProps>) {
+}: Readonly<HeroUIProviderProps>) {
   const isClient = useIsClient();
   const router = useRouter();
 
   return !isClient ? (
     children
   ) : (
-    <NUIProvider navigate={(path: string) => router.push(path)}>
+    <HUIProvider navigate={(path: string) => router.push(path)}>
       <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
       <Toaster theme="system" richColors />
-    </NUIProvider>
+    </HUIProvider>
   );
 }

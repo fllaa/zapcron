@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Card, CardBody, Chip, cn } from "@nextui-org/react";
+import { Card, CardBody, Chip, cn } from "@heroui/react";
 import {
   ArrowUpDown,
   Clock,

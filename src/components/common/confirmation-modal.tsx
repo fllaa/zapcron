@@ -10,7 +10,7 @@ import {
   Button,
   useDisclosure,
   type ButtonProps,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 interface ConfirmationModalProps {
   trigger: (onOpen: () => void) => React.ReactNode;

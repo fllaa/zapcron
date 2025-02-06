@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Card, CardBody, type CardProps } from "@nextui-org/react";
+import { Card, CardBody, type CardProps } from "@heroui/react";
 
 interface CardPageProps extends CardProps {
   children?: React.ReactNode;

@@ -10,7 +10,7 @@ import {
   TableRow,
   getKeyValue,
   type TableProps as NTableProps,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 interface TableProps extends NTableProps {
   rows: ({ key: string } & Record<string, unknown>)[];

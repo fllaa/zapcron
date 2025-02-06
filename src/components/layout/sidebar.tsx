@@ -12,7 +12,7 @@ import {
   Link,
   Switch,
   User,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useTheme } from "next-themes";
 import { CalendarSync, Moon, Sun } from "lucide-react";
 import _ from "lodash";

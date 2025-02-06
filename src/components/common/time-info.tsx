@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, Card, CardBody, Chip } from "@nextui-org/react";
+import { Button, Card, CardBody, Chip } from "@heroui/react";
 import { Info } from "lucide-react";
 import { format } from "@formkit/tempo";
 

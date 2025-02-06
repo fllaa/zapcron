@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
   PopoverContent,
   type PopoverProps,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 interface ActionPopoverProps extends Omit<PopoverProps, "children"> {
   trigger: React.ReactNode;

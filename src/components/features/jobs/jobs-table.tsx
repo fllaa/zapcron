@@ -2,7 +2,7 @@
 
 import React, { useCallback, useMemo } from "react";
 import { usePathname } from "next/navigation";
-import { Button, Chip, Link, Tooltip, cn } from "@nextui-org/react";
+import { Button, Chip, Link, Tooltip, cn } from "@heroui/react";
 import { ChevronRight, Play, Trash2 } from "lucide-react";
 import cronstrue from "cronstrue";
 import { toast } from "sonner";

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { forwardRef } from "react";
-import { Button, Spinner, type ButtonProps } from "@nextui-org/react";
+import { Button, Spinner, type ButtonProps } from "@heroui/react";
 import { cx } from "classix";
 
 interface IconButtonProps extends Omit<ButtonProps, "variant"> {

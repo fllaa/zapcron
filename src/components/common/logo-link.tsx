@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Image, Link } from "@nextui-org/react";
+import { Image, Link } from "@heroui/react";
 
 const LogoLink = () => {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { forwardRef } from "react";
-import { Input, type InputProps } from "@nextui-org/react";
+import { Input, type InputProps } from "@heroui/react";
 import { Search as SearchIcon } from "lucide-react";
 
 type SearchProps = Omit<InputProps, "startContent" | "label">;

@@ -11,7 +11,7 @@ import {
   Switch,
   cn,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { Download, Import, RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
 import parser from "cron-parser";

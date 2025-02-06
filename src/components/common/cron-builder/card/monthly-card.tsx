@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Card, CardBody, Select, SelectItem } from "@nextui-org/react";
+import { Card, CardBody, Select, SelectItem } from "@heroui/react";
 import { useFormContext } from "react-hook-form";
 import CronTime from "cron-time-generator";
 

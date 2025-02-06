@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Tab, Tabs, type TabsProps } from "@nextui-org/react";
+import { Tab, Tabs, type TabsProps } from "@heroui/react";
 
 import {
   CustomCard,

@@ -9,7 +9,7 @@ import {
   Chip,
   DateRangePicker,
   type RangeValue,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { format } from "@formkit/tempo";
 import {
   today,

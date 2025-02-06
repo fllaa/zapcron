@@ -2,7 +2,7 @@
 
 import React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Pagination, Select, SelectItem } from "@nextui-org/react";
+import { Pagination, Select, SelectItem } from "@heroui/react";
 
 import { api } from "@zapcron/trpc/react";
 import {

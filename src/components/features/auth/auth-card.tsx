@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, Card, CardHeader, CardBody } from "@nextui-org/react";
+import { Button, Card, CardHeader, CardBody } from "@heroui/react";
 import { signIn } from "next-auth/react";
 import { FaGithub, FaMicrosoft } from "react-icons/fa6";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, Card, CardBody, Link } from "@nextui-org/react";
+import { Button, Card, CardBody, Link } from "@heroui/react";
 import { Home } from "lucide-react";
 
 import { LogoLink } from "@zapcron/components/common";
