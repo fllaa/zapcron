@@ -10,9 +10,11 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Link,
+  Switch,
   User,
 } from "@nextui-org/react";
-import { CalendarSync, Settings, Workflow } from "lucide-react";
+import { useTheme } from "next-themes";
+import { CalendarSync, Moon, Sun } from "lucide-react";
 import _ from "lodash";
 
 import { IconButton, LogoLink } from "@zapcron/components/common";
@@ -32,6 +34,7 @@ interface SidebarProps {
 const Sidebar = ({ user }: SidebarProps) => {
   const pathname = usePathname();
   const buttonProfileRef = useRef<HTMLButtonElement>(null);
+  const { theme, setTheme } = useTheme();
 
   return (
     <aside className="hidden max-h-screen w-48 flex-shrink-0 md:block lg:w-56 xl:w-64">
@@ -74,6 +77,18 @@ const Sidebar = ({ user }: SidebarProps) => {
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="User Actions" variant="flat">
+            <DropdownItem key="theme-switcher" closeOnSelect={false}>
+              <Switch
+                isSelected={theme === "dark"}
+                color="secondary"
+                endContent={<Moon />}
+                size="md"
+                startContent={<Sun />}
+                onValueChange={(value) => setTheme(value ? "dark" : "light")}
+              >
+                Dark mode
+              </Switch>
+            </DropdownItem>
             <DropdownItem key="user" className="h-14 gap-2">
               <p className="font-bold">Signed in as</p>
               <p className="font-bold">{user?.name}</p>
