@@ -37,10 +37,10 @@ export const posts = createTable(
       () => new Date(),
     ),
   },
-  (example) => ({
-    createdByIdIdx: index("created_by_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
-  }),
+  (example) => [
+    index("created_by_idx").on(example.createdById),
+    index("name_idx").on(example.name),
+  ],
 );
 
 export type Post = InferSelectModel<typeof posts>;
@@ -88,12 +88,12 @@ export const accounts = createTable(
     id_token: text("id_token"),
     session_state: varchar("session_state", { length: 255 }),
   },
-  (account) => ({
-    compoundKey: primaryKey({
+  (account) => [
+    primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
-    userIdIdx: index("account_user_id_idx").on(account.userId),
-  }),
+    index("account_user_id_idx").on(account.userId),
+  ],
 );
 
 export type Account = InferSelectModel<typeof accounts>;
@@ -116,9 +116,7 @@ export const sessions = createTable(
       withTimezone: true,
     }).notNull(),
   },
-  (session) => ({
-    userIdIdx: index("session_user_id_idx").on(session.userId),
-  }),
+  (session) => [index("session_user_id_idx").on(session.userId)],
 );
 
 export type Session = InferSelectModel<typeof sessions>;
@@ -137,9 +135,7 @@ export const verificationTokens = createTable(
       withTimezone: true,
     }).notNull(),
   },
-  (vt) => ({
-    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  }),
+  (vt) => [primaryKey({ columns: [vt.identifier, vt.token] })],
 );
 
 export type VerificationToken = InferSelectModel<typeof verificationTokens>;
@@ -167,10 +163,10 @@ export const jobs = createTable(
       () => new Date(),
     ),
   },
-  (job) => ({
-    createdByIdIdx: index("job_created_by_idx").on(job.createdById),
-    nameIndex: index("job_name_idx").on(job.name),
-  }),
+  (job) => [
+    index("job_created_by_idx").on(job.createdById),
+    index("job_name_idx").on(job.name),
+  ],
 );
 
 export type Job = InferSelectModel<typeof jobs>;
@@ -200,10 +196,10 @@ export const logs = createTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
   },
-  (log) => ({
-    jobIdIdx: index("log_job_id_idx").on(log.jobId),
-    createdByIdIdx: index("log_created_by_idx").on(log.createdById),
-  }),
+  (log) => [
+    index("log_job_id_idx").on(log.jobId),
+    index("log_created_by_idx").on(log.createdById),
+  ],
 );
 
 export type Log = InferSelectModel<typeof logs>;
