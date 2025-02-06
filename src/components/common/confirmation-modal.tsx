@@ -9,14 +9,15 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  type ButtonProps,
 } from "@nextui-org/react";
 
 interface ConfirmationModalProps {
   trigger: (onOpen: () => void) => React.ReactNode;
   onConfirm: () => Promise<void>;
-  isLoading?: boolean;
   title?: string;
   message?: string;
+  color?: ButtonProps["color"];
 }
 
 const ConfirmationModal = ({
@@ -24,6 +25,7 @@ const ConfirmationModal = ({
   onConfirm,
   title = "Confirmation",
   message = "Are you sure?",
+  color = "primary",
 }: ConfirmationModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -49,7 +51,7 @@ const ConfirmationModal = ({
                   Close
                 </Button>
                 <Button
-                  color="primary"
+                  color={color}
                   onPress={async () => {
                     setIsLoading(true);
                     await onConfirm();

@@ -17,7 +17,11 @@ import { useTheme } from "next-themes";
 import { CalendarSync, Moon, Sun } from "lucide-react";
 import _ from "lodash";
 
-import { IconButton, LogoLink } from "@zapcron/components/common";
+import {
+  ConfirmationModal,
+  IconButton,
+  LogoLink,
+} from "@zapcron/components/common";
 import { UserProfileDrawer } from "@zapcron/components/features/user";
 
 const menu = [
@@ -34,6 +38,7 @@ interface SidebarProps {
 const Sidebar = ({ user }: SidebarProps) => {
   const pathname = usePathname();
   const buttonProfileRef = useRef<HTMLButtonElement>(null);
+  const buttonSignoutRef = useRef<HTMLButtonElement>(null);
   const { theme, setTheme } = useTheme();
 
   return (
@@ -99,13 +104,28 @@ const Sidebar = ({ user }: SidebarProps) => {
             >
               Profile
             </DropdownItem>
-            <DropdownItem key="logout" color="danger" onPress={() => signOut()}>
+            <DropdownItem
+              key="logout"
+              color="danger"
+              onPress={() => buttonSignoutRef.current?.click()}
+            >
               Log Out
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
       <UserProfileDrawer buttonRef={buttonProfileRef} user={user} />
+      <ConfirmationModal
+        onConfirm={signOut}
+        trigger={(onOpen) => (
+          <button ref={buttonSignoutRef} onClick={onOpen} className="hidden">
+            Sign Out
+          </button>
+        )}
+        title="Sign Out"
+        message="Are you sure you want to sign out?"
+        color="danger"
+      />
     </aside>
   );
 };
