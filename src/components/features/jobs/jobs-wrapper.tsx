@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Pagination, Select, SelectItem } from "@heroui/react";
 
@@ -18,6 +18,7 @@ interface JobsWrapper {
 }
 
 const JobsWrapper = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useDebouncedState("", 300);
   const createQueryString = useCreateQueryString();
   const pathname = usePathname();
@@ -33,6 +34,20 @@ const JobsWrapper = () => {
     page,
     query,
   });
+
+  useEffect(() => {
+    if (query && jobs.data?.length === 0 && jobs._meta.totalPages > 0) {
+      setCurrentPage(1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, jobs.data, jobs._meta.totalPages]);
+
+  useEffect(() => {
+    router.push(
+      `${pathname}?${createQueryString("page", currentPage.toString())}`,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   return (
     <>
@@ -53,11 +68,8 @@ const JobsWrapper = () => {
           <Pagination
             initialPage={page}
             total={jobs._meta.totalPages}
-            onChange={(page) =>
-              router.push(
-                `${pathname}?${createQueryString("page", page.toString())}`,
-              )
-            }
+            page={currentPage}
+            onChange={setCurrentPage}
           />
           <Select
             className="max-w-20"
