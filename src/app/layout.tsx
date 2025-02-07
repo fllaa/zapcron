@@ -5,7 +5,6 @@ import { type Metadata } from "next";
 
 import { HeroUIProvider } from "@zapcron/providers";
 import { TRPCReactProvider } from "@zapcron/trpc/react";
-import { TimeInfo } from "@zapcron/components/common";
 
 export const metadata: Metadata = {
   title: "ZapCron",
@@ -16,7 +15,6 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const date = new Date();
   return (
     <html lang="en" className={`overflow-x-hidden ${GeistSans.variable}`}>
       <body className="overflow-x-hidden">
@@ -30,7 +28,6 @@ export default function RootLayout({
             {children}
           </HeroUIProvider>
         </TRPCReactProvider>
-        <TimeInfo serverDate={date.toISOString()} />
       </body>
     </html>
   );
