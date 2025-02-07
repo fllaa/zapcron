@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Button,
   Card,
@@ -40,6 +40,7 @@ const JobsDetailsLogs = ({ jobId, data }: JobsDetailsLogsProps) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    refetch,
   } = api.log.getAllByJob.useInfiniteQuery(
     {
       jobId,
@@ -128,6 +129,14 @@ const JobsDetailsLogs = ({ jobId, data }: JobsDetailsLogsProps) => {
     },
     [],
   );
+
+  useEffect(() => {
+    if (dateFilter) {
+      void refetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dateFilter]);
+
   return (
     <Card className="col-span-8">
       <CardBody>

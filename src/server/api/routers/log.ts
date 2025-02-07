@@ -12,11 +12,16 @@ export const logRouter = createTRPCRouter({
         where: and(
           eq(logs.jobId, input.jobId),
           input?.cursor ? lt(logs.id, input.cursor) : undefined,
+          // set time to 00:00:00
           input?.filter?.startDate
-            ? gte(logs.createdAt, new Date(input.filter.startDate))
+            ? gte(
+                logs.createdAt,
+                new Date(`${input.filter.startDate}T00:00:00`),
+              )
             : undefined,
           input?.filter?.endDate
-            ? lte(logs.createdAt, new Date(input.filter.endDate))
+            ? // set time to 23:59:59
+              lte(logs.createdAt, new Date(`${input.filter.endDate}T23:59:59`))
             : undefined,
         ),
         orderBy: (logs, { desc }) => [desc(logs.createdAt)],
