@@ -9,7 +9,7 @@ import {
 } from "next-themes";
 import { Toaster } from "sonner";
 
-import { useIsClient } from "@zapcron/hooks";
+import { useIsClient, useIsMobile } from "@zapcron/hooks";
 
 export interface HeroUIProviderProps {
   children: React.ReactNode;
@@ -21,6 +21,7 @@ export function HeroUIProvider({
   themeProps,
 }: Readonly<HeroUIProviderProps>) {
   const isClient = useIsClient();
+  const isMobile = useIsMobile();
   const router = useRouter();
 
   return !isClient ? (
@@ -28,7 +29,11 @@ export function HeroUIProvider({
   ) : (
     <HUIProvider navigate={(path: string) => router.push(path)}>
       <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
-      <Toaster theme="system" richColors />
+      <Toaster
+        theme="system"
+        position={isMobile ? "top-center" : "bottom-right"}
+        richColors
+      />
     </HUIProvider>
   );
 }

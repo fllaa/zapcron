@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
 
 import { auth } from "@zapcron/server/auth";
-import { Sidebar } from "@zapcron/components/layout";
+import { Header, Sidebar } from "@zapcron/components/layout";
 
 export const metadata: Metadata = {
   title: "ZapCron | Dashboard",
@@ -17,11 +17,14 @@ export default async function DashboardLayout({
   const session = await auth();
   if (!session?.user) return redirect("/");
   return (
-    <SessionProvider session={session}>
-      <div className="flex min-h-screen">
-        <Sidebar user={session.user} />
-        <aside className="flex-auto">{children}</aside>
-      </div>
-    </SessionProvider>
+    <div className="relative">
+      <SessionProvider session={session}>
+        <Header user={session.user} />
+        <div className="flex min-h-screen">
+          <Sidebar user={session.user} />
+          <aside className="flex-auto">{children}</aside>
+        </div>
+      </SessionProvider>
+    </div>
   );
 }

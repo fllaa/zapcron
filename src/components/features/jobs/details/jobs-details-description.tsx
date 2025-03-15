@@ -9,7 +9,7 @@ interface JobsDetailsDescriptionProps {
 
 const JobsDetailsDescription = ({ data }: JobsDetailsDescriptionProps) => {
   return (
-    <Card className="col-span-3">
+    <Card className="col-span-8 md:col-span-3">
       <CardBody>
         <h3 className="text-lg font-semibold">Description</h3>
         <p className="mt-4 text-sm text-gray-700 dark:text-gray-200">{data}</p>

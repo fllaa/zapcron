@@ -16,8 +16,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`overflow-x-hidden ${GeistSans.variable}`}>
-      <body className="overflow-x-hidden">
+    <html lang="en" className={`${GeistSans.variable}`}>
+      <body>
         <TRPCReactProvider>
           <HeroUIProvider
             themeProps={{

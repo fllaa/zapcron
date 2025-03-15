@@ -32,6 +32,7 @@ const JobsImportModal = () => {
         key: job.name,
         name: job.name,
         cronspec: job.cronspec,
+        method: job.method,
         url: job.url,
         isEnabled: true,
         executeAt: parser.parseExpression(job.cronspec).next().toDate(),

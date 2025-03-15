@@ -38,6 +38,9 @@ const ConfirmationModal = ({
         backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        classNames={{
+          base: "rounded-b-none md:rounded-b-[--heroui-radius-large]",
+        }}
       >
         <ModalContent>
           {(onClose) => (
