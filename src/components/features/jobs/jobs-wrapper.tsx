@@ -6,6 +6,7 @@ import { Pagination, Select, SelectItem } from "@heroui/react";
 
 import { api } from "@zapcron/trpc/react";
 import {
+  JobsCards,
   JobsCreateModal,
   JobsImportModal,
   JobsTable,
@@ -51,7 +52,7 @@ const JobsWrapper = () => {
 
   return (
     <>
-      <div className="my-6 flex items-center justify-between gap-4">
+      <div className="my-6 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <Search
           onChange={(e) => setQuery(e.target.value)}
           onClear={() => setQuery("")}
@@ -64,6 +65,7 @@ const JobsWrapper = () => {
       </div>
       <div className="space-y-4">
         <JobsTable jobs={jobs} />
+        <JobsCards jobs={jobs} />
         <div className="flex items-center justify-between">
           <Pagination
             initialPage={page}

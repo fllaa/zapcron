@@ -14,6 +14,7 @@ import { ZodError } from "zod";
 import { auth } from "@zapcron/server/auth";
 import { db } from "@zapcron/server/db";
 import { queue } from "@zapcron/server/queue";
+import { s3 } from "@zapcron/server/s3";
 import { Role } from "@zapcron/constants/role";
 
 /**
@@ -35,6 +36,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     db,
     queue,
     session,
+    s3,
     ...opts,
   };
 };

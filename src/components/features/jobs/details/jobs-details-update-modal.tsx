@@ -19,9 +19,11 @@ import {
 import { Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { FormProvider, useForm } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { CronBuilder } from "@zapcron/components/common";
+import { useConfig } from "@zapcron/hooks";
 import { api } from "@zapcron/trpc/react";
 import { type api as apiServer } from "@zapcron/trpc/server";
 import { zUpdateJobInput } from "@zapcron/zod/job";
@@ -32,6 +34,7 @@ interface JobsDetailsUpdateModalProps {
 }
 
 const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
+  const config = useConfig();
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const httpMethods = Object.values(HttpMethod);
@@ -184,6 +187,7 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
             </FormProvider>
           )}
         </ModalContent>
+        {config.debug && <DevTool control={methods.control} />}
       </Modal>
     </>
   );

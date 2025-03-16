@@ -17,11 +17,17 @@ export const env = createEnv({
     AUTH_MICROSOFT_ENTRA_ID_CLIENT_SECRET: z.string(),
     AUTH_MICROSOFT_ENTRA_ID_TENANT_ID: z.string(),
     DATABASE_URL: z.string().url(),
+    DEBUG: z.boolean().optional().default(false),
     ENABLE_QUERY_LOGGING: z.boolean().optional().default(false),
     REDIS_HOST: z.string().optional().default("localhost"),
     REDIS_PORT: z.number().optional().default(6379),
     REDIS_PASSWORD: z.string().optional(),
     REDIS_DB: z.number().optional().default(0),
+    S3_BUCKET: z.string(),
+    S3_ENDPOINT: z.string(),
+    S3_ACCESS_KEY_ID: z.string(),
+    S3_SECRET_ACCESS_KEY: z.string(),
+    S3_PUBLIC_URL: z.string().url(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -51,6 +57,7 @@ export const env = createEnv({
     AUTH_MICROSOFT_ENTRA_ID_TENANT_ID:
       process.env.AUTH_MICROSOFT_ENTRA_ID_TENANT_ID,
     DATABASE_URL: process.env.DATABASE_URL,
+    DEBUG: process.env.DEBUG === "true",
     ENABLE_QUERY_LOGGING: process.env.ENABLE_QUERY_LOGGING === "true",
     REDIS_HOST: process.env.REDIS_HOST,
     REDIS_PORT: process.env.REDIS_PORT
@@ -58,6 +65,11 @@ export const env = createEnv({
       : undefined,
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
     REDIS_DB: process.env.REDIS_DB ? parseInt(process.env.REDIS_DB) : undefined,
+    S3_BUCKET: process.env.S3_BUCKET,
+    S3_ENDPOINT: process.env.S3_ENDPOINT,
+    S3_ACCESS_KEY_ID: process.env.S3_ACCESS_KEY_ID,
+    S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY,
+    S3_PUBLIC_URL: process.env.S3_PUBLIC_URL,
     NODE_ENV: process.env.NODE_ENV,
   },
   /**

@@ -24,7 +24,7 @@ interface JobsDetailsDataProps {
 
 const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
   return (
-    <Card className="col-span-5">
+    <Card className="col-span-8 md:col-span-5">
       <CardBody>
         <div className="flex items-start justify-between">
           <h3 className="text-lg font-semibold">Details</h3>

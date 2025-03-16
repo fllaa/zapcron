@@ -12,7 +12,7 @@ interface JobsDetailsHeadersProps {
 
 const JobsDetailsHeaders = ({ data }: JobsDetailsHeadersProps) => {
   return (
-    <Card className="col-span-4">
+    <Card className="col-span-8 md:col-span-4">
       <CardBody>
         <h3 className="text-lg font-semibold">Headers</h3>
         <SyntaxHighlighter language="json" style={dracula}>

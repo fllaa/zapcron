@@ -83,6 +83,7 @@ export const jobRouter = createTRPCRouter({
           name: true,
           isEnabled: true,
           cronspec: true,
+          method: true,
           url: true,
           executeAt: true,
         },

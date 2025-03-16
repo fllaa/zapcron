@@ -192,7 +192,7 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
   );
 
   return (
-    <div className="h-full w-full max-w-full overflow-x-scroll px-2 py-4 scrollbar-hide">
+    <div className="hidden h-full w-full max-w-full overflow-x-scroll px-2 py-4 scrollbar-hide md:block">
       <Table rows={rows} columns={columns} renderCell={renderCell} />
     </div>
   );

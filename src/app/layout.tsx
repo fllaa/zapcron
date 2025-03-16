@@ -3,7 +3,7 @@ import "@zapcron/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
-import { HeroUIProvider } from "@zapcron/providers";
+import { ConfigProvider, HeroUIProvider } from "@zapcron/providers";
 import { TRPCReactProvider } from "@zapcron/trpc/react";
 
 export const metadata: Metadata = {
@@ -15,9 +15,12 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const config = {
+    debug: process.env.DEBUG === "true",
+  };
   return (
-    <html lang="en" className={`overflow-x-hidden ${GeistSans.variable}`}>
-      <body className="overflow-x-hidden">
+    <html lang="en" className={`${GeistSans.variable}`}>
+      <body>
         <TRPCReactProvider>
           <HeroUIProvider
             themeProps={{
@@ -25,7 +28,7 @@ export default function RootLayout({
               defaultTheme: "dark",
             }}
           >
-            {children}
+            <ConfigProvider config={config}>{children}</ConfigProvider>
           </HeroUIProvider>
         </TRPCReactProvider>
       </body>
