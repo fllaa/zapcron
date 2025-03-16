@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.2",
+    "@aws-sdk/client-s3": "^3.758.0",
     "@formkit/tempo": "^0.1.2",
     "@heroui/react": "^0.0.0-canary-20250205213151",
     "@hookform/resolvers": "^3.9.1",
