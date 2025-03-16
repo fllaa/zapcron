@@ -183,11 +183,11 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
                     Submit
                   </Button>
                 </ModalFooter>
-                {config.debug && <DevTool control={methods.control} />}
               </form>
             </FormProvider>
           )}
         </ModalContent>
+        {config.debug && <DevTool control={methods.control} />}
       </Modal>
     </>
   );

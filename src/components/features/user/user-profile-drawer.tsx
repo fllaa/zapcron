@@ -167,10 +167,10 @@ const UserProfileDrawer = ({ buttonRef, user }: UserProfileDrawerProps) => {
                   Save
                 </Button>
               </DrawerFooter>
-              {config.debug && <DevTool control={control} />}
             </form>
           )}
         </DrawerContent>
+        {config.debug && <DevTool control={control} />}
       </Drawer>
     </>
   );
