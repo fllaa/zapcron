@@ -92,7 +92,7 @@ const UserProfileDrawer = ({ buttonRef, user }: UserProfileDrawerProps) => {
                   image: undefined,
                 };
                 if (file) {
-                  data.image = await fileToDataUrl(file);
+                  params.image = await fileToDataUrl(file);
                 }
                 toast.promise(updateMe.mutateAsync(params), {
                   loading: "Saving...",
