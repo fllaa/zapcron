@@ -13,7 +13,7 @@ import {
 } from "@heroui/react";
 
 interface ConfirmationModalProps {
-  trigger: (onOpen: () => void) => React.ReactNode;
+  renderTrigger: (onOpen: () => void) => React.ReactNode;
   onConfirm: () => Promise<void>;
   title?: string;
   message?: string;
@@ -21,7 +21,7 @@ interface ConfirmationModalProps {
 }
 
 const ConfirmationModal = ({
-  trigger,
+  renderTrigger,
   onConfirm,
   title = "Confirmation",
   message = "Are you sure?",
@@ -32,7 +32,7 @@ const ConfirmationModal = ({
 
   return (
     <>
-      {trigger(onOpen)}
+      {renderTrigger(onOpen)}
       <Modal
         size="sm"
         backdrop="blur"

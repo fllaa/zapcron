@@ -35,6 +35,7 @@ const JobsCreateModal = () => {
   const methods = useForm({
     resolver: zodResolver(zCreateJobInput),
   });
+  const { errors } = methods.formState;
   const utils = api.useUtils();
 
   const createJob = api.job.create.useMutation({
@@ -94,16 +95,16 @@ const JobsCreateModal = () => {
                     label="Name"
                     placeholder="My Job"
                     variant="bordered"
-                    isInvalid={!!methods.formState.errors.name?.message}
-                    errorMessage={methods.formState.errors.name?.message?.toString()}
+                    isInvalid={!!errors.name?.message}
+                    errorMessage={JSON.stringify(errors.name?.message)}
                   />
                   <Textarea
                     {...methods.register("description")}
                     label="Description"
                     placeholder="My Job Description"
                     variant="bordered"
-                    isInvalid={!!methods.formState.errors.description?.message}
-                    errorMessage={methods.formState.errors.description?.message?.toString()}
+                    isInvalid={!!errors.description?.message}
+                    errorMessage={JSON.stringify(errors.description?.message)}
                   />
                   <Switch defaultSelected {...methods.register("isEnabled")}>
                     Enabled
@@ -117,8 +118,8 @@ const JobsCreateModal = () => {
                     label="URL"
                     placeholder="https://example.com"
                     variant="bordered"
-                    isInvalid={!!methods.formState.errors.url?.message}
-                    errorMessage={methods.formState.errors.url?.message?.toString()}
+                    isInvalid={!!errors.url?.message}
+                    errorMessage={JSON.stringify(errors.url?.message)}
                   />
                   <Select
                     {...methods.register("method", {
@@ -127,8 +128,8 @@ const JobsCreateModal = () => {
                     label="Method"
                     placeholder="Select a method"
                     variant="bordered"
-                    isInvalid={!!methods.formState.errors.method?.message}
-                    errorMessage={methods.formState.errors.method?.message?.toString()}
+                    isInvalid={!!errors.method?.message}
+                    errorMessage={JSON.stringify(errors.method?.message)}
                   >
                     {httpMethods.map((method) => (
                       <SelectItem key={method} value={method}>
@@ -141,16 +142,16 @@ const JobsCreateModal = () => {
                     label="Headers"
                     placeholder={`{"Content-Type": "application/json"}`}
                     variant="bordered"
-                    isInvalid={!!methods.formState.errors.headers?.message}
-                    errorMessage={methods.formState.errors.headers?.message?.toString()}
+                    isInvalid={!!errors.headers?.message}
+                    errorMessage={JSON.stringify(errors.headers?.message)}
                   />
                   <Textarea
                     {...methods.register("body")}
                     label="Body"
                     placeholder={`{"key": "value"}`}
                     variant="bordered"
-                    isInvalid={!!methods.formState.errors.body?.message}
-                    errorMessage={methods.formState.errors.body?.message?.toString()}
+                    isInvalid={!!errors.body?.message}
+                    errorMessage={JSON.stringify(errors.body?.message)}
                   />
                 </ModalBody>
                 <ModalFooter>

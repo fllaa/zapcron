@@ -4,7 +4,6 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import { type Session } from "next-auth";
 import { Link } from "@heroui/react";
-import _ from "lodash";
 
 import { IconButton, LogoLink } from "@zapcron/components/common";
 import { UserDropdown } from "@zapcron/components/features/user";

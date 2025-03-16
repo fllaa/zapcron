@@ -90,13 +90,14 @@ const JobsDetailsLogs = ({ jobId, data }: JobsDetailsLogsProps) => {
       const value = item[_columnKey];
 
       switch (_columnKey) {
-        case "status":
+        case "status": {
           const color = colorByStatus(value as number);
           return (
             <Chip size="sm" color={color} variant="flat">
               {value as number}
             </Chip>
           );
+        }
         case "createdAt":
           return format({
             date: value as Date,

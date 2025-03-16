@@ -40,7 +40,6 @@ const UserProfileDrawer = ({ buttonRef, user }: UserProfileDrawerProps) => {
     if (!file) {
       return user?.image;
     }
-
     return URL.createObjectURL(file);
   }, [file, user?.image]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

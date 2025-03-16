@@ -19,6 +19,7 @@ import {
 } from "@heroui/react";
 import { EllipsisVertical, Play, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { randomUUID } from "crypto";
 
 import { api } from "@zapcron/trpc/react";
 import { type api as apiServer } from "@zapcron/trpc/server";
@@ -52,7 +53,7 @@ const JobsCards = ({ jobs }: JobsCardsProps) => {
     <>
       <div className="grid h-full w-full max-w-full grid-cols-1 gap-2 md:hidden">
         {jobs.data.map((job) => {
-          const hostname = new URL(job.url).hostname;
+          const { hostname } = new URL(job.url);
           const httpMethodColor = httpColors[job.method as HttpMethod];
           return (
             <div key={job.id} className="col-span-1">
@@ -134,11 +135,12 @@ const JobsCards = ({ jobs }: JobsCardsProps) => {
                         {job.logs
                           .map((log) => log.status)
                           .reverse()
-                          .map((status, idx) => {
+                          .map((status) => {
+                            const uuid = randomUUID();
                             const color = colorByStatus(parseInt(status, 10));
                             return (
                               <Chip
-                                key={idx}
+                                key={uuid}
                                 size="sm"
                                 color={color}
                                 className="aspect-square h-2 w-2"
@@ -155,7 +157,7 @@ const JobsCards = ({ jobs }: JobsCardsProps) => {
         })}
       </div>
       <ConfirmationModal
-        trigger={(onOpen) => (
+        renderTrigger={(onOpen) => (
           <button
             ref={deleteButtonRef}
             className="hidden"

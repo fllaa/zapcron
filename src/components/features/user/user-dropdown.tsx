@@ -76,7 +76,7 @@ const UserDropdown = ({ user }: UserDropdownProps) => {
       <UserProfileDrawer buttonRef={buttonProfileRef} user={user} />
       <ConfirmationModal
         onConfirm={signOut}
-        trigger={(onOpen) => (
+        renderTrigger={(onOpen) => (
           <button ref={buttonSignoutRef} onClick={onOpen} className="hidden">
             Sign Out
           </button>

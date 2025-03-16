@@ -7,6 +7,7 @@ import { ChevronRight, Play, Trash2 } from "lucide-react";
 import cronstrue from "cronstrue";
 import { toast } from "sonner";
 import { format } from "@formkit/tempo";
+import { randomUUID } from "crypto";
 
 import { api } from "@zapcron/trpc/react";
 import { type api as apiServer } from "@zapcron/trpc/server";
@@ -94,8 +95,8 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
               </Chip>
             </Tooltip>
           );
-        case "url":
-          const hostname = new URL(value as string).hostname;
+        case "url": {
+          const { hostname } = new URL(value as string);
           return (
             <Button
               isExternal
@@ -109,14 +110,16 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
               {hostname}
             </Button>
           );
+        }
         case "history":
           return (
             <div className="flex items-center gap-0.5">
-              {(value as string[]).reverse().map((status, index) => {
+              {(value as string[]).reverse().map((status) => {
+                const uuid = randomUUID();
                 const color = colorByStatus(parseInt(status, 10));
                 return (
                   <Chip
-                    key={index}
+                    key={uuid}
                     size="sm"
                     color={color}
                     className={cn(
@@ -132,7 +135,7 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
           return (
             <div className="flex items-center gap-2">
               <ConfirmationModal
-                trigger={(onOpen) => (
+                renderTrigger={(onOpen) => (
                   <Button
                     onPress={onOpen}
                     isIconOnly
