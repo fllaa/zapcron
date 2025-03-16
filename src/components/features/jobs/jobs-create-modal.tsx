@@ -18,9 +18,11 @@ import {
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { FormProvider, useForm } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { CronBuilder } from "@zapcron/components/common";
+import { useConfig } from "@zapcron/hooks";
 import { api } from "@zapcron/trpc/react";
 import { zCreateJobInput } from "@zapcron/zod/job";
 import { HttpMethod } from "@zapcron/constants/http";
@@ -29,6 +31,7 @@ const JobsCreateModal = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const httpMethods = Object.values(HttpMethod);
 
+  const config = useConfig();
   const methods = useForm({
     resolver: zodResolver(zCreateJobInput),
   });
@@ -162,6 +165,7 @@ const JobsCreateModal = () => {
                     Submit
                   </Button>
                 </ModalFooter>
+                {config.debug && <DevTool control={methods.control} />}
               </form>
             </FormProvider>
           )}

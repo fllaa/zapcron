@@ -19,9 +19,11 @@ import {
 import { PenLine } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { DevTool } from "@hookform/devtools";
 import { toast } from "sonner";
 
 import { api } from "@zapcron/trpc/react";
+import { useConfig } from "@zapcron/hooks";
 import { Role } from "@zapcron/constants/role";
 import { zUpdateMeInput } from "@zapcron/zod/user";
 import { fileToDataUrl } from "@zapcron/utils/file";
@@ -32,6 +34,7 @@ interface UserProfileDrawerProps {
 }
 
 const UserProfileDrawer = ({ buttonRef, user }: UserProfileDrawerProps) => {
+  const config = useConfig();
   const [file, setFile] = useState<File | null>(null);
   const image = useMemo(() => {
     if (!file) {
@@ -44,6 +47,7 @@ const UserProfileDrawer = ({ buttonRef, user }: UserProfileDrawerProps) => {
   const roles = Object.values(Role);
 
   const {
+    control,
     handleSubmit,
     register,
     formState: { errors },
@@ -163,6 +167,7 @@ const UserProfileDrawer = ({ buttonRef, user }: UserProfileDrawerProps) => {
                   Save
                 </Button>
               </DrawerFooter>
+              {config.debug && <DevTool control={control} />}
             </form>
           )}
         </DrawerContent>
