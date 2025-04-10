@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { randomUUID } from "crypto";
+import {v4} from "uuid";
 
 import { createTRPCRouter, protectedProcedure } from "@zapcron/server/api/trpc";
 import { users } from "@zapcron/server/db/schema";
@@ -13,7 +13,7 @@ export const userRouter = createTRPCRouter({
       if (input.image) {
         const file = await dataUrlToFile(
           input.image,
-          `${randomUUID()}.png`,
+          `${v4()}.png`,
           "image/png",
         );
         const { url } = await ctx.s3.uploadFile(file);

@@ -6,9 +6,9 @@ import { JobsDetailsWrapper } from "@zapcron/components/features/jobs/details";
 
 export default async function JobsDetailsPage({
   params,
-}: {
+}: Readonly<{
   params: Promise<{ id: string }>;
-}) {
+}>) {
   const job = await api.job.get({
     id: parseInt((await params).id),
   });

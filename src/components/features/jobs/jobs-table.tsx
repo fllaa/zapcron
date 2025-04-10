@@ -94,8 +94,8 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
               </Chip>
             </Tooltip>
           );
-        case "url":
-          const hostname = new URL(value as string).hostname;
+        case "url": {
+          const { hostname } = new URL(value as string);
           return (
             <Button
               isExternal
@@ -109,14 +109,15 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
               {hostname}
             </Button>
           );
+        }
         case "history":
           return (
             <div className="flex items-center gap-0.5">
-              {(value as string[]).reverse().map((status, index) => {
+              {(value as string[]).reverse().map((status, idx) => {
                 const color = colorByStatus(parseInt(status, 10));
                 return (
                   <Chip
-                    key={index}
+                    key={idx}
                     size="sm"
                     color={color}
                     className={cn(
@@ -132,7 +133,7 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
           return (
             <div className="flex items-center gap-2">
               <ConfirmationModal
-                trigger={(onOpen) => (
+                renderTrigger={(onOpen) => (
                   <Button
                     onPress={onOpen}
                     isIconOnly

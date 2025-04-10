@@ -33,7 +33,7 @@ const ActionPopover = ({
             <div className="text-small font-bold">{_message}</div>
             <div className="text-tiny">{_desc}</div>
           </div>
-          <Button size="sm" onClick={onAction}>
+          <Button size="sm" onPress={onAction}>
             Confirm
           </Button>
         </div>

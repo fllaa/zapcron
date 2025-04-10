@@ -2,6 +2,8 @@ import "@zapcron/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
+import { headers } from "next/headers";
+import { cloakSSROnlySecret } from "ssr-only-secrets";
 
 import { ConfigProvider, HeroUIProvider } from "@zapcron/providers";
 import { TRPCReactProvider } from "@zapcron/trpc/react";
@@ -12,16 +14,18 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const config = {
     debug: process.env.DEBUG === "true",
   };
+  const cookie = (await headers()).get("cookie");
+    const encryptedCookie = await cloakSSROnlySecret(cookie ?? "", "SECRET_CLIENT_COOKIE_VAR")
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <TRPCReactProvider>
+        <TRPCReactProvider ssrOnlySecret={encryptedCookie}>
           <HeroUIProvider
             themeProps={{
               attribute: "class",
