@@ -7,7 +7,7 @@ import { ChevronRight, Play, Trash2 } from "lucide-react";
 import cronstrue from "cronstrue";
 import { toast } from "sonner";
 import { format } from "@formkit/tempo";
-import { randomUUID } from "crypto";
+import {v4} from "uuid";
 
 import { api } from "@zapcron/trpc/react";
 import { type api as apiServer } from "@zapcron/trpc/server";
@@ -115,11 +115,10 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
           return (
             <div className="flex items-center gap-0.5">
               {(value as string[]).reverse().map((status) => {
-                const uuid = randomUUID();
                 const color = colorByStatus(parseInt(status, 10));
                 return (
                   <Chip
-                    key={uuid}
+                    key={v4()}
                     size="sm"
                     color={color}
                     className={cn(

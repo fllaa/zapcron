@@ -19,7 +19,7 @@ import {
 } from "@heroui/react";
 import { EllipsisVertical, Play, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { randomUUID } from "crypto";
+import { v4 } from "uuid";
 
 import { api } from "@zapcron/trpc/react";
 import { type api as apiServer } from "@zapcron/trpc/server";
@@ -136,11 +136,10 @@ const JobsCards = ({ jobs }: JobsCardsProps) => {
                           .map((log) => log.status)
                           .reverse()
                           .map((status) => {
-                            const uuid = randomUUID();
                             const color = colorByStatus(parseInt(status, 10));
                             return (
                               <Chip
-                                key={uuid}
+                                key={v4()}
                                 size="sm"
                                 color={color}
                                 className="aspect-square h-2 w-2"
