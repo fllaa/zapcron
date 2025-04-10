@@ -19,7 +19,6 @@ import {
 } from "@heroui/react";
 import { EllipsisVertical, Play, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { v4 } from "uuid";
 
 import { api } from "@zapcron/trpc/react";
 import { type api as apiServer } from "@zapcron/trpc/server";
@@ -135,11 +134,11 @@ const JobsCards = ({ jobs }: JobsCardsProps) => {
                         {job.logs
                           .map((log) => log.status)
                           .reverse()
-                          .map((status) => {
+                          .map((status, idx) => {
                             const color = colorByStatus(parseInt(status, 10));
                             return (
                               <Chip
-                                key={v4()}
+                                key={idx}
                                 size="sm"
                                 color={color}
                                 className="aspect-square h-2 w-2"

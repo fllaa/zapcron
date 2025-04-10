@@ -7,7 +7,6 @@ import { ChevronRight, Play, Trash2 } from "lucide-react";
 import cronstrue from "cronstrue";
 import { toast } from "sonner";
 import { format } from "@formkit/tempo";
-import {v4} from "uuid";
 
 import { api } from "@zapcron/trpc/react";
 import { type api as apiServer } from "@zapcron/trpc/server";
@@ -114,11 +113,11 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
         case "history":
           return (
             <div className="flex items-center gap-0.5">
-              {(value as string[]).reverse().map((status) => {
+              {(value as string[]).reverse().map((status, idx) => {
                 const color = colorByStatus(parseInt(status, 10));
                 return (
                   <Chip
-                    key={v4()}
+                    key={idx}
                     size="sm"
                     color={color}
                     className={cn(
