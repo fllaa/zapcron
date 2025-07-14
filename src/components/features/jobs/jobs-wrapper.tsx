@@ -48,7 +48,7 @@ const JobsWrapper = () => {
       `${pathname}?${createQueryString("page", currentPage.toString())}`,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, createQueryString, pathname, router.push]);
+  }, [currentPage, createQueryString, pathname, router]);
 
   return (
     <>
