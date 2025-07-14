@@ -1,16 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Button,
-  useDisclosure,
   type ButtonProps,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
 } from "@heroui/react";
+import type React from "react";
+import { useState } from "react";
 
 interface ConfirmationModalProps {
   renderTrigger: (onOpen: () => void) => React.ReactNode;

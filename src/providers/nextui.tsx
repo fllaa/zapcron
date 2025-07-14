@@ -1,15 +1,14 @@
 "use client";
 
-import * as React from "react";
 import { HeroUIProvider as HUIProvider } from "@heroui/system";
+import { useIsClient, useIsMobile } from "@zapcron/hooks";
 import { useRouter } from "next/navigation";
 import {
   ThemeProvider as NextThemesProvider,
   type ThemeProviderProps,
 } from "next-themes";
+import type * as React from "react";
 import { Toaster } from "sonner";
-
-import { useIsClient, useIsMobile } from "@zapcron/hooks";
 
 export interface HeroUIProviderProps {
   children: React.ReactNode;

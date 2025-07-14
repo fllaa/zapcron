@@ -1,18 +1,17 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { eq } from "drizzle-orm";
-import { type DefaultSession, type NextAuthConfig } from "next-auth";
-import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id";
-import GithubProvider from "next-auth/providers/github";
-
-import { db } from "@zapcron/server/db";
+import { Role } from "@zapcron/constants/role";
 import { env } from "@zapcron/env";
+import { db } from "@zapcron/server/db";
 import {
   accounts,
   sessions,
   users,
   verificationTokens,
 } from "@zapcron/server/db/schema";
-import { Role } from "@zapcron/constants/role";
+import { eq } from "drizzle-orm";
+import type { DefaultSession, NextAuthConfig } from "next-auth";
+import GithubProvider from "next-auth/providers/github";
+import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -70,6 +69,7 @@ export const authConfig = {
           await db
             .update(users)
             .set({ role: Role.ADMIN })
+            // biome-ignore lint/style/noNonNullAssertion: no non null assertion
             .where(eq(users.id, user.id!));
         }
       }

@@ -1,31 +1,29 @@
 "use client";
 
-import React from "react";
 import {
   Button,
   Input,
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
   Select,
   SelectItem,
   Switch,
   Textarea,
   useDisclosure,
 } from "@heroui/react";
-import { Plus } from "lucide-react";
-import { toast } from "sonner";
-import { FormProvider, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { CronBuilder } from "@zapcron/components/common";
+import { HttpMethod } from "@zapcron/constants/http";
 import { useConfig } from "@zapcron/hooks";
 import { api } from "@zapcron/trpc/react";
 import { zCreateJobInput } from "@zapcron/zod/job";
-import { HttpMethod } from "@zapcron/constants/http";
+import { Plus } from "lucide-react";
+import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const JobsCreateModal = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

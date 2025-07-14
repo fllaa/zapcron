@@ -1,10 +1,8 @@
 "use client";
 
-import React from "react";
 import { Button, Card, CardBody, Link } from "@heroui/react";
-import { Home } from "lucide-react";
-
 import { LogoLink } from "@zapcron/components/common";
+import { Home } from "lucide-react";
 
 const NotFound = () => {
   return (
@@ -13,7 +11,7 @@ const NotFound = () => {
         <CardBody>
           <div className="flex flex-col items-center space-y-4 p-4">
             <LogoLink />
-            <h1 className="text-4xl font-bold">404</h1>
+            <h1 className="font-bold text-4xl">404</h1>
             <p className="text-center text-lg">
               The page you are looking for does not exist.
             </p>

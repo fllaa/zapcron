@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { format } from "@formkit/tempo";
 import {
   Button,
   Card,
@@ -10,20 +10,20 @@ import {
   DateRangePicker,
   type RangeValue,
 } from "@heroui/react";
-import { format } from "@formkit/tempo";
 import {
-  today,
-  getLocalTimeZone,
   type CalendarDate,
+  getLocalTimeZone,
+  today,
 } from "@internationalized/date";
-
-import { api } from "@zapcron/trpc/react";
 import { Table } from "@zapcron/components/common";
 import { JobsDetailsLogsResponseModal } from "@zapcron/components/features/jobs/details";
-import { formatTime, getClientTimezone } from "@zapcron/utils/datetime";
-import { type Log } from "@zapcron/server/db/schema";
-import { colorByStatus } from "@zapcron/utils/color";
 import { LogsMode } from "@zapcron/constants/logs-mode";
+import type { Log } from "@zapcron/server/db/schema";
+import { api } from "@zapcron/trpc/react";
+import { colorByStatus } from "@zapcron/utils/color";
+import { formatTime, getClientTimezone } from "@zapcron/utils/datetime";
+import type React from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 type LogWithCreatedBy = Log & { createdBy: { name: string | null } | null };
 interface JobsDetailsLogsProps {
@@ -136,13 +136,13 @@ const JobsDetailsLogs = ({ jobId, data }: JobsDetailsLogsProps) => {
       void refetch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dateFilter]);
+  }, [dateFilter, refetch]);
 
   return (
     <Card className="col-span-8">
       <CardBody>
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Logs</h3>
+          <h3 className="font-semibold text-lg">Logs</h3>
           <DateRangePicker
             className="w-fit"
             size="sm"

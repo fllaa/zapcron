@@ -1,8 +1,5 @@
 "use client";
 
-import React, { useRef } from "react";
-import { signOut } from "next-auth/react";
-import { type Session } from "next-auth";
 import {
   Dropdown,
   DropdownItem,
@@ -11,12 +8,14 @@ import {
   Switch,
   User,
 } from "@heroui/react";
-import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
-import _ from "lodash";
-
 import { ConfirmationModal } from "@zapcron/components/common";
 import { UserProfileDrawer } from "@zapcron/components/features/user";
+import _ from "lodash";
+import { Moon, Sun } from "lucide-react";
+import type { Session } from "next-auth";
+import { signOut } from "next-auth/react";
+import { useTheme } from "next-themes";
+import { useRef } from "react";
 
 interface UserDropdownProps {
   user: Session["user"];
@@ -77,7 +76,12 @@ const UserDropdown = ({ user }: UserDropdownProps) => {
       <ConfirmationModal
         onConfirm={signOut}
         renderTrigger={(onOpen) => (
-          <button ref={buttonSignoutRef} onClick={onOpen} className="hidden">
+          <button
+            type="button"
+            ref={buttonSignoutRef}
+            onClick={onOpen}
+            className="hidden"
+          >
             Sign Out
           </button>
         )}

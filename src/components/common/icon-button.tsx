@@ -1,8 +1,9 @@
 "use client";
 
-import React, { forwardRef } from "react";
-import { Button, Spinner, type ButtonProps } from "@heroui/react";
+import { Button, type ButtonProps, Spinner } from "@heroui/react";
 import { cx } from "classix";
+import type React from "react";
+import { forwardRef } from "react";
 
 interface IconButtonProps extends Omit<ButtonProps, "variant"> {
   icon?: React.ReactNode;

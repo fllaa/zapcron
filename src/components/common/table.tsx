@@ -1,16 +1,16 @@
 "use client";
 
-import React from "react";
 import {
+  getKeyValue,
   Table as NTable,
+  type TableProps as NTableProps,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
   TableRow,
-  getKeyValue,
-  type TableProps as NTableProps,
 } from "@heroui/react";
+import type React from "react";
 
 interface TableProps extends NTableProps {
   rows: ({ key: string } & Record<string, unknown>)[];

@@ -1,11 +1,10 @@
-import { z } from "zod";
-
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "@zapcron/server/api/trpc";
 import { posts } from "@zapcron/server/db/schema";
+import { z } from "zod";
 
 export const postRouter = createTRPCRouter({
   hello: publicProcedure

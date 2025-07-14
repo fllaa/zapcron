@@ -1,12 +1,11 @@
 import "@zapcron/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
-import { type Metadata } from "next";
-import { headers } from "next/headers";
-import { cloakSSROnlySecret } from "ssr-only-secrets";
-
 import { ConfigProvider, HeroUIProvider } from "@zapcron/providers";
 import { TRPCReactProvider } from "@zapcron/trpc/react";
+import { GeistSans } from "geist/font/sans";
+import type { Metadata } from "next";
+import { headers } from "next/headers";
+import { cloakSSROnlySecret } from "ssr-only-secrets";
 
 export const metadata: Metadata = {
   title: "ZapCron",
@@ -21,7 +20,10 @@ export default async function RootLayout({
     debug: process.env.DEBUG === "true",
   };
   const cookie = (await headers()).get("cookie");
-    const encryptedCookie = await cloakSSROnlySecret(cookie ?? "", "SECRET_CLIENT_COOKIE_VAR")
+  const encryptedCookie = await cloakSSROnlySecret(
+    cookie ?? "",
+    "SECRET_CLIENT_COOKIE_VAR",
+  );
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>

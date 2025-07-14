@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useMemo } from "react";
 import { Card, CardBody, Input } from "@heroui/react";
-import { useFormContext } from "react-hook-form";
 import cronstrue from "cronstrue";
+import { useMemo } from "react";
+import { useFormContext } from "react-hook-form";
 
 const CustomCard = () => {
   const { register, watch } = useFormContext();

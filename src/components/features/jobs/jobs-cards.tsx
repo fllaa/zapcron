@@ -1,30 +1,29 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { usePathname } from "next/navigation";
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
+  CardHeader,
   Chip,
+  type ChipProps,
+  cn,
   Divider,
   Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
   DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Link,
-  cn,
-  type ChipProps,
 } from "@heroui/react";
-import { EllipsisVertical, Play, Trash2 } from "lucide-react";
-import { toast } from "sonner";
-
-import { api } from "@zapcron/trpc/react";
-import { type api as apiServer } from "@zapcron/trpc/server";
 import { ConfirmationModal } from "@zapcron/components/common";
+import { type HttpMethod, httpColors } from "@zapcron/constants/http";
+import { api } from "@zapcron/trpc/react";
+import type { api as apiServer } from "@zapcron/trpc/server";
 import { colorByStatus } from "@zapcron/utils/color";
-import { httpColors, type HttpMethod } from "@zapcron/constants/http";
+import { EllipsisVertical, Play, Trash2 } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useRef, useState } from "react";
+import { toast } from "sonner";
 
 interface JobsCardsProps {
   jobs: Omit<Awaited<ReturnType<typeof apiServer.job.getAll>>, "_meta">;
@@ -75,7 +74,7 @@ const JobsCards = ({ jobs }: JobsCardsProps) => {
                       >
                         {job.method}
                       </Chip>
-                      <p className="text-small text-default-500">{hostname}</p>
+                      <p className="text-default-500 text-small">{hostname}</p>
                     </div>
                   </div>
                   <Dropdown>
@@ -138,6 +137,7 @@ const JobsCards = ({ jobs }: JobsCardsProps) => {
                             const color = colorByStatus(parseInt(status, 10));
                             return (
                               <Chip
+                                // biome-ignore lint/suspicious/noArrayIndexKey: no array index key
                                 key={idx}
                                 size="sm"
                                 color={color}
@@ -157,6 +157,7 @@ const JobsCards = ({ jobs }: JobsCardsProps) => {
       <ConfirmationModal
         renderTrigger={(onOpen) => (
           <button
+            type="button"
             ref={deleteButtonRef}
             className="hidden"
             onClick={onOpen}
@@ -164,6 +165,7 @@ const JobsCards = ({ jobs }: JobsCardsProps) => {
         )}
         onConfirm={() =>
           deleteJob.mutateAsync({
+            // biome-ignore lint/style/noNonNullAssertion: no non null assertion
             id: willDeleteJobId!,
           })
         }

@@ -11,8 +11,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "dev": "next dev --turbo",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
-    "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
+    "format": "biome check --write",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "preview": "next build && next start",
@@ -61,6 +60,7 @@
     "zod": "^3.23.3"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.1.1",
     "@hookform/devtools": "^4.3.3",
     "@types/eslint": "^8.56.10",
     "@types/node": "^20.14.10",

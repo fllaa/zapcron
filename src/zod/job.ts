@@ -1,7 +1,7 @@
-import { z } from "zod";
+import { HttpMethod } from "@zapcron/constants/http";
 
 import { parseCronValid, parseJSONValid } from "@zapcron/utils/validate-value";
-import { HttpMethod } from "@zapcron/constants/http";
+import { z } from "zod";
 
 export const zCreateJobInput = z.object({
   name: z.string().min(1),

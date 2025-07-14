@@ -1,33 +1,31 @@
 "use client";
 
-import React from "react";
-import { useRouter } from "next/navigation";
 import {
   Button,
   Input,
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
   Select,
   SelectItem,
   Switch,
   Textarea,
   useDisclosure,
 } from "@heroui/react";
-import { Pencil } from "lucide-react";
-import { toast } from "sonner";
-import { FormProvider, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { CronBuilder } from "@zapcron/components/common";
+import { HttpMethod } from "@zapcron/constants/http";
 import { useConfig } from "@zapcron/hooks";
 import { api } from "@zapcron/trpc/react";
-import { type api as apiServer } from "@zapcron/trpc/server";
+import type { api as apiServer } from "@zapcron/trpc/server";
 import { zUpdateJobInput } from "@zapcron/zod/job";
-import { HttpMethod } from "@zapcron/constants/http";
+import { Pencil } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface JobsDetailsUpdateModalProps {
   data: Awaited<ReturnType<typeof apiServer.job.get>>;
@@ -42,15 +40,15 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
   const methods = useForm({
     resolver: zodResolver(zUpdateJobInput),
     defaultValues: {
-      id: data!.id,
-      name: data!.name,
-      description: data!.description,
-      isEnabled: data!.isEnabled,
-      cronspec: data!.cronspec,
-      url: data!.url,
-      method: data!.method,
-      headers: data!.headers ? JSON.stringify(data!.headers) : "",
-      body: data!.body ? JSON.stringify(data!.body) : "",
+      id: data?.id,
+      name: data?.name,
+      description: data?.description,
+      isEnabled: data?.isEnabled,
+      cronspec: data?.cronspec,
+      url: data?.url,
+      method: data?.method,
+      headers: data?.headers ? JSON.stringify(data?.headers) : "",
+      body: data?.body ? JSON.stringify(data?.body) : "",
     },
   });
   const utils = api.useUtils();
@@ -83,11 +81,14 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
               <form
                 onSubmit={methods.handleSubmit((data) =>
                   updateJob.mutate({
-                    id: data.id,
+                    // biome-ignore lint/style/noNonNullAssertion: no non null assertion
+                    id: data.id!,
                     name: data.name,
+                    // biome-ignore lint/style/noNonNullAssertion: no non null assertion
                     description: data.description!,
                     isEnabled: data.isEnabled,
-                    cronspec: data.cronspec,
+                    // biome-ignore lint/style/noNonNullAssertion: no non null assertion
+                    cronspec: data.cronspec!,
                     url: data.url,
                     method: data.method as HttpMethod,
                     headers: data.headers,

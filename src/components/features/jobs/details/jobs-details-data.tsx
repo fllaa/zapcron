@@ -1,7 +1,11 @@
 "use client";
 
-import React from "react";
+import { format } from "@formkit/tempo";
 import { Card, CardBody, Chip, cn } from "@heroui/react";
+import { JobsDetailsUpdateModal } from "@zapcron/components/features/jobs/details";
+import type { api } from "@zapcron/trpc/server";
+import { getClientTimezone } from "@zapcron/utils/datetime";
+import cronstrue from "cronstrue";
 import {
   ArrowUpDown,
   Clock,
@@ -11,12 +15,6 @@ import {
   Timer,
   User,
 } from "lucide-react";
-import { format } from "@formkit/tempo";
-import cronstrue from "cronstrue";
-
-import { type api } from "@zapcron/trpc/server";
-import { getClientTimezone } from "@zapcron/utils/datetime";
-import { JobsDetailsUpdateModal } from "@zapcron/components/features/jobs/details";
 
 interface JobsDetailsDataProps {
   data: Awaited<ReturnType<typeof api.job.get>>;
@@ -27,7 +25,7 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
     <Card className="col-span-8 md:col-span-5">
       <CardBody>
         <div className="flex items-start justify-between">
-          <h3 className="text-lg font-semibold">Details</h3>
+          <h3 className="font-semibold text-lg">Details</h3>
           <JobsDetailsUpdateModal data={data} />
         </div>
         <div className="mt-4 grid grid-cols-2 gap-4">
@@ -35,40 +33,40 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
             <Chip startContent={<Fingerprint size={12} />} size="sm">
               ID
             </Chip>
-            <p className="text-sm text-gray-700 dark:text-gray-200">
-              {data!.id}
+            <p className="text-gray-700 text-sm dark:text-gray-200">
+              {data?.id}
             </p>
           </div>
           <div className="space-y-1">
             <Chip startContent={<Pickaxe size={12} />} size="sm">
               Status
             </Chip>
-            <p className="text-sm text-gray-700 dark:text-gray-200">
-              {data!.isEnabled ? "Enabled" : "Disabled"}
+            <p className="text-gray-700 text-sm dark:text-gray-200">
+              {data?.isEnabled ? "Enabled" : "Disabled"}
             </p>
           </div>
           <div className="space-y-1">
             <Chip startContent={<Link2 size={12} />} size="sm">
               URL
             </Chip>
-            <p className="text-sm text-gray-700 dark:text-gray-200">
-              {data!.url}
+            <p className="text-gray-700 text-sm dark:text-gray-200">
+              {data?.url}
             </p>
           </div>
           <div className="space-y-1">
             <Chip startContent={<ArrowUpDown size={12} />} size="sm">
               Method
             </Chip>
-            <p className="text-sm text-gray-700 dark:text-gray-200">
-              {data!.method}
+            <p className="text-gray-700 text-sm dark:text-gray-200">
+              {data?.method}
             </p>
           </div>
           <div className="space-y-1">
             <Chip startContent={<Timer size={12} />} size="sm">
               Cronspec
             </Chip>
-            <p className="text-sm text-gray-700 dark:text-gray-200">
-              {cronstrue.toString(data!.cronspec)}
+            <p className="text-gray-700 text-sm dark:text-gray-200">
+              {cronstrue.toString(data?.cronspec)}
             </p>
           </div>
           <div className="space-y-1">
@@ -77,12 +75,12 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
             </Chip>
             <p
               className={cn(
-                "text-sm text-gray-700 dark:text-gray-200",
-                data!.isEnabled ? "text-green-500" : "text-red-500",
+                "text-gray-700 text-sm dark:text-gray-200",
+                data?.isEnabled ? "text-green-500" : "text-red-500",
               )}
             >
               {format({
-                date: data!.executeAt,
+                date: data?.executeAt,
                 format: "YYYY-MM-DD HH:mm",
                 tz: getClientTimezone(),
               })}
@@ -92,22 +90,22 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
             <Chip startContent={<Clock size={12} />} size="sm">
               Created At
             </Chip>
-            <p className="text-sm text-gray-700 dark:text-gray-200">
+            <p className="text-gray-700 text-sm dark:text-gray-200">
               {format({
-                date: data!.createdAt,
+                date: data?.createdAt,
                 format: "YYYY-MM-DD HH:mm",
                 tz: getClientTimezone(),
               })}
             </p>
           </div>
-          {data!.updatedAt && (
+          {data?.updatedAt && (
             <div className="space-y-1">
               <Chip startContent={<Clock size={12} />} size="sm">
                 Updated At
               </Chip>
-              <p className="text-sm text-gray-700 dark:text-gray-200">
+              <p className="text-gray-700 text-sm dark:text-gray-200">
                 {format({
-                  date: data!.updatedAt,
+                  date: data?.updatedAt,
 
                   format: "YYYY-MM-DD HH:mm",
                   tz: getClientTimezone(),
@@ -119,8 +117,8 @@ const JobsDetailsData = ({ data }: JobsDetailsDataProps) => {
             <Chip startContent={<User size={12} />} size="sm">
               Created By
             </Chip>
-            <p className="text-sm text-gray-700 dark:text-gray-200">
-              {data!.createdBy.name}
+            <p className="text-gray-700 text-sm dark:text-gray-200">
+              {data?.createdBy.name}
             </p>
           </div>
         </div>

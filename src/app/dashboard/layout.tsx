@@ -1,9 +1,8 @@
-import { type Metadata } from "next";
+import { Header, Sidebar } from "@zapcron/components/layout";
+import { auth } from "@zapcron/server/auth";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
-
-import { auth } from "@zapcron/server/auth";
-import { Header, Sidebar } from "@zapcron/components/layout";
 
 export const metadata: Metadata = {
   title: "ZapCron | Dashboard",

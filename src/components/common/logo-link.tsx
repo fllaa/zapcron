@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Image, Link } from "@heroui/react";
 
 const LogoLink = () => {
@@ -16,7 +15,7 @@ const LogoLink = () => {
         height={40}
         className="dark:invert"
       />
-      <span className="text-2xl font-bold">ZapCron</span>
+      <span className="font-bold text-2xl">ZapCron</span>
     </Link>
   );
 };

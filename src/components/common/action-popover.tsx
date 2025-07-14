@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
 import {
   Button,
   Popover,
-  PopoverTrigger,
   PopoverContent,
   type PopoverProps,
+  PopoverTrigger,
 } from "@heroui/react";
+import type React from "react";
 
 interface ActionPopoverProps extends Omit<PopoverProps, "children"> {
   trigger: React.ReactNode;
@@ -30,7 +30,7 @@ const ActionPopover = ({
       <PopoverContent>
         <div className="flex items-center gap-2">
           <div className="px-1 py-2">
-            <div className="text-small font-bold">{_message}</div>
+            <div className="font-bold text-small">{_message}</div>
             <div className="text-tiny">{_desc}</div>
           </div>
           <Button size="sm" onPress={onAction}>

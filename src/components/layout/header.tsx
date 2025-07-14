@@ -1,14 +1,11 @@
 "use client";
 
-import React from "react";
-import { usePathname } from "next/navigation";
-import { type Session } from "next-auth";
 import {
   Button,
   Drawer,
+  DrawerBody,
   DrawerContent,
   DrawerHeader,
-  DrawerBody,
   Link,
   Navbar,
   NavbarBrand,
@@ -16,11 +13,12 @@ import {
   NavbarItem,
   useDisclosure,
 } from "@heroui/react";
-import { Menu } from "lucide-react";
-
 import { IconButton, LogoLink } from "@zapcron/components/common";
 import { UserDropdown } from "@zapcron/components/features/user";
 import { menu } from "@zapcron/constants/menu";
+import { Menu } from "lucide-react";
+import { usePathname } from "next/navigation";
+import type { Session } from "next-auth";
 
 interface HeaderProps {
   user: Session["user"];

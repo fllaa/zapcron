@@ -1,8 +1,7 @@
-import { notFound } from "next/navigation";
-
-import { api } from "@zapcron/trpc/server";
 import { HeaderPage } from "@zapcron/components/common";
 import { JobsDetailsWrapper } from "@zapcron/components/features/jobs/details";
+import { api } from "@zapcron/trpc/server";
+import { notFound } from "next/navigation";
 
 export default async function JobsDetailsPage({
   params,
