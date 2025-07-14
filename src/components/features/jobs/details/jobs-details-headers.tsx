@@ -1,24 +1,32 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
-import { Card, CardBody } from "@heroui/react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { Input } from "@heroui/react";
+import { useMemo } from "react";
 
 interface JobsDetailsHeadersProps {
   data: Record<string, unknown>;
 }
 
 const JobsDetailsHeaders = ({ data }: JobsDetailsHeadersProps) => {
+  const headers = useMemo(() => Object.entries(data), [data]);
   return (
-    <Card className="col-span-8 md:col-span-4">
-      <CardBody>
-        <h3 className="font-semibold text-lg">Headers</h3>
-        <SyntaxHighlighter language="json" style={dracula}>
-          {JSON.stringify(data ?? {}, null, 2)}
-        </SyntaxHighlighter>
-      </CardBody>
-    </Card>
+    <div className="col-span-8 md:col-span-4">
+      <h3 className="font-semibold text-lg">Headers</h3>
+      <div className="mt-2 space-y-1">
+        {headers.map(([key, value]) => (
+          <Input
+            key={key}
+            size="sm"
+            defaultValue={value as string}
+            label={key}
+            variant="faded"
+            color="primary"
+            readOnly
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 
