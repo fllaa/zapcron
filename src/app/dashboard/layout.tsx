@@ -1,5 +1,6 @@
 import { Header, Sidebar } from "@zapcron/components/layout";
 import { auth } from "@zapcron/server/auth";
+import { api } from "@zapcron/trpc/server";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
@@ -15,12 +16,14 @@ export default async function DashboardLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const session = await auth();
   if (!session?.user) return redirect("/");
+
+  const systemInfo = await api.system.get();
   return (
     <div className="relative">
       <SessionProvider session={session}>
-        <Header user={session.user} />
+        <Header user={session.user} systemInfo={systemInfo} />
         <div className="flex min-h-screen">
-          <Sidebar user={session.user} />
+          <Sidebar user={session.user} systemInfo={systemInfo} />
           <aside className="flex-auto">{children}</aside>
         </div>
       </SessionProvider>

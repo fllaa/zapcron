@@ -16,15 +16,17 @@ import {
 import { IconButton, LogoLink } from "@zapcron/components/common";
 import { UserDropdown } from "@zapcron/components/features/user";
 import { menu } from "@zapcron/constants/menu";
+import type { api } from "@zapcron/trpc/server";
 import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import type { Session } from "next-auth";
 
 interface HeaderProps {
   user: Session["user"];
+  systemInfo: Awaited<ReturnType<typeof api.system.get>>;
 }
 
-const Header = ({ user }: HeaderProps) => {
+const Header = ({ user, systemInfo }: HeaderProps) => {
   const pathname = usePathname();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
@@ -73,8 +75,11 @@ const Header = ({ user }: HeaderProps) => {
                     );
                   })}
                 </ul>
-                <div className="mt-8 text-start">
+                <div className="relative mt-8 text-start">
                   <UserDropdown user={user} />
+                  <span className="absolute right-0 bottom-0 py-1.5 text-gray-300 text-xs dark:text-gray-700">
+                    v{systemInfo?.version} | {systemInfo?.commitSha}
+                  </span>
                 </div>
               </DrawerBody>
             </>

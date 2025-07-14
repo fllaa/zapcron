@@ -4,14 +4,16 @@ import { Link } from "@heroui/react";
 import { IconButton, LogoLink } from "@zapcron/components/common";
 import { UserDropdown } from "@zapcron/components/features/user";
 import { menu } from "@zapcron/constants/menu";
+import type { api } from "@zapcron/trpc/server";
 import { usePathname } from "next/navigation";
 import type { Session } from "next-auth";
 
 interface SidebarProps {
   user: Session["user"];
+  systemInfo: Awaited<ReturnType<typeof api.system.get>>;
 }
 
-const Sidebar = ({ user }: SidebarProps) => {
+const Sidebar = ({ user, systemInfo }: SidebarProps) => {
   const pathname = usePathname();
 
   return (
@@ -40,8 +42,11 @@ const Sidebar = ({ user }: SidebarProps) => {
           </ul>
         </div>
       </div>
-      <div className="fixed bottom-0 z-30 flex max-h-screen flex-col gap-4 p-10">
+      <div className="fixed bottom-0 z-30 flex max-h-screen flex-col gap-4 px-10 py-4">
         <UserDropdown user={user} />
+        <span className="text-gray-300 text-xs dark:text-gray-700">
+          v{systemInfo?.version} | {systemInfo?.commitSha}
+        </span>
       </div>
     </aside>
   );

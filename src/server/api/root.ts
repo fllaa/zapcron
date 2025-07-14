@@ -1,6 +1,7 @@
 import { jobRouter } from "@zapcron/server/api/routers/job";
 import { logRouter } from "@zapcron/server/api/routers/log";
 import { postRouter } from "@zapcron/server/api/routers/post";
+import { systemRouter } from "@zapcron/server/api/routers/system";
 import { userRouter } from "@zapcron/server/api/routers/user";
 import {
   createCallerFactory,
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
   job: jobRouter,
   log: logRouter,
   post: postRouter,
+  system: systemRouter,
   user: userRouter,
 });
 
