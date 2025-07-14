@@ -10,3 +10,8 @@ export const zGetAllLogByJobInput = z.object({
     })
     .optional(),
 });
+
+export const zClearLog = z.object({
+  startDate: z.optional(z.string()),
+  endDate: z.optional(z.string()),
+});
