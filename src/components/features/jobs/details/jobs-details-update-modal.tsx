@@ -55,8 +55,11 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
 
   const updateJob = api.job.update.useMutation({
     onSuccess: () => {
-      methods.reset();
-      void utils.job.invalidate();
+      if (data) {
+        void utils.job.get.invalidate({
+          id: data.id,
+        });
+      }
       toast.success("Job updated successfully");
       onOpenChange();
       router.refresh();
