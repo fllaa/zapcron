@@ -2,6 +2,8 @@
 
 import {
   Button,
+  Card,
+  CardBody,
   Input,
   Modal,
   ModalBody,
@@ -16,13 +18,21 @@ import {
 } from "@heroui/react";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Editor from "@monaco-editor/react";
 import { CronBuilder } from "@zapcron/components/common";
 import { HttpMethod } from "@zapcron/constants/http";
 import { useConfig } from "@zapcron/hooks";
 import { api } from "@zapcron/trpc/react";
 import { zCreateJobInput } from "@zapcron/zod/job";
+import { cx } from "classix";
 import { Plus, X } from "lucide-react";
-import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import { useTheme } from "next-themes";
+import {
+  Controller,
+  FormProvider,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { toast } from "sonner";
 
 const JobsCreateModal = () => {
@@ -39,6 +49,7 @@ const JobsCreateModal = () => {
     name: "headers",
   });
 
+  const { theme } = useTheme();
   const utils = api.useUtils();
 
   const createJob = api.job.create.useMutation({
@@ -196,14 +207,38 @@ const JobsCreateModal = () => {
                       Add Header
                     </Button>
                   </div>
-                  <Textarea
-                    {...methods.register("body")}
-                    label="Body"
-                    placeholder={`{"key": "value"}`}
-                    variant="bordered"
-                    isInvalid={!!errors.body?.message}
-                    errorMessage={JSON.stringify(errors.body?.message)}
-                  />
+                  <Card
+                    className={cx(errors.body?.message && "outline-red-500")}
+                  >
+                    <CardBody>
+                      <h4 className="mb-1 text-gray-500 text-xs dark:text-gray-300">
+                        Body
+                      </h4>
+                      <Controller
+                        control={methods.control}
+                        name="body"
+                        render={({ field }) => (
+                          <Editor
+                            height="10rem"
+                            defaultLanguage="json"
+                            defaultValue={
+                              typeof field.value === "string"
+                                ? field.value
+                                : "{}"
+                            }
+                            theme={theme === "dark" ? "vs-dark" : "light"}
+                            options={{
+                              minimap: { enabled: false },
+                              wordWrap: "on",
+                              fontSize: 14,
+                              lineNumbers: "on",
+                            }}
+                            onChange={field.onChange}
+                          />
+                        )}
+                      />
+                    </CardBody>
+                  </Card>
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onPress={onClose}>
