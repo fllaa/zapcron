@@ -83,6 +83,9 @@ export const logRouter = createTRPCRouter({
         .where(
           whereConditions.length === 0 ? undefined : and(...whereConditions),
         );
+
+      // Vacuum the logs table to reclaim space
+      await ctx.db.execute("VACUUM ANALYZE zc_log");
       return { success: true };
     }),
 });
