@@ -1,4 +1,4 @@
-name: Deployment
+name: Build & Push Image
 
 on:
   push:
@@ -35,11 +35,3 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/zapcron-webapp:${{ env.BRANCH_NAME }},${{ secrets.DOCKER_USERNAME }}/zapcron-webapp:${{ env.BRANCH_NAME }}-${{ steps.commithash.outputs.sha_short }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Set up Kubernetes context
-        uses: azure/k8s-set-context@v1
-        with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
-
-      - name: Deploy to Kubernetes
-        run: kubectl set image deployment/zapcron webapp=${{ secrets.DOCKER_USERNAME }}/zapcron-webapp:${{ env.BRANCH_NAME }}-${{ steps.commithash.outputs.sha_short }}
