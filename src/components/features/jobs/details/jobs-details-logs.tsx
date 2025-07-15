@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { format } from "@formkit/tempo";
 import {
   Button,
   Card,
@@ -10,20 +10,20 @@ import {
   DateRangePicker,
   type RangeValue,
 } from "@heroui/react";
-import { format } from "@formkit/tempo";
 import {
-  today,
-  getLocalTimeZone,
   type CalendarDate,
+  getLocalTimeZone,
+  today,
 } from "@internationalized/date";
-
-import { api } from "@zapcron/trpc/react";
 import { Table } from "@zapcron/components/common";
 import { JobsDetailsLogsResponseModal } from "@zapcron/components/features/jobs/details";
-import { formatTime, getClientTimezone } from "@zapcron/utils/datetime";
-import { type Log } from "@zapcron/server/db/schema";
-import { colorByStatus } from "@zapcron/utils/color";
 import { LogsMode } from "@zapcron/constants/logs-mode";
+import type { Log } from "@zapcron/server/db/schema";
+import { api } from "@zapcron/trpc/react";
+import { colorByStatus } from "@zapcron/utils/color";
+import { formatTime, getClientTimezone } from "@zapcron/utils/datetime";
+import type React from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 type LogWithCreatedBy = Log & { createdBy: { name: string | null } | null };
 interface JobsDetailsLogsProps {
@@ -136,58 +136,60 @@ const JobsDetailsLogs = ({ jobId, data }: JobsDetailsLogsProps) => {
       void refetch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dateFilter]);
+  }, [dateFilter, refetch]);
 
   return (
-    <Card className="col-span-8">
-      <CardBody>
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Logs</h3>
-          <DateRangePicker
-            className="w-fit"
-            size="sm"
-            label="Date"
-            labelPlacement="outside-left"
-            variant="flat"
-            maxValue={today(getLocalTimeZone())}
-            value={dateFilter}
-            onChange={setDateFilter}
-            CalendarBottomContent={
-              <div className="mx-auto px-2 pb-2 text-right">
-                <Button
-                  size="sm"
-                  variant="bordered"
-                  radius="full"
-                  color="warning"
-                  onPress={() => setDateFilter(null)}
-                >
-                  Reset
-                </Button>
-              </div>
-            }
-            disableAnimation
-            showMonthAndYearPickers
+    <div className="col-span-8 space-y-2">
+      <h3 className="font-semibold text-lg">Logs</h3>
+      <Card>
+        <CardBody>
+          <div className="flex items-center justify-between">
+            <DateRangePicker
+              className="w-fit"
+              size="sm"
+              label="Date"
+              labelPlacement="outside-left"
+              variant="flat"
+              maxValue={today(getLocalTimeZone())}
+              value={dateFilter}
+              onChange={setDateFilter}
+              CalendarBottomContent={
+                <div className="mx-auto px-2 pb-2 text-right">
+                  <Button
+                    size="sm"
+                    variant="bordered"
+                    radius="full"
+                    color="warning"
+                    onPress={() => setDateFilter(null)}
+                  >
+                    Reset
+                  </Button>
+                </div>
+              }
+              disableAnimation
+              showMonthAndYearPickers
+            />
+          </div>
+          <Table
+            columns={columns}
+            rows={rows}
+            renderCell={renderCell}
+            className="mt-4"
           />
-        </div>
-        <Table
-          columns={columns}
-          rows={rows}
-          renderCell={renderCell}
-          className="mt-4"
-        />
-        <div className="mx-auto mt-4">
-          <Button
-            onPress={() => fetchNextPage()}
-            isDisabled={!hasNextPage}
-            isLoading={isFetchingNextPage}
-            size="sm"
-            variant="ghost"
-          >
-            {hasNextPage ? "Load More" : "No More Logs"}
-          </Button>
-        </div>
-      </CardBody>
-    </Card>
+          <div className="mx-auto mt-4">
+            <Button
+              onPress={() => fetchNextPage()}
+              isDisabled={!hasNextPage}
+              isLoading={isFetchingNextPage}
+              size="sm"
+              variant="ghost"
+            >
+              {hasNextPage ? "Load More" : "No More Logs"}
+            </Button>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
   );
 };
 

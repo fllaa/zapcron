@@ -1,7 +1,6 @@
+import { env } from "@zapcron/env";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-
-import { env } from "@zapcron/env";
 import * as schema from "./schema";
 
 /**

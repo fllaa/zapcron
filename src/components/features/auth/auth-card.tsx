@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { Button, Card, CardHeader, CardBody } from "@heroui/react";
+import { Button, Card, CardBody, CardHeader } from "@heroui/react";
 import { signIn } from "next-auth/react";
 import { FaGithub, FaMicrosoft } from "react-icons/fa6";
 
@@ -10,8 +9,8 @@ const AuthCard = () => {
     <Card className="w-full max-w-[400px]">
       <CardHeader>
         <div className="w-full text-center">
-          <h2 className="text-lg font-semibold">Sign In to Your Account</h2>
-          <p className="text-sm text-gray-500">
+          <h2 className="font-semibold text-lg">Sign In to Your Account</h2>
+          <p className="text-gray-500 text-sm">
             Sign in to access your account
           </p>
         </div>

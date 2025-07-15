@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
 import {
   Card,
   CardBody,
@@ -10,8 +9,9 @@ import {
   Select,
   SelectItem,
 } from "@heroui/react";
-import { useFormContext } from "react-hook-form";
 import CronTime from "cron-time-generator";
+import { useEffect, useMemo, useState } from "react";
+import { useFormContext } from "react-hook-form";
 
 const MinutelyCard = () => {
   const minutes = Array.from({ length: 60 }, (_, i) => i.toString());

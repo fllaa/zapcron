@@ -1,20 +1,19 @@
 "use client";
 
-import React from "react";
 import {
   Button,
   Link,
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
   useDisclosure,
 } from "@heroui/react";
+import _ from "lodash";
 import { Braces } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
-import _ from "lodash";
 
 interface JobsDetailsLogsResponseModalProps {
   id: string;
@@ -40,7 +39,6 @@ const JobsDetailsLogsResponseModal = ({
       <Modal
         size="4xl"
         scrollBehavior="inside"
-        backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >

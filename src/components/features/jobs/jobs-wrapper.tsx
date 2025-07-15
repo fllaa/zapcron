@@ -1,18 +1,18 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Pagination, Select, SelectItem } from "@heroui/react";
-
-import { api } from "@zapcron/trpc/react";
+import { Search } from "@zapcron/components/common";
 import {
   JobsCards,
   JobsCreateModal,
   JobsImportModal,
   JobsTable,
 } from "@zapcron/components/features/jobs";
-import { Search } from "@zapcron/components/common";
 import { useCreateQueryString, useDebouncedState } from "@zapcron/hooks";
+import { api } from "@zapcron/trpc/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import type React from "react";
+import { useEffect, useState } from "react";
 
 interface JobsWrapper {
   children: React.ReactNode;
@@ -48,7 +48,7 @@ const JobsWrapper = () => {
       `${pathname}?${createQueryString("page", currentPage.toString())}`,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [currentPage, createQueryString, pathname, router]);
 
   return (
     <>

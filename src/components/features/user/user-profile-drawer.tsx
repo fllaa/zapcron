@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
-import React, { useMemo, useState } from "react";
-import { type Session } from "next-auth";
 import {
   Avatar,
   Button,
@@ -16,17 +14,19 @@ import {
   SelectItem,
   useDisclosure,
 } from "@heroui/react";
-import { PenLine } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { DevTool } from "@hookform/devtools";
-import { toast } from "sonner";
-
-import { api } from "@zapcron/trpc/react";
-import { useConfig } from "@zapcron/hooks";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Role } from "@zapcron/constants/role";
-import { zUpdateMeInput } from "@zapcron/zod/user";
+import { useConfig } from "@zapcron/hooks";
+import { api } from "@zapcron/trpc/react";
 import { fileToDataUrl } from "@zapcron/utils/file";
+import { zUpdateMeInput } from "@zapcron/zod/user";
+import { PenLine } from "lucide-react";
+import type { Session } from "next-auth";
+import type React from "react";
+import { useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface UserProfileDrawerProps {
   buttonRef: React.RefObject<HTMLButtonElement>;
@@ -69,15 +69,10 @@ const UserProfileDrawer = ({ buttonRef, user }: UserProfileDrawerProps) => {
 
   return (
     <>
-      <button ref={buttonRef} className="hidden" onClick={onOpen}>
+      <button type="button" ref={buttonRef} className="hidden" onClick={onOpen}>
         open
       </button>
-      <Drawer
-        placement="left"
-        backdrop="blur"
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
+      <Drawer placement="left" isOpen={isOpen} onOpenChange={onOpenChange}>
         <DrawerContent>
           {(onClose) => (
             <form
@@ -114,7 +109,7 @@ const UserProfileDrawer = ({ buttonRef, user }: UserProfileDrawerProps) => {
                     className="h-24 w-24 text-large group-hover:brightness-75"
                     src={image ?? ""}
                   />
-                  <span className="absolute bottom-1/2 left-1/2 -translate-x-1/2 translate-y-1/2 transform text-white opacity-0 group-hover:opacity-100">
+                  <span className="-translate-x-1/2 absolute bottom-1/2 left-1/2 translate-y-1/2 transform text-white opacity-0 group-hover:opacity-100">
                     <PenLine size={24} />
                   </span>
                 </label>

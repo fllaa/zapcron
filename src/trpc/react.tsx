@@ -1,27 +1,25 @@
 "use client";
 
-import { QueryClientProvider, type QueryClient } from "@tanstack/react-query";
+import { type QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
-import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+import type { AppRouter } from "@zapcron/server/api/root";
 import { useState } from "react";
-import SuperJSON from "superjson";
 import { readSSROnlySecret } from "ssr-only-secrets";
-
-import { type AppRouter } from "@zapcron/server/api/root";
+import SuperJSON from "superjson";
 import { createQueryClient } from "./query-client";
 
-let clientQueryClientSingleton: QueryClient | undefined = undefined;
+let clientQueryClientSingleton: QueryClient | undefined;
 const getQueryClient = () => {
   if (typeof window === "undefined") {
     // Server: always make a new query client
     return createQueryClient();
   }
   // Browser: use singleton pattern to keep the same query client
-  if (!clientQueryClientSingleton) {
-    clientQueryClientSingleton = createQueryClient();
-  }
+  clientQueryClientSingleton ??= createQueryClient();
+
   return clientQueryClientSingleton;
 };
 
@@ -42,7 +40,7 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 export function TRPCReactProvider(
-  props: Readonly<{ ssrOnlySecret: string, children: React.ReactNode }>,
+  props: Readonly<{ ssrOnlySecret: string; children: React.ReactNode }>,
 ) {
   const queryClient = getQueryClient();
 
@@ -56,10 +54,13 @@ export function TRPCReactProvider(
         }),
         unstable_httpBatchStreamLink({
           transformer: SuperJSON,
-          url: getBaseUrl() + "/api/trpc",
+          url: `${getBaseUrl()}/api/trpc`,
           async headers() {
             const headers = new Headers();
-            const secret = await readSSROnlySecret(props.ssrOnlySecret, "SECRET_CLIENT_COOKIE_VAR")
+            const secret = await readSSROnlySecret(
+              props.ssrOnlySecret,
+              "SECRET_CLIENT_COOKIE_VAR",
+            );
             headers.set("x-trpc-source", "nextjs-react");
             if (secret) {
               headers.set("cookie", secret);

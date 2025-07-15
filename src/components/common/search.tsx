@@ -1,8 +1,8 @@
 "use client";
 
-import React, { forwardRef } from "react";
 import { Input, type InputProps } from "@heroui/react";
 import { Search as SearchIcon } from "lucide-react";
+import { forwardRef } from "react";
 
 type SearchProps = Omit<InputProps, "startContent" | "label">;
 

@@ -1,9 +1,8 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { type NextRequest } from "next/server";
-
 import { env } from "@zapcron/env";
 import { appRouter } from "@zapcron/server/api/root";
 import { createTRPCContext } from "@zapcron/server/api/trpc";
+import type { NextRequest } from "next/server";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when

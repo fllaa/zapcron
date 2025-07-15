@@ -1,4 +1,4 @@
-import { ConfigContext, type Config } from "@zapcron/providers";
+import { type Config, ConfigContext } from "@zapcron/providers";
 import { useContext } from "react";
 
 /**

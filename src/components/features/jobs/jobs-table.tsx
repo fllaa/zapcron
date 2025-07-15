@@ -1,18 +1,18 @@
 "use client";
 
-import React, { useCallback, useMemo } from "react";
-import { usePathname } from "next/navigation";
-import { Button, Chip, Link, Tooltip, cn } from "@heroui/react";
-import { ChevronRight, Play, Trash2 } from "lucide-react";
-import cronstrue from "cronstrue";
-import { toast } from "sonner";
 import { format } from "@formkit/tempo";
-
-import { api } from "@zapcron/trpc/react";
-import { type api as apiServer } from "@zapcron/trpc/server";
+import { Button, Chip, cn, Link, Tooltip } from "@heroui/react";
 import { ConfirmationModal, Table } from "@zapcron/components/common";
-import { getClientTimezone } from "@zapcron/utils/datetime";
+import { api } from "@zapcron/trpc/react";
+import type { api as apiServer } from "@zapcron/trpc/server";
 import { colorByStatus } from "@zapcron/utils/color";
+import { getClientTimezone } from "@zapcron/utils/datetime";
+import cronstrue from "cronstrue";
+import { ChevronRight, Play, Trash2 } from "lucide-react";
+import { usePathname } from "next/navigation";
+import type React from "react";
+import { useCallback, useMemo } from "react";
+import { toast } from "sonner";
 
 interface JobsTableProps {
   jobs: Omit<Awaited<ReturnType<typeof apiServer.job.getAll>>, "_meta">;
@@ -117,6 +117,7 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
                 const color = colorByStatus(parseInt(status, 10));
                 return (
                   <Chip
+                    // biome-ignore lint/suspicious/noArrayIndexKey: no array index key
                     key={idx}
                     size="sm"
                     color={color}
@@ -189,11 +190,11 @@ const JobsTable = ({ jobs, isImport }: JobsTableProps) => {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [deleteJob.mutateAsync, executeNowJob.mutateAsync, pathname],
   );
 
   return (
-    <div className="hidden h-full w-full max-w-full overflow-x-scroll px-2 py-4 scrollbar-hide md:block">
+    <div className="scrollbar-hide hidden h-full w-full max-w-full overflow-x-scroll px-2 py-4 md:block">
       <Table rows={rows} columns={columns} renderCell={renderCell} />
     </div>
   );

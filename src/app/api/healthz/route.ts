@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import os from "os-utils";
-import { sql } from "drizzle-orm";
 
 import { db } from "@zapcron/server/db";
+import { sql } from "drizzle-orm";
+import os from "os-utils";
 
 export const GET = async () => {
   // Check if the database is connected, and response time

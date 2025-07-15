@@ -1,31 +1,39 @@
 "use client";
 
-import React from "react";
 import {
   Button,
+  Card,
+  CardBody,
   Input,
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
   Select,
   SelectItem,
   Switch,
   Textarea,
   useDisclosure,
 } from "@heroui/react";
-import { Plus } from "lucide-react";
-import { toast } from "sonner";
-import { FormProvider, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import Editor from "@monaco-editor/react";
 import { CronBuilder } from "@zapcron/components/common";
+import { HttpMethod } from "@zapcron/constants/http";
 import { useConfig } from "@zapcron/hooks";
 import { api } from "@zapcron/trpc/react";
 import { zCreateJobInput } from "@zapcron/zod/job";
-import { HttpMethod } from "@zapcron/constants/http";
+import { cx } from "classix";
+import { Plus, X } from "lucide-react";
+import { useTheme } from "next-themes";
+import {
+  Controller,
+  FormProvider,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
+import { toast } from "sonner";
 
 const JobsCreateModal = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -36,6 +44,12 @@ const JobsCreateModal = () => {
     resolver: zodResolver(zCreateJobInput),
   });
   const { errors } = methods.formState;
+  const { fields, append, remove } = useFieldArray({
+    control: methods.control,
+    name: "headers",
+  });
+
+  const { theme } = useTheme();
   const utils = api.useUtils();
 
   const createJob = api.job.create.useMutation({
@@ -60,7 +74,6 @@ const JobsCreateModal = () => {
       <Modal
         size="xl"
         scrollBehavior="inside"
-        backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
@@ -68,7 +81,7 @@ const JobsCreateModal = () => {
           {(onClose) => (
             <FormProvider {...methods}>
               <form
-                onSubmit={methods.handleSubmit((data) =>
+                onSubmit={methods.handleSubmit((data) => {
                   createJob.mutate({
                     name: data.name as string,
                     description: data.description as string,
@@ -76,10 +89,13 @@ const JobsCreateModal = () => {
                     cronspec: data.cronspec as string,
                     url: data.url as string,
                     method: data.method as HttpMethod,
-                    headers: data.headers as string,
+                    headers: data.headers as Array<{
+                      key: string;
+                      value: string;
+                    }>,
                     body: data.body as string,
-                  }),
-                )}
+                  });
+                })}
                 className="overflow-y-auto"
               >
                 <ModalHeader className="flex flex-col gap-1">
@@ -137,22 +153,91 @@ const JobsCreateModal = () => {
                       </SelectItem>
                     ))}
                   </Select>
-                  <Textarea
-                    {...methods.register("headers")}
-                    label="Headers"
-                    placeholder={`{"Content-Type": "application/json"}`}
-                    variant="bordered"
-                    isInvalid={!!errors.headers?.message}
-                    errorMessage={JSON.stringify(errors.headers?.message)}
-                  />
-                  <Textarea
-                    {...methods.register("body")}
-                    label="Body"
-                    placeholder={`{"key": "value"}`}
-                    variant="bordered"
-                    isInvalid={!!errors.body?.message}
-                    errorMessage={JSON.stringify(errors.body?.message)}
-                  />
+                  <h4 className="text-gray-500 text-xs dark:text-gray-300">
+                    Headers
+                  </h4>
+                  <div className="flex flex-col gap-4">
+                    {fields.map((item, index) => (
+                      <div
+                        key={item.id}
+                        className="relative flex justify-between gap-2"
+                      >
+                        <Input
+                          {...methods.register(`headers.${index}.key`, {
+                            required: "Key is required",
+                          })}
+                          isClearable
+                          label="Key"
+                          placeholder="Content-Type"
+                          variant="bordered"
+                          size="sm"
+                          isInvalid={!!errors.headers?.message}
+                          errorMessage={JSON.stringify(errors.headers?.message)}
+                        />
+                        <Input
+                          {...methods.register(`headers.${index}.value`, {
+                            required: "Value is required",
+                          })}
+                          isClearable
+                          label="Value"
+                          placeholder="application/json"
+                          variant="bordered"
+                          size="sm"
+                          isInvalid={!!errors.headers?.message}
+                          errorMessage={JSON.stringify(errors.headers?.message)}
+                        />
+                        <Button
+                          isIconOnly
+                          className="absolute top-[-7px] right-[-7px] aspect-square h-5 min-w-5 max-w-5 rounded-full p-0"
+                          color="danger"
+                          variant="shadow"
+                          onPress={() => remove(index)}
+                        >
+                          <X size={10} />
+                        </Button>
+                      </div>
+                    ))}
+                    <Button
+                      variant="light"
+                      size="sm"
+                      startContent={<Plus size={12} />}
+                      onPress={() => append({ key: "", value: "" })}
+                    >
+                      Add Header
+                    </Button>
+                  </div>
+                  <Card
+                    className={cx(errors.body?.message && "outline-red-500")}
+                  >
+                    <CardBody>
+                      <h4 className="mb-1 text-gray-500 text-xs dark:text-gray-300">
+                        Body
+                      </h4>
+                      <Controller
+                        control={methods.control}
+                        name="body"
+                        render={({ field }) => (
+                          <Editor
+                            height="10rem"
+                            defaultLanguage="json"
+                            defaultValue={
+                              typeof field.value === "string"
+                                ? field.value
+                                : "{}"
+                            }
+                            theme={theme === "dark" ? "vs-dark" : "light"}
+                            options={{
+                              minimap: { enabled: false },
+                              wordWrap: "on",
+                              fontSize: 14,
+                              lineNumbers: "on",
+                            }}
+                            onChange={field.onChange}
+                          />
+                        )}
+                      />
+                    </CardBody>
+                  </Card>
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onPress={onClose}>

@@ -1,33 +1,42 @@
 "use client";
 
-import React from "react";
-import { useRouter } from "next/navigation";
 import {
   Button,
+  Card,
+  CardBody,
   Input,
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
   Select,
   SelectItem,
   Switch,
   Textarea,
   useDisclosure,
 } from "@heroui/react";
-import { Pencil } from "lucide-react";
-import { toast } from "sonner";
-import { FormProvider, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import Editor from "@monaco-editor/react";
 import { CronBuilder } from "@zapcron/components/common";
+import { HttpMethod } from "@zapcron/constants/http";
 import { useConfig } from "@zapcron/hooks";
 import { api } from "@zapcron/trpc/react";
-import { type api as apiServer } from "@zapcron/trpc/server";
+import type { api as apiServer } from "@zapcron/trpc/server";
 import { zUpdateJobInput } from "@zapcron/zod/job";
-import { HttpMethod } from "@zapcron/constants/http";
+import { cx } from "classix";
+import { Pencil, Plus, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+import { useMemo } from "react";
+import {
+  Controller,
+  FormProvider,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
+import { toast } from "sonner";
 
 interface JobsDetailsUpdateModalProps {
   data: Awaited<ReturnType<typeof apiServer.job.get>>;
@@ -39,26 +48,53 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const httpMethods = Object.values(HttpMethod);
 
+  const _headers = useMemo(() => {
+    let headers: Array<{ key: string; value: string }> = [];
+    if (data?.headers) {
+      try {
+        if (typeof data.headers === "object") {
+          headers = Object.entries(data.headers).map(([key, value]) => ({
+            key,
+            value: String(value),
+          }));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    return headers;
+  }, [data]);
+
   const methods = useForm({
     resolver: zodResolver(zUpdateJobInput),
     defaultValues: {
-      id: data!.id,
-      name: data!.name,
-      description: data!.description,
-      isEnabled: data!.isEnabled,
-      cronspec: data!.cronspec,
-      url: data!.url,
-      method: data!.method,
-      headers: data!.headers ? JSON.stringify(data!.headers) : "",
-      body: data!.body ? JSON.stringify(data!.body) : "",
+      id: data?.id,
+      name: data?.name,
+      description: data?.description,
+      isEnabled: data?.isEnabled,
+      cronspec: data?.cronspec,
+      url: data?.url,
+      method: data?.method,
+      headers: _headers,
+      body: data?.body ? JSON.stringify(data?.body) : "",
     },
   });
+  const { fields, append, remove } = useFieldArray({
+    control: methods.control,
+    name: "headers",
+  });
+
+  const { theme } = useTheme();
   const utils = api.useUtils();
 
   const updateJob = api.job.update.useMutation({
     onSuccess: () => {
-      methods.reset();
-      void utils.job.invalidate();
+      if (data) {
+        void utils.job.get.invalidate({
+          id: data.id,
+        });
+      }
       toast.success("Job updated successfully");
       onOpenChange();
       router.refresh();
@@ -73,7 +109,6 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
       <Modal
         size="xl"
         scrollBehavior="inside"
-        backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
@@ -83,11 +118,14 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
               <form
                 onSubmit={methods.handleSubmit((data) =>
                   updateJob.mutate({
-                    id: data.id,
+                    // biome-ignore lint/style/noNonNullAssertion: no non null assertion
+                    id: data.id!,
                     name: data.name,
+                    // biome-ignore lint/style/noNonNullAssertion: no non null assertion
                     description: data.description!,
                     isEnabled: data.isEnabled,
-                    cronspec: data.cronspec,
+                    // biome-ignore lint/style/noNonNullAssertion: no non null assertion
+                    cronspec: data.cronspec!,
                     url: data.url,
                     method: data.method as HttpMethod,
                     headers: data.headers,
@@ -154,22 +192,102 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
                       </SelectItem>
                     ))}
                   </Select>
-                  <Textarea
-                    {...methods.register("headers")}
-                    label="Headers"
-                    placeholder={`{"Content-Type": "application/json"}`}
-                    variant="bordered"
-                    isInvalid={!!methods.formState.errors.headers?.message}
-                    errorMessage={methods.formState.errors.headers?.message?.toString()}
-                  />
-                  <Textarea
-                    {...methods.register("body")}
-                    label="Body"
-                    placeholder={`{"key": "value"}`}
-                    variant="bordered"
-                    isInvalid={!!methods.formState.errors.body?.message}
-                    errorMessage={methods.formState.errors.body?.message?.toString()}
-                  />
+                  <h4 className="text-gray-500 text-xs dark:text-gray-300">
+                    Headers
+                  </h4>
+                  <div className="flex flex-col gap-4">
+                    {fields.map((item, index) => (
+                      <div
+                        key={item.id}
+                        className="relative flex justify-between gap-2"
+                      >
+                        <Input
+                          {...methods.register(`headers.${index}.key`, {
+                            required: "Key is required",
+                          })}
+                          isClearable
+                          label="Key"
+                          placeholder="Content-Type"
+                          variant="bordered"
+                          size="sm"
+                          isInvalid={
+                            !!methods.formState.errors.headers?.message
+                          }
+                          errorMessage={JSON.stringify(
+                            methods.formState.errors.headers?.message,
+                          )}
+                        />
+                        <Input
+                          {...methods.register(`headers.${index}.value`, {
+                            required: "Value is required",
+                          })}
+                          isClearable
+                          label="Value"
+                          placeholder="application/json"
+                          variant="bordered"
+                          size="sm"
+                          isInvalid={
+                            !!methods.formState.errors.headers?.message
+                          }
+                          errorMessage={JSON.stringify(
+                            methods.formState.errors.headers?.message,
+                          )}
+                        />
+                        <Button
+                          isIconOnly
+                          className="absolute top-[-7px] right-[-7px] aspect-square h-5 min-w-5 max-w-5 rounded-full p-0"
+                          color="danger"
+                          variant="shadow"
+                          onPress={() => remove(index)}
+                        >
+                          <X size={10} />
+                        </Button>
+                      </div>
+                    ))}
+                    <Button
+                      variant="light"
+                      size="sm"
+                      startContent={<Plus size={12} />}
+                      onPress={() => append({ key: "", value: "" })}
+                    >
+                      Add Header
+                    </Button>
+                  </div>
+                  <Card
+                    className={cx(
+                      methods.formState.errors.body?.message &&
+                        "outline-red-500",
+                    )}
+                  >
+                    <CardBody>
+                      <h4 className="mb-1 text-gray-500 text-xs dark:text-gray-300">
+                        Body
+                      </h4>
+                      <Controller
+                        control={methods.control}
+                        name="body"
+                        render={({ field }) => (
+                          <Editor
+                            height="10rem"
+                            defaultLanguage="json"
+                            defaultValue={
+                              typeof field.value === "string"
+                                ? field.value
+                                : "{}"
+                            }
+                            theme={theme === "dark" ? "vs-dark" : "light"}
+                            options={{
+                              minimap: { enabled: false },
+                              wordWrap: "on",
+                              fontSize: 14,
+                              lineNumbers: "on",
+                            }}
+                            onChange={field.onChange}
+                          />
+                        )}
+                      />
+                    </CardBody>
+                  </Card>
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onPress={onClose}>

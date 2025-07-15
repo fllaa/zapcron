@@ -1,10 +1,9 @@
-import { eq } from "drizzle-orm";
-import {v4} from "uuid";
-
 import { createTRPCRouter, protectedProcedure } from "@zapcron/server/api/trpc";
 import { users } from "@zapcron/server/db/schema";
-import { zUpdateMeInput } from "@zapcron/zod/user";
 import { dataUrlToFile } from "@zapcron/utils/file";
+import { zUpdateMeInput } from "@zapcron/zod/user";
+import { eq } from "drizzle-orm";
+import { v4 } from "uuid";
 
 export const userRouter = createTRPCRouter({
   updateMe: protectedProcedure

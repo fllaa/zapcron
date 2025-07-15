@@ -1,8 +1,7 @@
-import { and, eq, gte, lt, lte } from "drizzle-orm";
-
 import { createTRPCRouter, protectedProcedure } from "@zapcron/server/api/trpc";
 import { logs } from "@zapcron/server/db/schema";
-import { zGetAllLogByJobInput } from "@zapcron/zod/log";
+import { zClearLog, zGetAllLogByJobInput } from "@zapcron/zod/log";
+import { and, eq, gte, lt, lte } from "drizzle-orm";
 
 export const logRouter = createTRPCRouter({
   getAllByJob: protectedProcedure
@@ -34,5 +33,59 @@ export const logRouter = createTRPCRouter({
           },
         },
       });
+    }),
+
+  getStats: protectedProcedure.query(async ({ ctx }) => {
+    let size = "Unknown";
+    const total = await ctx.db.$count(logs);
+    const sizeResult = await ctx.db.execute(
+      "SELECT pg_size_pretty(pg_total_relation_size('zc_log')) AS size",
+    );
+    const oldest = await ctx.db.query.logs.findFirst({
+      orderBy: (logs, { asc }) => [asc(logs.createdAt)],
+      columns: {
+        createdAt: true,
+      },
+    });
+    const newest = await ctx.db.query.logs.findFirst({
+      orderBy: (logs, { desc }) => [desc(logs.createdAt)],
+      columns: {
+        createdAt: true,
+      },
+    });
+    if (sizeResult.length > 0) {
+      size = sizeResult[0]?.size as string;
+    }
+    return {
+      total,
+      size,
+      oldest: oldest?.createdAt.toISOString(),
+      newest: newest?.createdAt.toISOString(),
+    };
+  }),
+
+  clear: protectedProcedure
+    .input(zClearLog)
+    .mutation(async ({ ctx, input }) => {
+      const whereConditions = [];
+      if (input.startDate) {
+        whereConditions.push(
+          gte(logs.createdAt, new Date(`${input.startDate}T00:00:00`)),
+        );
+      }
+      if (input.endDate) {
+        whereConditions.push(
+          lte(logs.createdAt, new Date(`${input.endDate}T23:59:59`)),
+        );
+      }
+      await ctx.db
+        .delete(logs)
+        .where(
+          whereConditions.length === 0 ? undefined : and(...whereConditions),
+        );
+
+      // Vacuum the logs table to reclaim space
+      await ctx.db.execute("VACUUM ANALYZE zc_log");
+      return { success: true };
     }),
 });

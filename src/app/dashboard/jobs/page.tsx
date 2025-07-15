@@ -1,6 +1,6 @@
-import { api, HydrateClient } from "@zapcron/trpc/server";
-import { JobsWrapper } from "@zapcron/components/features/jobs";
 import { HeaderPage } from "@zapcron/components/common";
+import { JobsWrapper } from "@zapcron/components/features/jobs";
+import { api, HydrateClient } from "@zapcron/trpc/server";
 
 export default async function JobsPage({
   searchParams,
@@ -11,8 +11,10 @@ export default async function JobsPage({
 
   await api.job.getAll
     .prefetch({
-      limit: !isNaN(parseInt(limit!)) ? parseInt(limit!) : undefined,
-      page: !isNaN(parseInt(page!)) ? parseInt(page!) : undefined,
+      // biome-ignore lint/style/noNonNullAssertion: no non null assertion
+      limit: !Number.isNaN(parseInt(limit!)) ? parseInt(limit!) : undefined,
+      // biome-ignore lint/style/noNonNullAssertion: no non null assertion
+      page: !Number.isNaN(parseInt(page!)) ? parseInt(page!) : undefined,
     })
     .catch(() => {
       // ignore

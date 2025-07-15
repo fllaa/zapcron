@@ -50,6 +50,12 @@ EXPOSE 3000
 
 ENV PORT=3000
 
+# Set ENV VERSION & COMMIT_SHA from args
+ARG VERSION
+ARG COMMIT_SHA
+ENV VERSION=${VERSION}
+ENV COMMIT_SHA=${COMMIT_SHA}
+
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
 ENV HOSTNAME="0.0.0.0"

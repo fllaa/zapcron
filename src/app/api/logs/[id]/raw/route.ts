@@ -1,8 +1,7 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
-
 import { db } from "@zapcron/server/db";
 import { logs } from "@zapcron/server/db/schema";
+import { eq } from "drizzle-orm";
+import { type NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
   _req: NextRequest,

@@ -1,4 +1,4 @@
-name: Deployment
+name: Build & Push Image
 
 on:
   push:
@@ -27,19 +27,24 @@ jobs:
         id: commithash
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
+      - name: Set versioning environment variables
+        run: |
+          # get version from package.json
+          VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | xargs)
+          # get commit sha
+          COMMIT_SHA=${{ steps.commithash.outputs.sha_short }}
+          # set version as tag for the image
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
+
       - name: Build and push Webapp image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/zapcron-webapp:${{ env.BRANCH_NAME }},${{ secrets.DOCKER_USERNAME }}/zapcron-webapp:${{ env.BRANCH_NAME }}-${{ steps.commithash.outputs.sha_short }}
+          build-args: |
+            VERSION=${{ env.VERSION }}
+            COMMIT_SHA=${{ env.COMMIT_SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Set up Kubernetes context
-        uses: azure/k8s-set-context@v1
-        with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
-
-      - name: Deploy to Kubernetes
-        run: kubectl set image deployment/zapcron webapp=${{ secrets.DOCKER_USERNAME }}/zapcron-webapp:${{ env.BRANCH_NAME }}-${{ steps.commithash.outputs.sha_short }}

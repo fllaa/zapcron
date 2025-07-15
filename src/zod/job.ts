@@ -1,7 +1,7 @@
-import { z } from "zod";
+import { HttpMethod } from "@zapcron/constants/http";
 
 import { parseCronValid, parseJSONValid } from "@zapcron/utils/validate-value";
-import { HttpMethod } from "@zapcron/constants/http";
+import { z } from "zod";
 
 export const zCreateJobInput = z.object({
   name: z.string().min(1),
@@ -21,9 +21,12 @@ export const zCreateJobInput = z.object({
     HttpMethod.DELETE,
   ]),
   headers: z.optional(
-    z.string().refine((value) => parseJSONValid(value, { ignoreEmpty: true }), {
-      message: "Invalid JSON",
-    }),
+    z.array(
+      z.object({
+        key: z.string().min(1),
+        value: z.string().min(1),
+      }),
+    ),
   ),
   body: z.optional(
     z.string().refine((value) => parseJSONValid(value, { ignoreEmpty: true }), {
@@ -55,9 +58,12 @@ export const zUpdateJobInput = z.object({
     ]),
   ),
   headers: z.optional(
-    z.string().refine((value) => parseJSONValid(value, { ignoreEmpty: true }), {
-      message: "Invalid JSON",
-    }),
+    z.array(
+      z.object({
+        key: z.string().min(1),
+        value: z.string().min(1),
+      }),
+    ),
   ),
   body: z.optional(
     z.string().refine((value) => parseJSONValid(value, { ignoreEmpty: true }), {

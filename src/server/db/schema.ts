@@ -1,19 +1,18 @@
+import { LogsMode } from "@zapcron/constants/logs-mode";
 import { type InferSelectModel, relations, sql } from "drizzle-orm";
 import {
   boolean,
   index,
   integer,
+  json,
   pgTableCreator,
   primaryKey,
   text,
-  json,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { type AdapterAccount } from "next-auth/adapters";
+import type { AdapterAccount } from "next-auth/adapters";
 import { v4 } from "uuid";
-
-import { LogsMode } from "@zapcron/constants/logs-mode";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same

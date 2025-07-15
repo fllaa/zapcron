@@ -1,4 +1,5 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+// biome-ignore-all lint/style/noNonNullAssertion: no non null assertion
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 class S3 {
   client: S3Client;

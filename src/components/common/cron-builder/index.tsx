@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Tab, Tabs, type TabsProps } from "@heroui/react";
 
 import {

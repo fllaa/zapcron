@@ -1,26 +1,26 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
 import {
   Button,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Switch,
   cn,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Switch,
   useDisclosure,
 } from "@heroui/react";
-import { Download, Import, RefreshCcw } from "lucide-react";
-import { toast } from "sonner";
-import parser from "cron-parser";
-import { ZodError, type z } from "zod";
-
 import { JobsTable } from "@zapcron/components/features/jobs";
 import { api } from "@zapcron/trpc/react";
-import { zBulkCreateJobInput } from "@zapcron/zod/job";
 import { parseCsv } from "@zapcron/utils/csv";
+import { zBulkCreateJobInput } from "@zapcron/zod/job";
+import parser from "cron-parser";
+import { Download, Import, RefreshCcw } from "lucide-react";
+import type React from "react";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
+import { ZodError, type z } from "zod";
 
 const JobsImportModal = () => {
   const [jobs, setJobs] = useState<z.infer<typeof zBulkCreateJobInput>>([]);
@@ -122,7 +122,6 @@ const JobsImportModal = () => {
       <Modal
         size={isFilled ? "4xl" : "md"}
         scrollBehavior="inside"
-        backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
@@ -158,7 +157,7 @@ const JobsImportModal = () => {
                 className={cn(
                   "flex items-center justify-between",
                   isFilled &&
-                    "sticky bottom-0 left-0 right-0 rounded-2xl bg-content1",
+                    "sticky right-0 bottom-0 left-0 rounded-2xl bg-content1",
                 )}
               >
                 <div className="flex items-center gap-2">
