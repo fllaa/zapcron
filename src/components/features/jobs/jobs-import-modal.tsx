@@ -122,7 +122,6 @@ const JobsImportModal = () => {
       <Modal
         size={isFilled ? "4xl" : "md"}
         scrollBehavior="inside"
-        backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >

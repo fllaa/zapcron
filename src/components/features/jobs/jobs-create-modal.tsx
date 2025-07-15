@@ -74,7 +74,6 @@ const JobsCreateModal = () => {
       <Modal
         size="xl"
         scrollBehavior="inside"
-        backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >

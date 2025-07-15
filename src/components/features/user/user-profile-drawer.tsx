@@ -72,12 +72,7 @@ const UserProfileDrawer = ({ buttonRef, user }: UserProfileDrawerProps) => {
       <button type="button" ref={buttonRef} className="hidden" onClick={onOpen}>
         open
       </button>
-      <Drawer
-        placement="left"
-        backdrop="blur"
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
+      <Drawer placement="left" isOpen={isOpen} onOpenChange={onOpenChange}>
         <DrawerContent>
           {(onClose) => (
             <form

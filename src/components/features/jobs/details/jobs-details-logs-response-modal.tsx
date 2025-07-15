@@ -39,7 +39,6 @@ const JobsDetailsLogsResponseModal = ({
       <Modal
         size="4xl"
         scrollBehavior="inside"
-        backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >

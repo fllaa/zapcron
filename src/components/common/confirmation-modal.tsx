@@ -36,7 +36,6 @@ const ConfirmationModal = ({
       {renderTrigger(onOpen)}
       <Modal
         size="sm"
-        backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         classNames={{
