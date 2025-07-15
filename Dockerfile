@@ -35,11 +35,7 @@ ENV NODE_ENV=production
 # ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1002 bunjs \
-    && adduser --system --uid 1002 nextjs \
-    # Install git
-    && apt-get update \
-    && apt-get -y install git \
-    && rm -rf /var/lib/apt/lists/*
+    && adduser --system --uid 1002 nextjs
 
 COPY --from=builder /app/public ./public
 
