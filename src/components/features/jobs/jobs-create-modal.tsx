@@ -79,11 +79,13 @@ const JobsCreateModal = () => {
                     cronspec: data.cronspec as string,
                     url: data.url as string,
                     method: data.method as HttpMethod,
-                    headers: data.headers as Array<{ key: string; value: string }>,
+                    headers: data.headers as Array<{
+                      key: string;
+                      value: string;
+                    }>,
                     body: data.body as string,
-                  })
-                }
-                )}
+                  });
+                })}
                 className="overflow-y-auto"
               >
                 <ModalHeader className="flex flex-col gap-1">
@@ -176,7 +178,7 @@ const JobsCreateModal = () => {
                         />
                         <Button
                           isIconOnly
-                          className="absolute top-[-7px] right-[-7px] h-5 p-0 max-w-5 min-w-5 aspect-square rounded-full"
+                          className="absolute top-[-7px] right-[-7px] aspect-square h-5 min-w-5 max-w-5 rounded-full p-0"
                           color="danger"
                           variant="shadow"
                           onPress={() => remove(index)}

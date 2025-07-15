@@ -12,7 +12,8 @@ import { count, eq, ilike, or } from "drizzle-orm";
 
 const reduceHeaders = (headers: { key: string; value: string }[]) =>
   headers.reduce<Record<string, string>>((acc, header) => {
-    return { ...acc, [header.key]: header.value };
+    acc[header.key] = header.value;
+    return acc;
   }, {});
 
 export const jobRouter = createTRPCRouter({

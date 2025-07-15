@@ -39,16 +39,16 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
   const httpMethods = Object.values(HttpMethod);
 
   const _headers = useMemo(() => {
-    let headers: Array<{key: string; value: string}> = []
+    let headers: Array<{ key: string; value: string }> = [];
     if (data?.headers) {
       try {
-        if (typeof data.headers === 'object') {
+        if (typeof data.headers === "object") {
           headers = Object.entries(data.headers).map(([key, value]) => ({
             key,
-            value: String(value)
-          }))
+            value: String(value),
+          }));
         }
-      } catch(error) {
+      } catch (error) {
         console.error(error);
       }
     }
@@ -70,10 +70,10 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
       body: data?.body ? JSON.stringify(data?.body) : "",
     },
   });
-    const { fields, append, remove } = useFieldArray({
-      control: methods.control,
-      name: "headers",
-    });
+  const { fields, append, remove } = useFieldArray({
+    control: methods.control,
+    name: "headers",
+  });
 
   const utils = api.useUtils();
 
@@ -200,8 +200,12 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
                           placeholder="Content-Type"
                           variant="bordered"
                           size="sm"
-                          isInvalid={!!methods.formState.errors.headers?.message}
-                          errorMessage={JSON.stringify(methods.formState.errors.headers?.message)}
+                          isInvalid={
+                            !!methods.formState.errors.headers?.message
+                          }
+                          errorMessage={JSON.stringify(
+                            methods.formState.errors.headers?.message,
+                          )}
                         />
                         <Input
                           {...methods.register(`headers.${index}.value`, {
@@ -212,12 +216,16 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
                           placeholder="application/json"
                           variant="bordered"
                           size="sm"
-                          isInvalid={!!methods.formState.errors.headers?.message}
-                          errorMessage={JSON.stringify(methods.formState.errors.headers?.message)}
+                          isInvalid={
+                            !!methods.formState.errors.headers?.message
+                          }
+                          errorMessage={JSON.stringify(
+                            methods.formState.errors.headers?.message,
+                          )}
                         />
                         <Button
                           isIconOnly
-                          className="absolute top-[-7px] right-[-7px] h-5 p-0 max-w-5 min-w-5 aspect-square rounded-full"
+                          className="absolute top-[-7px] right-[-7px] aspect-square h-5 min-w-5 max-w-5 rounded-full p-0"
                           color="danger"
                           variant="shadow"
                           onPress={() => remove(index)}
