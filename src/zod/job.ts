@@ -21,9 +21,12 @@ export const zCreateJobInput = z.object({
     HttpMethod.DELETE,
   ]),
   headers: z.optional(
-    z.string().refine((value) => parseJSONValid(value, { ignoreEmpty: true }), {
-      message: "Invalid JSON",
-    }),
+    z.array(
+      z.object({
+        key: z.string().min(1),
+        value: z.string().min(1),
+      }),
+    ),
   ),
   body: z.optional(
     z.string().refine((value) => parseJSONValid(value, { ignoreEmpty: true }), {
@@ -55,9 +58,12 @@ export const zUpdateJobInput = z.object({
     ]),
   ),
   headers: z.optional(
-    z.string().refine((value) => parseJSONValid(value, { ignoreEmpty: true }), {
-      message: "Invalid JSON",
-    }),
+    z.array(
+      z.object({
+        key: z.string().min(1),
+        value: z.string().min(1),
+      }),
+    ),
   ),
   body: z.optional(
     z.string().refine((value) => parseJSONValid(value, { ignoreEmpty: true }), {

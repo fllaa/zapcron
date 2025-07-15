@@ -22,9 +22,10 @@ import { useConfig } from "@zapcron/hooks";
 import { api } from "@zapcron/trpc/react";
 import type { api as apiServer } from "@zapcron/trpc/server";
 import { zUpdateJobInput } from "@zapcron/zod/job";
-import { Pencil } from "lucide-react";
+import { Pencil, Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FormProvider, useForm } from "react-hook-form";
+import { useMemo } from "react";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 interface JobsDetailsUpdateModalProps {
@@ -37,6 +38,24 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const httpMethods = Object.values(HttpMethod);
 
+  const _headers = useMemo(() => {
+    let headers: Array<{key: string; value: string}> = []
+    if (data?.headers) {
+      try {
+        if (typeof data.headers === 'object') {
+          headers = Object.entries(data.headers).map(([key, value]) => ({
+            key,
+            value: String(value)
+          }))
+        }
+      } catch(error) {
+        console.error(error);
+      }
+    }
+
+    return headers;
+  }, [data]);
+
   const methods = useForm({
     resolver: zodResolver(zUpdateJobInput),
     defaultValues: {
@@ -47,10 +66,15 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
       cronspec: data?.cronspec,
       url: data?.url,
       method: data?.method,
-      headers: data?.headers ? JSON.stringify(data?.headers) : "",
+      headers: _headers,
       body: data?.body ? JSON.stringify(data?.body) : "",
     },
   });
+    const { fields, append, remove } = useFieldArray({
+      control: methods.control,
+      name: "headers",
+    });
+
   const utils = api.useUtils();
 
   const updateJob = api.job.update.useMutation({
@@ -158,14 +182,59 @@ const JobsDetailsUpdateModal = ({ data }: JobsDetailsUpdateModalProps) => {
                       </SelectItem>
                     ))}
                   </Select>
-                  <Textarea
-                    {...methods.register("headers")}
-                    label="Headers"
-                    placeholder={`{"Content-Type": "application/json"}`}
-                    variant="bordered"
-                    isInvalid={!!methods.formState.errors.headers?.message}
-                    errorMessage={methods.formState.errors.headers?.message?.toString()}
-                  />
+                  <h4 className="text-gray-500 text-xs dark:text-gray-300">
+                    Headers
+                  </h4>
+                  <div className="flex flex-col gap-4">
+                    {fields.map((item, index) => (
+                      <div
+                        key={item.id}
+                        className="relative flex justify-between gap-2"
+                      >
+                        <Input
+                          {...methods.register(`headers.${index}.key`, {
+                            required: "Key is required",
+                          })}
+                          isClearable
+                          label="Key"
+                          placeholder="Content-Type"
+                          variant="bordered"
+                          size="sm"
+                          isInvalid={!!methods.formState.errors.headers?.message}
+                          errorMessage={JSON.stringify(methods.formState.errors.headers?.message)}
+                        />
+                        <Input
+                          {...methods.register(`headers.${index}.value`, {
+                            required: "Value is required",
+                          })}
+                          isClearable
+                          label="Value"
+                          placeholder="application/json"
+                          variant="bordered"
+                          size="sm"
+                          isInvalid={!!methods.formState.errors.headers?.message}
+                          errorMessage={JSON.stringify(methods.formState.errors.headers?.message)}
+                        />
+                        <Button
+                          isIconOnly
+                          className="absolute top-[-7px] right-[-7px] h-5 p-0 max-w-5 min-w-5 aspect-square rounded-full"
+                          color="danger"
+                          variant="shadow"
+                          onPress={() => remove(index)}
+                        >
+                          <X size={10} />
+                        </Button>
+                      </div>
+                    ))}
+                    <Button
+                      variant="light"
+                      size="sm"
+                      startContent={<Plus size={12} />}
+                      onPress={() => append({ key: "", value: "" })}
+                    >
+                      Add Header
+                    </Button>
+                  </div>
                   <Textarea
                     {...methods.register("body")}
                     label="Body"

@@ -10,6 +10,11 @@ import {
 import parser from "cron-parser";
 import { count, eq, ilike, or } from "drizzle-orm";
 
+const reduceHeaders = (headers: { key: string; value: string }[]) =>
+  headers.reduce<Record<string, string>>((acc, header) => {
+    return { ...acc, [header.key]: header.value };
+  }, {});
+
 export const jobRouter = createTRPCRouter({
   bulkCreate: protectedProcedure
     .input(zBulkCreateJobInput)
@@ -26,6 +31,8 @@ export const jobRouter = createTRPCRouter({
   create: protectedProcedure
     .input(zCreateJobInput)
     .mutation(async ({ ctx, input }) => {
+      const _headers = reduceHeaders(input.headers ?? []);
+
       await ctx.db.insert(jobs).values({
         name: input.name,
         description: input.description,
@@ -33,7 +40,7 @@ export const jobRouter = createTRPCRouter({
         cronspec: input.cronspec,
         url: input.url,
         method: input.method,
-        headers: input.headers,
+        headers: _headers,
         body: input.body,
         executeAt: parser.parseExpression(input.cronspec).next().toDate(),
         createdById: ctx.session.user.id,
@@ -43,10 +50,13 @@ export const jobRouter = createTRPCRouter({
   update: protectedProcedure
     .input(zUpdateJobInput)
     .mutation(async ({ ctx, input }) => {
+      const _headers = reduceHeaders(input.headers ?? []);
+
       await ctx.db
         .update(jobs)
         .set({
           ...input,
+          headers: _headers,
           executeAt: parser.parseExpression(input.cronspec).next().toDate(),
         })
         .where(eq(jobs.id, input.id));
