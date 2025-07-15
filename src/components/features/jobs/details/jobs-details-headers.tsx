@@ -13,7 +13,7 @@ const JobsDetailsHeaders = ({ data }: JobsDetailsHeadersProps) => {
   return (
     <div className="col-span-8 md:col-span-4">
       <h3 className="font-semibold text-lg">Headers</h3>
-      <div className="mt-2 space-y-1">
+      <div className="mt-2 grid grid-cols-2 gap-1">
         {headers.map(([key, value]) => (
           <Input
             key={key}
