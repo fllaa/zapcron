@@ -1,8 +1,12 @@
-import { createTRPCRouter, protectedProcedure } from "@zapcron/server/api/trpc";
+import {
+  createTRPCRouter,
+  privilegedProcedure,
+  protectedProcedure,
+} from "@zapcron/server/api/trpc";
 import { users } from "@zapcron/server/db/schema";
 import { dataUrlToFile } from "@zapcron/utils/file";
-import { zUpdateMeInput } from "@zapcron/zod/user";
-import { eq } from "drizzle-orm";
+import { zGetAllUserInput, zUpdateMeInput } from "@zapcron/zod/user";
+import { count, eq, ilike, or } from "drizzle-orm";
 import { v4 } from "uuid";
 
 export const userRouter = createTRPCRouter({
@@ -29,4 +33,43 @@ export const userRouter = createTRPCRouter({
       where: eq(users.id, ctx.session.user.id),
     });
   }),
+
+  getAll: privilegedProcedure
+    .input(zGetAllUserInput)
+    .query(async ({ ctx, input }) => {
+      const data = await ctx.db.query.users.findMany({
+        orderBy: (users, { asc }) => [asc(users.name)],
+        limit: input.limit,
+        offset: (input.page - 1) * input.limit,
+        where: input.query
+          ? or(
+              ilike(users.name, `%${input.query}%`),
+              ilike(users.email, `%${input.query}%`),
+            )
+          : undefined,
+      });
+      const total =
+        (
+          await ctx.db
+            .select({ count: count() })
+            .from(users)
+            .where(
+              input.query
+                ? or(
+                    ilike(users.name, `%${input.query}%`),
+                    ilike(users.email, `%${input.query}%`),
+                  )
+                : undefined,
+            )
+        )[0]?.count ?? 0;
+      return {
+        data,
+        _meta: {
+          total,
+          page: input.page,
+          limit: input.limit,
+          totalPages: Math.ceil(total / input.limit),
+        },
+      };
+    }),
 });
