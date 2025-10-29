@@ -1,6 +1,6 @@
 # syntax=docker.io/docker/dockerfile:1
 
-FROM imbios/bun-node:1.1.38-22-slim AS base
+FROM imbios/bun-node:1.3.1-22-slim AS base
 
 # Install dependencies only when needed
 FROM base AS deps
