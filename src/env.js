@@ -16,6 +16,10 @@ export const env = createEnv({
     AUTH_MICROSOFT_ENTRA_ID_CLIENT_ID: z.string(),
     AUTH_MICROSOFT_ENTRA_ID_CLIENT_SECRET: z.string(),
     AUTH_MICROSOFT_ENTRA_ID_TENANT_ID: z.string(),
+    AUTH_MICROSOFT_ENTRA_ID_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: z
+      .boolean()
+      .optional()
+      .default(false),
     DATABASE_URL: z.string().url(),
     DEBUG: z.boolean().optional().default(false),
     ENABLE_QUERY_LOGGING: z.boolean().optional().default(false),
@@ -57,6 +61,10 @@ export const env = createEnv({
       process.env.AUTH_MICROSOFT_ENTRA_ID_CLIENT_SECRET,
     AUTH_MICROSOFT_ENTRA_ID_TENANT_ID:
       process.env.AUTH_MICROSOFT_ENTRA_ID_TENANT_ID,
+    AUTH_MICROSOFT_ENTRA_ID_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING:
+      process.env
+        .AUTH_MICROSOFT_ENTRA_ID_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING ===
+      "true",
     DATABASE_URL: process.env.DATABASE_URL,
     DEBUG: process.env.DEBUG === "true",
     ENABLE_QUERY_LOGGING: process.env.ENABLE_QUERY_LOGGING === "true",
