@@ -23,10 +23,12 @@ import { CronBuilder } from "@zapcron/components/common";
 import { HttpMethod } from "@zapcron/constants/http";
 import { useConfig } from "@zapcron/hooks";
 import { api } from "@zapcron/trpc/react";
+import { parseCurlCommand } from "@zapcron/utils/parse-curl";
 import { zCreateJobInput } from "@zapcron/zod/job";
 import { cx } from "classix";
-import { Plus, X } from "lucide-react";
+import { ClipboardPaste, Plus, X } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useState } from "react";
 import {
   Controller,
   FormProvider,
@@ -35,16 +37,20 @@ import {
 } from "react-hook-form";
 import { toast } from "sonner";
 
+const CURL_PLACEHOLDER =
+  'curl "https://api.example.com" -X POST -H "Content-Type: application/json" -d \'{"key":"value"}\'';
+
 const JobsCreateModal = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const httpMethods = Object.values(HttpMethod);
+  const [curlInput, setCurlInput] = useState("");
 
   const config = useConfig();
   const methods = useForm({
     resolver: zodResolver(zCreateJobInput),
   });
   const { errors } = methods.formState;
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control: methods.control,
     name: "headers",
   });
@@ -55,11 +61,27 @@ const JobsCreateModal = () => {
   const createJob = api.job.create.useMutation({
     onSuccess: () => {
       methods.reset();
+      setCurlInput("");
       void utils.job.invalidate();
       toast.success("Job created successfully");
       onOpenChange();
     },
   });
+
+  const handleParseCurl = () => {
+    try {
+      const parsed = parseCurlCommand(curlInput);
+      methods.setValue("url", parsed.url, { shouldValidate: true });
+      methods.setValue("method", parsed.method, { shouldValidate: true });
+      replace(parsed.headers);
+      methods.setValue("body", parsed.body ?? "", { shouldValidate: true });
+      toast.success("cURL command parsed successfully");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to parse cURL command",
+      );
+    }
+  };
 
   return (
     <>
@@ -126,6 +148,31 @@ const JobsCreateModal = () => {
                     Enabled
                   </Switch>
                   <CronBuilder />
+                  <Card className="border-dashed">
+                    <CardBody className="gap-3">
+                      <h4 className="text-gray-500 text-xs dark:text-gray-300">
+                        Import from cURL
+                      </h4>
+                      <Textarea
+                        value={curlInput}
+                        onValueChange={setCurlInput}
+                        label="cURL command"
+                        placeholder={CURL_PLACEHOLDER}
+                        variant="bordered"
+                        minRows={3}
+                      />
+                      <Button
+                        variant="flat"
+                        size="sm"
+                        className="self-start"
+                        startContent={<ClipboardPaste size={14} />}
+                        onPress={handleParseCurl}
+                        isDisabled={!curlInput.trim()}
+                      >
+                        Parse cURL
+                      </Button>
+                    </CardBody>
+                  </Card>
                   <Input
                     {...methods.register("url", {
                       required: "URL is required",
@@ -220,7 +267,7 @@ const JobsCreateModal = () => {
                           <Editor
                             height="10rem"
                             defaultLanguage="json"
-                            defaultValue={
+                            value={
                               typeof field.value === "string"
                                 ? field.value
                                 : "{}"
