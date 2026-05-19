@@ -65,6 +65,10 @@ Ensure the following are installed on your system before running ZapCron:
 
 ZapCron uses environment variables for configuration. Refer to the provided `.env.example` file for required and optional variables. Customize it according to your needs.
 
+### Job log retention
+
+Set `LOG_RETENTION_DAYS` to automatically delete job execution logs older than that many days (`0` disables retention). Schedule a periodic call to `POST /api/logs/purge` with `LOG_RETENTION_CRON_SECRET` in the `Authorization: Bearer` header or `x-log-retention-secret` header (for example via Kubernetes CronJob or system cron). Admins can also purge expired logs from **Settings → Log Management**.
+
 ## Usage
 
 Once ZapCron is running, you can define your webhook schedules and manage them through the API. Refer to the API documentation (coming soon) for detailed instructions.

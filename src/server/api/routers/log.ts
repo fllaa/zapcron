@@ -1,5 +1,16 @@
-import { createTRPCRouter, protectedProcedure } from "@zapcron/server/api/trpc";
+import {
+  createTRPCRouter,
+  privilegedProcedure,
+  protectedProcedure,
+} from "@zapcron/server/api/trpc";
 import { logs } from "@zapcron/server/db/schema";
+import {
+  countExpiredLogs,
+  getLogRetentionCutoffDate,
+  getLogRetentionDays,
+  isLogRetentionEnabled,
+  purgeExpiredLogs,
+} from "@zapcron/server/logs/retention";
 import { zClearLog, zGetAllLogByJobInput } from "@zapcron/zod/log";
 import { and, eq, gte, lt, lte } from "drizzle-orm";
 
@@ -56,12 +67,26 @@ export const logRouter = createTRPCRouter({
     if (sizeResult.length > 0) {
       size = sizeResult[0]?.size as string;
     }
+    const retentionDays = getLogRetentionDays();
+    const cutoffDate = getLogRetentionCutoffDate();
+    const expiredCount = isLogRetentionEnabled()
+      ? await countExpiredLogs(ctx.db)
+      : 0;
+
     return {
       total,
       size,
       oldest: oldest?.createdAt.toISOString(),
       newest: newest?.createdAt.toISOString(),
+      retentionDays,
+      retentionEnabled: isLogRetentionEnabled(),
+      cutoffDate: cutoffDate?.toISOString() ?? null,
+      expiredCount,
     };
+  }),
+
+  purgeExpired: privilegedProcedure.mutation(async ({ ctx }) => {
+    return await purgeExpiredLogs(ctx.db);
   }),
 
   clear: protectedProcedure
