@@ -17,7 +17,7 @@ import {
 } from "@internationalized/date";
 import { ActionPopover } from "@zapcron/components/common";
 import { api } from "@zapcron/trpc/react";
-import { HardDrive, Rows2 } from "lucide-react";
+import { CalendarClock, HardDrive, Rows2, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -49,6 +49,16 @@ const SettingsLogs = () => {
     onSuccess() {
       void utils.log.invalidate();
       toast.success("Successfully cleared logs");
+    },
+  });
+
+  const purgeExpiredLogs = api.log.purgeExpired.useMutation({
+    onSuccess(result) {
+      void utils.log.invalidate();
+      toast.success(`Purged ${result.deleted} expired log(s)`);
+    },
+    onError() {
+      toast.error("Failed to purge expired logs");
     },
   });
   return (
@@ -83,6 +93,64 @@ const SettingsLogs = () => {
               </p>
             </div>
           </div>
+          <h3 className="mb-2 font-medium text-md">Retention</h3>
+          <div className="mb-6 flex flex-wrap gap-8">
+            <div className="flex items-center gap-2">
+              <Chip
+                startContent={<CalendarClock size={12} />}
+                size="sm"
+                color={stats.retentionEnabled ? "success" : "default"}
+              >
+                Policy
+              </Chip>
+              <p className="text-gray-700 text-sm dark:text-gray-200">
+                {stats.retentionEnabled
+                  ? `Keep logs for ${stats.retentionDays} day(s)`
+                  : "Disabled (set LOG_RETENTION_DAYS)"}
+              </p>
+            </div>
+            {stats.retentionEnabled && (
+              <>
+                <div className="flex items-center gap-2">
+                  <Chip size="sm" variant="flat">
+                    Cutoff
+                  </Chip>
+                  <p className="text-gray-700 text-sm dark:text-gray-200">
+                    {stats.cutoffDate
+                      ? new Date(stats.cutoffDate).toLocaleString()
+                      : "—"}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Chip size="sm" color="warning" variant="flat">
+                    Expired
+                  </Chip>
+                  <p className="text-gray-700 text-sm dark:text-gray-200">
+                    {stats.expiredCount}
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
+          {stats.retentionEnabled && stats.expiredCount > 0 && (
+            <div className="mb-6">
+              <ActionPopover
+                placement="right"
+                trigger={
+                  <Button
+                    isLoading={purgeExpiredLogs.isPending}
+                    color="warning"
+                    size="sm"
+                    className="w-fit"
+                    startContent={<Trash2 size={14} />}
+                  >
+                    Purge Expired Logs
+                  </Button>
+                }
+                onAction={() => purgeExpiredLogs.mutate()}
+              />
+            </div>
+          )}
           <h3 className="mb-2 font-medium text-md">Clear</h3>
           <div className="mb-2 flex items-center gap-2">
             <Switch

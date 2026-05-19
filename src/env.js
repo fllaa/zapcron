@@ -23,6 +23,13 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
     DEBUG: z.boolean().optional().default(false),
     ENABLE_QUERY_LOGGING: z.boolean().optional().default(false),
+    LOG_RETENTION_DAYS: z.coerce
+      .number()
+      .int()
+      .min(0)
+      .optional()
+      .default(0),
+    LOG_RETENTION_CRON_SECRET: z.string().optional(),
     REDIS_HOST: z.string().optional().default("localhost"),
     REDIS_PORT: z.number().optional().default(6379),
     REDIS_PASSWORD: z.string().optional(),
@@ -68,6 +75,8 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     DEBUG: process.env.DEBUG === "true",
     ENABLE_QUERY_LOGGING: process.env.ENABLE_QUERY_LOGGING === "true",
+    LOG_RETENTION_DAYS: process.env.LOG_RETENTION_DAYS,
+    LOG_RETENTION_CRON_SECRET: process.env.LOG_RETENTION_CRON_SECRET,
     REDIS_HOST: process.env.REDIS_HOST,
     REDIS_PORT: process.env.REDIS_PORT
       ? parseInt(process.env.REDIS_PORT)
